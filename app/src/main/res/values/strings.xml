@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">LinMea</string>
+
+    <!-- Login Activity -->
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="welcome">Welcome</string>
+    <string name="rememberme">remember me</string>
+    <string name="singup">Sing UP</string>
+    <string name="restorepassword">Restore password</string>
+    <string name="noacc">Don\'t have an account?</string>
+</resources>
