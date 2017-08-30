@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "516307553257",
+    "firebase_url": "https://linmea-1e338.firebaseio.com",
+    "project_id": "linmea-1e338",
+    "storage_bucket": "linmea-1e338.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516307553257:android:39e0634b3b332716",
+        "android_client_info": {
+          "package_name": "com.fallenangel.linmea"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516307553257-m5dg6vrcclcgkl9l6n79h9b0rf60lk4j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fallenangel.linmea",
+            "certificate_hash": "885cce7e0c12a10d86b7335b609e4bf8b51ca6aa"
+          }
+        },
+        {
+          "client_id": "516307553257-ra5sd19pem4qc3og422u0jbbp36t6qvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS4kH0bUZrUhbbmLoIzunIxpDtErkKjh4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516307553257-ra5sd19pem4qc3og422u0jbbp36t6qvk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
