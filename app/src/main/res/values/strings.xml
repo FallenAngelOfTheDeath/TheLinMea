@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">LinMea</string>
 
-    <!-- Login Activity -->
+    <!-- Authentication -->
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="welcome">Welcome</string>
@@ -9,4 +9,9 @@
     <string name="singup">Sing UP</string>
     <string name="restorepassword">Restore password</string>
     <string name="noacc">Don\'t have an account?</string>
+
+
+    <!-- LOG TAGS -->
+    <string name="LOG_TAG_AUTH">Authentication</string>
+
 </resources>
