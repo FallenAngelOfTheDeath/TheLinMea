@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.fallenangel.linmea.authentication.LoginActivity;
+import com.fallenangel.linmea.authentication.SignUpActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button buttonLogin;
+    Button buttonLogin, buttonSingup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,16 +19,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         buttonLogin = (Button)findViewById(R.id.test_login_btn);
-        buttonLogin.setOnClickListener(this);
+        buttonSingup = (Button)findViewById(R.id.test_singup_btn);
 
+        buttonLogin.setOnClickListener(this);
+        buttonSingup.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.test_login_btn:
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                Intent logInIntent = new Intent(this, LoginActivity.class);
+                startActivity(logInIntent);
+                break;
+            case R.id.test_singup_btn:
+                Intent singUpIntent = new Intent(this, SignUpActivity.class);
+                startActivity(singUpIntent);
                 break;
             default:
                 break;

@@ -29,8 +29,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //private String LOG_TAG = "Authentication";
 
-    Button loginButton;
-    EditText usernameEditText, passwordEditText;
+    private Button loginButton;
+    private EditText usernameEditText, passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

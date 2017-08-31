@@ -13,5 +13,7 @@
 
     <!-- LOG TAGS -->
     <string name="LOG_TAG_AUTH">Authentication</string>
+    <string name="email_singup">Email</string>
+    <string name="login">Log in</string>
 
 </resources>
