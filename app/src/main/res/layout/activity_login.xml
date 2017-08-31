@@ -89,7 +89,7 @@
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"/>
+            android:text="@string/login"/>
 
         <LinearLayout
             android:layout_marginTop="@dimen/activity_login_margin_top"
