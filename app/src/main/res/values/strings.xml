@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">LinMea</string>
 
+    <!-- LOG TAGS -->
+    <string name="LOG_TAG_AUTH">Authentication</string>
+
     <!-- Authentication -->
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
@@ -9,11 +12,23 @@
     <string name="singup">Sing UP</string>
     <string name="restorepassword">Restore password</string>
     <string name="noacc">Don\'t have an account?</string>
-
-
-    <!-- LOG TAGS -->
-    <string name="LOG_TAG_AUTH">Authentication</string>
     <string name="email_singup">Email</string>
     <string name="login">Log in</string>
+    <string name="incorrectpassword">incorrect password</string>
+    <string name="registrationissuccessful">registration is successful</string>
+    <string name="incorrectemail">incorrect email</string>
+    <string name="profile">profile</string>
+    <string name="password_reset">reset password</string>
+    <string name="email_verification">email verification</string>
+    <string name="user_name">Name:</string>
+    <string name="user_email">Email:</string>
+    <string name="user_email_verification">Email verification: </string>
+
+    <!-- New -->
+    <string name="lorem">На презентации Google I/O 15, компания Google представила новую версию библиотеки поддержки которая реализует несколько компонентов, сильно связанных со спецификациями Material Design, среди этих компонентов вы можете найти новые типы ViewGroup такие как AppbarLayout, CollapsingToolbarLayout и CoordinatorLayout.  При правильном комбинировании и настройке данные Viewgroup могут быть очень мощным инструментом, по этому я решил написать статью с некоторыми настройками и советами.  CoordinatorLayout  Как и предполагает его название, цель и философия этой ViewGroup является координация view элементов, которые находятся внутри него.  Рассмотрим следующую картинку:</string>
+    <string name="user_uid">UID:</string>
+    <string name="non">non</string>
+    <string name="user">user</string>
+
 
 </resources>

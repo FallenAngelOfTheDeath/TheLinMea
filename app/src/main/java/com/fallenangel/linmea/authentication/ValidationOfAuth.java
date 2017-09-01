@@ -23,10 +23,6 @@ public class ValidationOfAuth {
     }
 
     public boolean passwordComparison (String password1, String password2){
-//        boolean validate;
-//        if (password1 == password2){
-//            validate = true;
-//        } else validate = false;
         return  password1 == null ? password2 == null : password1.equals(password2);
     }
 }

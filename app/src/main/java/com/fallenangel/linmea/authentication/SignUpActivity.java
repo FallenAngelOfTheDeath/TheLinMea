@@ -50,19 +50,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         ValidationOfAuth validate = new ValidationOfAuth();
 
         if (!validate.validateEmail(email)) {
-            Toast.makeText(getApplicationContext(), "Not a valid email address!", Toast.LENGTH_SHORT).show();
-        } else if (!validate.validatePassword(password1)) {
-            Toast.makeText(getApplicationContext(), "Not a valid password!", Toast.LENGTH_SHORT).show();
-        } else  if (!validate.passwordComparison(password1, password2)){
-            Log.d(String.valueOf(getText(R.string.LOG_TAG_AUTH)), "password do not match");
-            Toast.makeText(getApplicationContext(), "password do not match", Toast.LENGTH_SHORT).show();
+            Log.i(String.valueOf(getText(R.string.LOG_TAG_AUTH)), this.getString(R.string.incorrectemail));
+            Toast.makeText(getApplicationContext(), this.getString(R.string.incorrectemail), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getApplicationContext(), "email and password is valid!", Toast.LENGTH_SHORT).show();
-            singup(email, password1);
+            if (!validate.validatePassword(password1) | !validate.passwordComparison(password1, password2)) {
+                Log.i(String.valueOf(getText(R.string.LOG_TAG_AUTH)), this.getString(R.string.incorrectpassword));
+                Toast.makeText(getApplicationContext(), this.getString(R.string.incorrectpassword), Toast.LENGTH_SHORT).show();
+            } else {
+                registration(email, password1);
+                Log.i(String.valueOf(getText(R.string.LOG_TAG_AUTH)), this.getString(R.string.registrationissuccessful));
+                Toast.makeText(getApplicationContext(), this.getString(R.string.registrationissuccessful), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    private void singup (String email, String password){
+    private void registration (String email, String password){
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
