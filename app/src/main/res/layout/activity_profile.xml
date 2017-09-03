@@ -21,10 +21,9 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="48dp"
-            app:expandedTitleMarginEnd="64dp"
-            >
+            app:expandedTitleMarginEnd="64dp">
 
-                <ImageView
+            <ImageView
                     android:id="@+id/main.backdrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -39,6 +38,7 @@
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:layout_collapseMode="pin"/>
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -51,6 +51,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/data_profile_created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:lineSpacingExtra="8dp"
+                android:text="null"/>
+            <TextView
+                android:id="@+id/data_last_singin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:lineSpacingExtra="8dp"
+                android:text="null"/>
         <LinearLayout
             android:paddingTop="@dimen/activity_top_user_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -149,19 +163,14 @@
                 android:text="@string/password_reset"
                 android:padding="@dimen/activity_horizontal_margin"/>
             <TextView
+                android:id="@+id/confirm_email_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:lineSpacingExtra="8dp"
                 android:text="@string/email_verification"
                 android:padding="@dimen/activity_horizontal_margin"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="@string/lorem"
-                android:padding="@dimen/activity_horizontal_margin"/>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

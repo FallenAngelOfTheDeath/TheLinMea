@@ -29,6 +29,9 @@
     <string name="user_uid">UID:</string>
     <string name="non">non</string>
     <string name="user">user</string>
+    <string name="update_profile">update profile</string>
+    <string name="email_hint">Email</string>
+    <string name="choose_image">Choose image</string>
 
 
 </resources>

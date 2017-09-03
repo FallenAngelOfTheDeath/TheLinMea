@@ -27,6 +27,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/profile"/>
+
+    <Button
+        android:id="@+id/update_profile_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/update_profile"/>
 </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

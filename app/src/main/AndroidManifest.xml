@@ -22,6 +22,10 @@
         </activity>
         <activity android:name=".authentication.ProfileActivity">
         </activity>
+        <activity android:name=".authentication.ChangePasswordActivity">
+        </activity>
+        <activity android:name=".authentication.ChangeProfileDataActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -4,5 +4,7 @@
     <dimen name="activity_login_margin">32dp</dimen>
     <dimen name="activity_login_margin_top">64dp</dimen>
     <dimen name="activity_top_user_margin">8dp</dimen>
+    <dimen name="avatar_margin">8dp</dimen>
+    <dimen name="avatar">170dp</dimen>
 
 </resources>

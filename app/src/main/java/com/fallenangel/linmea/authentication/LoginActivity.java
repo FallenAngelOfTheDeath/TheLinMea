@@ -1,6 +1,7 @@
 package com.fallenangel.linmea.authentication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fallenangel.linmea.R;
@@ -23,24 +25,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-//    private static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
-//    private Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-//    private Matcher matcher;
-
-    //private String LOG_TAG = "Authentication";
-
     private Button loginButton;
-    private EditText usernameEditText, passwordEditText;
+    private EditText emailEditText, passwordEditText;
+    private TextView mResetPasswordTextView, mSingUpTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mResetPasswordTextView = (TextView)findViewById(R.id.restore_password_textview);
+        mSingUpTextView = (TextView)findViewById(R.id.singup_textview);
+
+        mResetPasswordTextView.setOnClickListener(this);
+        mSingUpTextView.setOnClickListener(this);
+
         loginButton = (Button) findViewById(R.id.btn_login);
         loginButton.setOnClickListener(this);
 
-        usernameEditText = (EditText) findViewById(R.id.username_login);
+        emailEditText = (EditText) findViewById(R.id.username_login);
         passwordEditText = (EditText) findViewById(R.id.password_login);
 
         mAuth = FirebaseAuth.getInstance();
@@ -70,19 +73,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        hideKeyboard();
-
-        String username = usernameEditText.getText().toString();
+        String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
-
         ValidationOfAuth validate = new ValidationOfAuth();
 
-        if (!validate.validateEmail(username)) {
-            Toast.makeText(getApplicationContext(), "Not a valid email address!", Toast.LENGTH_SHORT).show();
-        } else if (!validate.validatePassword(password)) {
-            Toast.makeText(getApplicationContext(), "Not a valid password!", Toast.LENGTH_SHORT).show();
-        } else {
-            singing(username, password);
+        switch (v.getId()){
+            case R.id.btn_login:
+                hideKeyboard();
+                if (!validate.validateEmail(email)) {
+                    Toast.makeText(getApplicationContext(), "Not a valid email address!", Toast.LENGTH_SHORT).show();
+                } else if (!validate.validatePassword(password)) {
+                    Toast.makeText(getApplicationContext(), "Not a valid password!", Toast.LENGTH_SHORT).show();
+                } else {
+                    singing(email, password);
+                }
+                break;
+
+            case R.id.restore_password_textview:
+                if (email.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Enter a valid email address!", Toast.LENGTH_SHORT).show();
+                } else if (!validate.validateEmail(email)){
+                    Toast.makeText(getApplicationContext(), "Not a valid email address!", Toast.LENGTH_SHORT).show();
+                } else mAuth.sendPasswordResetEmail(email);
+                break;
+
+            case R.id.singup_textview:
+                Intent singUpIntent = new Intent(this, SignUpActivity.class);
+                startActivity(singUpIntent);
+                break;
         }
     }
 
