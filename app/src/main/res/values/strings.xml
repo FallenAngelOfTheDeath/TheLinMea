@@ -3,6 +3,7 @@
 
     <!-- LOG TAGS -->
     <string name="LOG_TAG_AUTH">Authentication</string>
+    <string name="LOG_TAG_IMAGE_UTILS">ImageUtils</string>
 
     <!-- Authentication -->
     <string name="username_hint">Username</string>
@@ -32,6 +33,9 @@
     <string name="update_profile">update profile</string>
     <string name="email_hint">Email</string>
     <string name="choose_image">Choose image</string>
+    <string name="LOG_TAG_AVATAR">Avatar</string>
+    <string name="take_photo">Take photo</string>
+    <string name="upload">Upload</string>
 
 
 </resources>

@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.fallenangel.linmea">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,11 +24,11 @@
         </activity>
         <activity android:name=".authentication.SignUpActivity">
         </activity>
-        <activity android:name=".authentication.ProfileActivity">
+        <activity android:name=".profile.ProfileActivity">
         </activity>
         <activity android:name=".authentication.ChangePasswordActivity">
         </activity>
-        <activity android:name=".authentication.ChangeProfileDataActivity">
+        <activity android:name=".profile.ChangeProfileDataActivity">
         </activity>
     </application>
 

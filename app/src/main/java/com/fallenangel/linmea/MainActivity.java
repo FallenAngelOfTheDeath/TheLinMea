@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.fallenangel.linmea.authentication.ChangeProfileDataActivity;
+import com.fallenangel.linmea.profile.ChangeProfileDataActivity;
 import com.fallenangel.linmea.authentication.LoginActivity;
-import com.fallenangel.linmea.authentication.ProfileActivity;
+import com.fallenangel.linmea.profile.ProfileActivity;
 import com.fallenangel.linmea.authentication.SignUpActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
