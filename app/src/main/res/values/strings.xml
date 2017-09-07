@@ -36,6 +36,10 @@
     <string name="LOG_TAG_AVATAR">Avatar</string>
     <string name="take_photo">Take photo</string>
     <string name="upload">Upload</string>
+    <string name="MD5">MD5</string>
+    <string name="avatarURI">AVATARURI</string>
+    <string name="no_permission_to_read_from_es">No permission to read from external storage</string>
+    <string name="permission">Permission</string>
 
 
 </resources>

@@ -25,14 +25,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.File;
-import java.io.IOException;
 
 public class ChangeProfileDataActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,9 +45,10 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user = mAuth.getCurrentUser();
+    private FirebaseStorage mStorage = FirebaseStorage.getInstance();
     private StorageReference mStorageRef;
     private Uri avatarUri = null;
-    private SharedPreferences mAvatarMd5Preferences;
+    private SharedPreferences mPreferences;
 
     ImageUtils imageUtils = new ImageUtils();
     CheckPermissionReadExternalStorage checkPermissionReadExternalStorage = new CheckPermissionReadExternalStorage();
@@ -65,6 +63,7 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_profile_data);
         mStorageRef = FirebaseStorage.getInstance().getReference();
+
 
         implementView();
         if (user != null) {
@@ -94,12 +93,41 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
         mUserNameEditText.setText(user.getDisplayName());
         mEmailEditText.setText(user.getEmail());
 
-        if (checkPermissionReadExternalStorage.checkReadPermission(this)) {
+        //String avatarUri = getFromSharedPreferences(getString(R.string.avatarURI), user.getUid());
+        //String md5FromFB = mStorage.getReferenceFromUrl(avatarUri).getMetadata().getResult().getMd5Hash();
+        final String[] md5FromFB = {""};
+        StorageReference forestRef = FirebaseStorage.getInstance().getReference().child("Avatars/" + user.getUid() + ".jpg");
+
+        forestRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+            @Override
+            public void onSuccess(StorageMetadata storageMetadata) {
+                md5FromFB[0] = storageMetadata.getMd5Hash();
+            }
+        });
+
+        if (validateMD5(md5FromFB[0], getFromSharedPreferences(getString(R.string.MD5), user.getUid()))){
+            //not validated, download new from fb
+            Log.i("Validate", "MD5FB = MD5ES");
+
+            if (checkPermissionReadExternalStorage.checkReadPermission(this)) {
+                mAvatarImageView.setImageBitmap(imageUtils.getAvatarFromExternalStorage(this, user.getUid()));
+            } else {
+                Log.i(getString(R.string.permission),getString(R.string.no_permission_to_read_from_es));
+            }
+
+        } else {
+            // is validated get from external storage
+            Log.i("Validate", "MD5FB != MD5ES");
+            imageUtils.downloadAvatar(user.getUid(), this);
+            forestRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                @Override
+                public void onSuccess(StorageMetadata storageMetadata) {
+                    md5FromFB[0] = storageMetadata.getMd5Hash();
+                }
+            });
+            saveToSharedPreferences(getString(R.string.MD5), user.getUid(),  md5FromFB[0]);
             mAvatarImageView.setImageBitmap(imageUtils.getAvatarFromExternalStorage(this, user.getUid()));
         }
-//        validateMD5("Avatar/",userUid,loadAvatarMd5(userUid));
-//        Log.d("Avatar Validate", String.valueOf(validateMD5("Avatar/",userUid,loadAvatarMd5(userUid))));
-
     }
 
     private void updateUserData (){
@@ -131,21 +159,9 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
         }
     }
 
-    private void downloadAatar (String avatarName){
-        StorageReference downloadRef = mStorageRef.child("Avatars/" + avatarName);
-        try {
-            File localFile = File.createTempFile(avatarName, "jpg");
-            downloadRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     private void uploadAvatar (Uri uri, final String avatarName) {
+        final Uri[] downloadUrl = {null};
         if (checkPermissionReadExternalStorage.checkReadPermission(this)) {
             UploadTask uploadTask = mStorageRef.child("Avatars/" + avatarName).putFile(uri);
             uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -157,18 +173,10 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    avatarUri = taskSnapshot.getMetadata().getDownloadUrl();
-                    String avatarMd5Hash = taskSnapshot.getMetadata().getMd5Hash();
-                    String avatarName = taskSnapshot.getMetadata().getName();
+
                     Log.i(getString(R.string.LOG_TAG_AVATAR), "Upload is done.");
-
-                    saveAvatarMd5(avatarName, avatarMd5Hash);
-
-                    Log.i(getString(R.string.LOG_TAG_AVATAR), "Name: " + avatarName + " MD5: " + avatarMd5Hash);
-                    Log.i(getString(R.string.LOG_TAG_AVATAR), "Avatar uri: " + avatarUri);
-
-//                UserProfileChangeRequest profileChangeRequest1 = new UserProfileChangeRequest.Builder().setPhotoUri(avatarUri).build();
-//                user.updateProfile(profileChangeRequest1);
+                    //saveToSharedPreferences(getString(R.string.avatarURI), user.getUid(), taskSnapshot.getMetadata().getDownloadUrl().toString());
+                    saveToSharedPreferences(getString(R.string.MD5), user.getUid(), getMd5FromFireBase(taskSnapshot));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -179,27 +187,37 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
         }
     }
 
-//    private boolean validateMD5 (String path, String name, String md5){
-//        StorageReference storageReference = mStorageRef.child(path + name);
-//        String md5Hash = storageReference.getMetadata().getResult().getMd5Hash();
-//        if (md5 == md5Hash){
-//            return true;
-//        }else return false;
-//    }
 
-    private void saveAvatarMd5(String key, String md5) {
-        mAvatarMd5Preferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor edit = mAvatarMd5Preferences.edit();
-        edit.putString(key, md5);
+    private String getMd5FromFireBase (UploadTask.TaskSnapshot taskSnapshot){
+        String avatarMd5Hash = taskSnapshot.getMetadata().getMd5Hash();
+        return avatarMd5Hash;
+    }
+
+    private void saveToSharedPreferences(String key, String userName, String md5) {
+        mPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor edit = mPreferences.edit();
+        edit.putString(key + ":" + userName, md5);
         edit.commit();
         Log.i(getString(R.string.LOG_TAG_AVATAR), "MD5 Hash has been saved");
     }
 
-    private String loadAvatarMd5(String key) {
-        mAvatarMd5Preferences = getPreferences(MODE_PRIVATE);
-        String savedMd5 = mAvatarMd5Preferences.getString(key, "");
-        return savedMd5;
+    private String getFromSharedPreferences (String key, String userName) {
+        mPreferences = getPreferences(MODE_PRIVATE);
+        String savedSharedPreferences = mPreferences.getString(key + ":" + userName, "");
+        return savedSharedPreferences;
     }
+
+    private boolean validateMD5 (String Md5FromFB, String Md5FromSP){
+        if (Md5FromFB == Md5FromSP){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
 
     @Override
     public void onClick(View v) {
@@ -247,15 +265,18 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
             case GALLERY_REQUEST:
                 if(resultCode == RESULT_OK){
                     Uri selectedImage = data.getData();
-                    String avatarName = user.getUid();
 
                     if (checkPermissionReadExternalStorage.checkReadPermission(this)) {
                         Bitmap imgBitmap = ImageUtils.decodeSampledBitmapFromStream(this, selectedImage, reqWidth, reqHeight);
-                        imageUtils.saveImage(imgBitmap, this, avatarName);
+                        Uri decodeImageUri = imageUtils.saveImage(imgBitmap, this, user.getUid());
+                        uploadAvatar(decodeImageUri, user.getUid());
+
+                        //get MD
+
+                        imageUtils.saveImage(imgBitmap, this, user.getUid());
                         mAvatarImageView.setImageBitmap(imgBitmap);
                     }
 
-                    uploadAvatar(selectedImage, avatarName);
                 }
                 break;
             default:

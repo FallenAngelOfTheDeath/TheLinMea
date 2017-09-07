@@ -6,9 +6,16 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fallenangel.linmea.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -80,11 +87,58 @@ public class ImageUtils extends AsyncTask<InputStream, Void, Bitmap> {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Log.i(context.getString(R.string.LOG_TAG_IMAGE_UTILS), "InputStream can not be create!");
         }
+
         return bitmapImage;
     }
 
+
+    public void downloadAvatar (String userName, final Context context){
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("Avatars/" + userName);
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File directory = new File(root + "/LinMea/Avatars");
+        String imageName = userName + ".jpg";
+        String file = directory + "/" + imageName;
+        final File imageFile;
+
+        Log.i(context.getString(R.string.LOG_TAG_IMAGE_UTILS), "Avatar will be saved as: " + file);
+
+
+
+        if (!directory.exists()){
+            Log.i(context.getString(R.string.LOG_TAG_IMAGE_UTILS), "Dictionary not exist!");
+            directory.mkdir();
+            Log.i(context.getString(R.string.LOG_TAG_IMAGE_UTILS), "Dictionary has been created!");
+        }
+
+        try {
+            imageFile = new File(directory, imageName);
+            storageRef.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    int progress = (int) ((100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount());
+                    taskSnapshot.getStorage();
+
+                    // need to save a link in shared pref
+
+                    Log.i(context.getString(R.string.LOG_TAG_AVATAR), "Download is " + progress + " done"  + " ^ " +  imageFile);
+                }
+            }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                    Log.i(context.getString(R.string.LOG_TAG_AVATAR), "Download is done");
+                }
+            });
+            if (!imageFile.exists()) {
+                Log.i(context.getString(R.string.LOG_TAG_IMAGE_UTILS), "Avatar image not exist!");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 
     public Bitmap getAvatarFromExternalStorage (Context context, String userName){
         String root = Environment.getExternalStorageDirectory().toString();
@@ -116,7 +170,7 @@ public class ImageUtils extends AsyncTask<InputStream, Void, Bitmap> {
         return BitmapFactory.decodeFile(file);
     }
 
-    public void saveImage (Bitmap image, Context context, String userName){
+    public Uri saveImage (Bitmap image, Context context, String userName){
             String root = Environment.getExternalStorageDirectory().toString();
             File directory = new File(root + "/LinMea/Avatars");
             String imageName = userName + ".jpg";
@@ -148,7 +202,7 @@ public class ImageUtils extends AsyncTask<InputStream, Void, Bitmap> {
                 e.printStackTrace();
                 Log.i(context.getString(R.string.LOG_TAG_IMAGE_UTILS), "saving image has been failed!");
             }
-
+            return Uri.fromFile(imageFile);
     }
 
 
