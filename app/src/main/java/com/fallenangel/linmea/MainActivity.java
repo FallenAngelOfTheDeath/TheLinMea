@@ -6,10 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.fallenangel.linmea.profile.ChangeProfileDataActivity;
 import com.fallenangel.linmea.authentication.LoginActivity;
-import com.fallenangel.linmea.profile.ProfileActivity;
 import com.fallenangel.linmea.authentication.SignUpActivity;
+import com.fallenangel.linmea.profile.ChangeUserProfileActivity;
+import com.fallenangel.linmea.profile.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(profileIntent);
                 break;
             case R.id.update_profile_btn:
-                Intent updateProfileIntent = new Intent(this, ChangeProfileDataActivity.class);
+                Intent updateProfileIntent = new Intent(this, ChangeUserProfileActivity.class);
                 startActivity(updateProfileIntent);
                 break;
             default:

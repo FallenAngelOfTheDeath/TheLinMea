@@ -40,6 +40,9 @@
     <string name="avatarURI">AVATARURI</string>
     <string name="no_permission_to_read_from_es">No permission to read from external storage</string>
     <string name="permission">Permission</string>
+    <string name="user_offline">You are offline</string>
+    <string name="user_online">user online</string>
+    <string name="LOG_TAG_USER_PROFILE">User profile</string>
 
 
 </resources>

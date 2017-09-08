@@ -3,7 +3,6 @@ package com.fallenangel.linmea.profile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -110,7 +109,7 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
             Log.i("Validate", "MD5FB = MD5ES");
 
             if (checkPermissionReadExternalStorage.checkReadPermission(this)) {
-                mAvatarImageView.setImageBitmap(imageUtils.getAvatarFromExternalStorage(this, user.getUid()));
+              //  mAvatarImageView.setImageBitmap(imageUtils.getAvatarFromExternalStorage(this, user.getUid()));
             } else {
                 Log.i(getString(R.string.permission),getString(R.string.no_permission_to_read_from_es));
             }
@@ -126,7 +125,7 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
                 }
             });
             saveToSharedPreferences(getString(R.string.MD5), user.getUid(),  md5FromFB[0]);
-            mAvatarImageView.setImageBitmap(imageUtils.getAvatarFromExternalStorage(this, user.getUid()));
+        //    mAvatarImageView.setImageBitmap(imageUtils.getAvatarFromExternalStorage(this, user.getUid()));
         }
     }
 
@@ -267,14 +266,14 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
                     Uri selectedImage = data.getData();
 
                     if (checkPermissionReadExternalStorage.checkReadPermission(this)) {
-                        Bitmap imgBitmap = ImageUtils.decodeSampledBitmapFromStream(this, selectedImage, reqWidth, reqHeight);
-                        Uri decodeImageUri = imageUtils.saveImage(imgBitmap, this, user.getUid());
-                        uploadAvatar(decodeImageUri, user.getUid());
+                        //Bitmap imgBitmap = ImageUtils.decodeSampledBitmapFromStream(this, selectedImage, reqWidth, reqHeight);
+                     //   Uri decodeImageUri = imageUtils.saveImage(imgBitmap, this, user.getUid());
+                     //   uploadAvatar(decodeImageUri, user.getUid());
 
                         //get MD
 
-                        imageUtils.saveImage(imgBitmap, this, user.getUid());
-                        mAvatarImageView.setImageBitmap(imgBitmap);
+                     //   imageUtils.saveImage(imgBitmap, this, user.getUid());
+                      //  mAvatarImageView.setImageBitmap(imgBitmap);
                     }
 
                 }

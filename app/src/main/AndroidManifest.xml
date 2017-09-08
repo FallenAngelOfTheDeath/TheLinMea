@@ -30,6 +30,8 @@
         </activity>
         <activity android:name=".profile.ChangeProfileDataActivity">
         </activity>
+        <activity android:name=".profile.ChangeUserProfileActivity">
+        </activity>
     </application>
 
 </manifest>
