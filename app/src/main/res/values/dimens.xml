@@ -6,5 +6,13 @@
     <dimen name="activity_top_user_margin">8dp</dimen>
     <dimen name="avatar_margin">8dp</dimen>
     <dimen name="avatar">170dp</dimen>
+    <dimen name="tab_label">14sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="title">128sp</dimen>
+    <dimen name="header_text_size">18sp</dimen>
+    <dimen name="cardview_options_margin">7dp</dimen>
+    <dimen name="cardview_main_padding">10dp</dimen>
+    <dimen name="default_text_size">20sp</dimen>
+    <dimen name="margin_in_card_view">15dp</dimen>
 
 </resources>

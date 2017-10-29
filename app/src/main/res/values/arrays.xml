@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="parts_of_speech">
+        <item>Null</item>
+        <item>Noun</item>
+        <item>Adjective</item>
+        <item>Numeral</item>
+        <item>Pronoun</item>
+        <item>Verb</item>
+        <item>Adverb</item>
+        <item>Modal words</item>
+        <item>Pretext</item>
+        <item>Union</item>
+        <item>Particle</item>
+        <item>Article</item>
+        <item>Interjection</item>
+    </string-array>
+    <string-array name="part_of_speech">
+        <item>Noun</item>
+        <item>Adjective</item>
+        <item>Numeral</item>
+        <item>Pronoun</item>
+        <item>Verb</item>
+        <item>Adverb</item>
+        <item>Modal words</item>
+        <item>Pretext</item>
+        <item>Union</item>
+        <item>Particle</item>
+        <item>Article</item>
+        <item>Interjection</item>
+    </string-array>
+
+
+    <string-array name="order_entries">
+       <item name="0">Drag &amp; Drop</item>
+       <item name="1">Word</item>
+       <item name="2">Word reverse order</item>
+       <item name="3">Translation</item>
+       <item name="4">Translation reverse order</item>
+    </string-array>
+
+    <string-array name="order_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="2">2</item>
+        <item name="2">3</item>
+        <item name="2">4</item>
+        <item name="2">5</item>
+    </string-array>
+
+    <string-array name="search_type">
+        <item name="0">Word</item>
+        <item name="1">Translation</item>
+    </string-array>
+
+    <string-array name="search_type_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+
+    </string-array>
+
+    <string-array name="display_type">
+        <item name="0">Word and Translation</item>
+        <item name="1">Only word</item>
+        <item name="2">Only translation</item>
+    </string-array>
+
+    <string-array name="display_type_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="2">2</item>
+    </string-array>
+
+    <string-array name="hide_learned">
+        <item name="0">Learned and not learned</item>
+        <item name="1">Only learned</item>
+        <item name="2">Only not learned</item>
+    </string-array>
+
+    <string-array name="hide_learned_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="2">2</item>
+    </string-array>
+
+    <string-array name="hide_favorite">
+        <item name="0">Favorite and not favorite</item>
+        <item name="1">Only favorite</item>
+        <item name="2">Only not favorite</item>
+    </string-array>
+
+    <string-array name="hide_favorite_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="2">2</item>
+    </string-array>
+
+</resources>

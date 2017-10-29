@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/order_filter">
+
+        <ListPreference
+            android:key="orderBy"
+            android:defaultValue="0"
+            android:entries="@array/order_entries"
+            android:summary="@string/sorting_elements"
+            android:entryValues="@array/order_values"
+            android:title="@string/pref_order_by" />
+
+        <ListPreference
+            android:key="filter"
+            android:defaultValue="0"
+            android:entries="@array/hide_learned"
+            android:summary="@string/hide_learned_words_summary"
+            android:entryValues="@array/hide_learned_values"
+            android:title="@string/hide_learned_words" />
+
+        <ListPreference
+            android:key="filterFavorite"
+            android:defaultValue="0"
+            android:entries="@array/hide_favorite"
+            android:summary="@string/hide_favorite_words_summary"
+            android:entryValues="@array/hide_favorite_values"
+            android:title="@string/hide_favorite_words" />
+
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/search_options">
+        <ListPreference
+            android:key="searchBy"
+            android:defaultValue="0"
+            android:entries="@array/search_type"
+            android:summary="@string/search_elements"
+            android:entryValues="@array/search_type_values"
+            android:title="@string/pref_search_type" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/view_options">
+        <ListPreference
+            android:key="displayType"
+            android:defaultValue="0"
+            android:entries="@array/display_type"
+            android:summary="@string/display_elements"
+            android:entryValues="@array/display_type_values"
+            android:title="@string/pref_display_type" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/fount_size">
+
+        <SeekBarPreference
+            android:summary="@string/hide_learned_words_summary"
+            android:key="fountSizeWord"
+            android:defaultValue="20"
+            android:textColor="@color/colorBlack"
+            android:title="@string/fount_size_of_words"
+            android:max="48"
+            />
+
+        <SeekBarPreference
+            android:key="fountSizeTranslation"
+            android:defaultValue="18"
+            android:textColorHint="@color/colorBlack"
+            android:textColor="@color/colorBlack"
+            android:title="@string/fount_size_of_translations"
+            android:max="48"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/other">
+        <SwitchPreference
+            android:key="closeAfterAdd"
+            android:defaultValue="true"
+            android:title="@string/close_after_added"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

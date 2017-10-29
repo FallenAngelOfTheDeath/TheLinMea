@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/extended_list_item_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+                  <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/cardview_main_padding"
+                    android:layout_weight="0.1">
+
+                    <ImageView
+                        android:id="@+id/extended_list_item_status_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:src="@drawable/ic_school"/>
+
+                    <TextView
+                        android:id="@+id/extended_list_item_word_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/extended_list_item_status_image_view"
+                        android:text="@string/word"
+                        android:textAppearance="?android:textAppearanceLarge"
+                        android:textSize="20sp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9">
+                    <ImageView
+                        android:id="@+id/extended_list_item_options_menu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="@dimen/cardview_options_margin"
+                        android:layout_marginTop="@dimen/cardview_options_margin"
+                        android:text="&#8942;"
+                        android:textAppearance="?android:textAppearanceLarge"
+                        app:srcCompat="@drawable/ic_more"/>
+
+                </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>

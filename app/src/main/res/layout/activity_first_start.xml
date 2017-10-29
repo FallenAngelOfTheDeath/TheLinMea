@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/first_start_layout"
+    android:background="@color/colorBlack"
+    android:scaleType="centerCrop"
+    tools:context="com.fallenangel.linmea.linmea.startup.FirstStartActivity">
+
+    <TextView
+        android:id="@+id/hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/title"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        style="@style/TextShadow"
+        android:textColor="@color/white"
+        android:id="@+id/first_start_sing_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/singup"
+        android:textSize="20sp"
+        android:layout_below="@+id/hello"
+        android:layout_alignLeft="@+id/hello"
+        android:layout_alignStart="@+id/hello"/>
+
+    <TextView
+        style="@style/TextShadow"
+        android:textColor="@color/white"
+        android:text="@string/or"
+        android:textSize="20sp"
+        android:id="@+id/first_start_or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hello"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        style="@style/TextShadow"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="@string/singin"
+        android:id="@+id/first_start_sing_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hello"
+        android:layout_alignRight="@+id/hello"
+        android:layout_alignEnd="@+id/hello"/>
+
+    <TextView
+        style="@style/TextShadow"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="@string/anonymously"
+        android:id="@+id/first_start_anonymously"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/first_start_or"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"/>
+
+</RelativeLayout>

@@ -1,6 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    android:background="#e3e3e3"
+    android:id="@+id/login_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:background="#e3e3e3"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:padding="@dimen/activity_horizontal_margin"
@@ -9,7 +16,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="7"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -17,9 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Welcome"
-            android:textSize="30sp"
-            android:textColor="#333333"/>
+            android:text="@string/welcome"
+            android:textSize="60sp"
+            android:textColor="@color/colorAccent"/>
 
     </RelativeLayout>
 
@@ -31,11 +38,13 @@
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
+            style="@style/TextShadow"
             android:id="@+id/usernameWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
+                style="@style/TextShadow"
                 android:id="@+id/username_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,6 +54,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            style="@style/TextShadow"
             android:id="@+id/passwordWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,6 +62,7 @@
             android:layout_marginTop="4dp">
 
             <EditText
+                style="@style/TextShadow"
                 android:id="@+id/password_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,6 +78,7 @@
 
 
             <CheckBox
+                style="@style/TextShadow"
                 android:id="@+id/remember_me_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,22 +86,23 @@
                 android:text="@string/rememberme"/>
 
             <TextView
+                style="@style/TextShadow"
                 android:id="@+id/restore_password_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:textColor="@color/colorBlack"
                 android:text="@string/restorepassword"/>
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_marginTop="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/login"/>
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_marginTop="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login"/>
 
         <LinearLayout
             android:layout_marginTop="@dimen/activity_login_margin_top"
@@ -100,6 +113,8 @@
 
 
             <TextView
+                style="@style/TextShadow"
+                android:textColor="@color/colorAccent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -112,10 +127,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.9"
                 android:gravity="left"
-                android:textColor="@color/colorBlack"
+                style="@style/TextShadow"
                 android:text="@string/singup"/>
         </LinearLayout>
 
     </LinearLayout>
 
 </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_sign_in"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_anchor="@id/btn_login"
+        app:layout_anchorGravity="center_horizontal|center|center_vertical"/>
+
+    </android.support.design.widget.CoordinatorLayout>

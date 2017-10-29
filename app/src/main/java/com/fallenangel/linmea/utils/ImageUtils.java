@@ -26,29 +26,6 @@ import java.io.FileOutputStream;
 public class ImageUtils {
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public Uri downloadAvatar (final String userName, final Context context){
         //final Context context = activity.getBaseContext();
 

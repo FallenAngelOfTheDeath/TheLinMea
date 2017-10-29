@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/sign_up_layout"
               android:background="#e3e3e3"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -19,8 +20,8 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="Welcome"
-            android:textSize="30sp"
-            android:textColor="#333333"/>
+            android:textSize="60sp"
+            android:textColor="@color/colorAccent"/>
 
     </RelativeLayout>
 
@@ -32,11 +33,13 @@
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
+            style="@style/TextShadow"
             android:id="@+id/usernameWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
+                style="@style/TextShadow"
                 android:id="@+id/email_singup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,6 +49,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            style="@style/TextShadow"
             android:id="@+id/passwordWrapper_singup_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,6 +57,7 @@
             android:layout_marginTop="4dp">
 
             <EditText
+                style="@style/TextShadow"
                 android:id="@+id/password_singup_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,6 +67,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            style="@style/TextShadow"
             android:id="@+id/passwordWrapper_singup_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,6 +75,7 @@
             android:layout_marginTop="4dp">
 
             <EditText
+                style="@style/TextShadow"
                 android:id="@+id/password_singup_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

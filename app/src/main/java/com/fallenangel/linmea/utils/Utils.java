@@ -13,10 +13,10 @@ public class Utils {
 
     Activity mActivity = new Activity();
 
-    public void hideKeyboard() {
-        View view =  mActivity.getCurrentFocus();
+    public static void hideKeyboard(Activity activity) {
+        View view =  activity.getCurrentFocus();
         if (view != null) {
-            ((InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE)).
+            ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE)).
                     hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }

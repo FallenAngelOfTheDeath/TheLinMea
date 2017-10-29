@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">LinMea</string>
 
+
+    <string-array name="true_false">
+        <item>true</item>
+        <item>false</item>
+    </string-array>
+
     <!-- LOG TAGS -->
     <string name="LOG_TAG_AUTH">Authentication</string>
     <string name="LOG_TAG_IMAGE_UTILS">ImageUtils</string>
@@ -19,7 +25,8 @@
     <string name="registrationissuccessful">registration is successful</string>
     <string name="incorrectemail">incorrect email</string>
     <string name="profile">profile</string>
-    <string name="password_reset">reset password</string>
+    <string name="password_reset">Reset password</string>
+    <string name="restore_password">Restore password</string>
     <string name="email_verification">email verification</string>
     <string name="user_name">Name:</string>
     <string name="user_email">Email:</string>
@@ -42,7 +49,166 @@
     <string name="permission">Permission</string>
     <string name="user_offline">You are offline</string>
     <string name="user_online">user online</string>
-    <string name="LOG_TAG_USER_PROFILE">User profile</string>
+    <string name="LOG_TAG_USER_PROFILE">UserProfile</string>
+    <string name="no_permission">no permission</string>
+    <string name="fire_base">Fire Base</string>
+    <string name="word">Word</string>
+    <string name="forms">Form</string>
+    <string name="translation">Translation</string>
+    <string name="word_hint">Word</string>
+    <string name="translation_hint">Translation</string>
+    <string name="description_hint">Description</string>
+    <string name="status">Status</string>
+    <string name="favorite">Favorite</string>
+    <string name="part_of_speech">Part of speech:</string>
+    <string name="dictionary_name">Dictionary name</string>
+    <string name="size_hint">Size</string>
+    <string name="owner_hint">Owner</string>
+    <string name="main_dictionary">Main dictionary</string>
+    <string name="custom_dictionaries">Custom dictionaries</string>
+    <string name="shared_dictionaries">Shared dictionaries</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_custom_dictionary">Default custom dictionary</string>
+    <string name="custom_dictionary_list">Other dictionaries</string>
+    <string name="font_fontFamily_medium">sans-serif</string>
+    <string name="name_dictionary_hint">Name</string>
+    <string name="editable">Editable:</string>
+    <string name="close_after_added">Close screen after added word</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value"/>
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="pref_order_by">Order by</string>
+    <string name="pref_display_type">Display type</string>
+    <string name="sorting_elements">sorting dictionary elements</string>
+    <string name="display_elements">display of dictionary elements</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="learned">Learned</string>
+    <string name="share">Share</string>
+    <string name="move_to">move to</string>
+    <string name="set_default_dictionary">set as default</string>
+    <string name="ward_has_been_added">Word has been added</string>
+    <string name="favorite_dictionary">Dictionary</string>
+    <string name="favorite_words">Favorite words</string>
+    <string name="all_dictionaries">All</string>
+    <string name="search_title">Search</string>
+    <string name="filter_elements">0</string>
+    <string name="filter_type">filter your dictionary</string>
+    <string name="hide_learned_words">Learned words</string>
+    <string name="hide_favorite_words">Favorite words</string>
+    <string name="hide_learned_words_summary">hide or display learned or not learned words</string>
+    <string name="hide_favorite_words_summary">hide or display favorite or not favorite words</string>
+    <string name="hello">hello</string>
+    <string name="singin">Sign IN</string>
+    <string name="or">or</string>
+    <string name="anonymously">Anonymously</string>
+    <string name="first_name_profile">First name:</string>
+    <string name="last_name_profile">Last name:</string>
+    <string name="nickname_profile">Nickname:</string>
+    <string name="email_profile">Email:</string>
+    <string name="confirm_email">Confirm email</string>
+    <string name="date_profile_created">Date of profile created:</string>
+    <string name="click_to_confirm_email">Click here to send email verification</string>
+    <string name="email_has_been_sent">Email has been sent</string>
+    <string name="log_out">Log out</string>
+    <string name="field_of_a_word_or_translation_is_empty">field of a word or translation is empty</string>
+    <string name="fount_size_of_words">Fount size of words</string>
+    <string name="fount_size">Fount size</string>
+    <string name="fount_size_of_translations">Fount size of translations</string>
+    <string name="order_filter">Order and filters</string>
+    <string name="view_options">View options</string>
+    <string name="other">Other</string>
+    <string name="birthday_profile">Birthday:</string>
+    <string name="city_profile">City: </string>
+    <string name="biography_profile">Biography:</string>
+    <string name="firstname_hint">Firstname</string>
+    <string name="first_name_hint">First name</string>
+    <string name="last_name_hint">Last name</string>
+    <string name="city_hint">City</string>
+    <string name="biography_hint">Biography</string>
+    <string name="copy">Copy</string>
+    <string name="select">Select</string>
+    <string name="selection_toggle">selection mode</string>
+    <string name="detail_view">Detail view</string>
+    <string name="delete_messege">you are sure that you want to remove this a word, it can\'t be cancelled</string>
+    <string name="search_options">Search options</string>
+    <string name="search_elements">Search by...</string>
+    <string name="pref_search_type">Search by</string>
+
 
 
 </resources>
