@@ -15,7 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea.interfaces.OnItemTouch;
+import com.fallenangel.linmea.interfaces.OnItemTouchHelper;
+import com.fallenangel.linmea.interfaces.OnItemTouchHelperViewHolder;
 import com.fallenangel.linmea.interfaces.OnRecyclerViewClickListener;
 import com.fallenangel.linmea.interfaces.OnStartDragListener;
 import com.fallenangel.linmea.linmea.collection.DictionaryCompare;
@@ -30,8 +31,8 @@ import java.util.List;
 
 public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomDictionaryModel, CustomDictionaryAdapter.ViewHolder> {
 
-    public CustomDictionaryAdapter(Context context, List<CustomDictionaryModel> items, OnRecyclerViewClickListener clickListener, OnStartDragListener dragStartListener, OnItemTouch onItemTouch) {
-        super(context, items, clickListener, dragStartListener, onItemTouch);
+    public CustomDictionaryAdapter(Context context, List<CustomDictionaryModel> items, OnRecyclerViewClickListener clickListener, OnStartDragListener dragStartListener, OnItemTouchHelper onItemTouchHelper) {
+        super(context, items, clickListener, dragStartListener, onItemTouchHelper);
     }
     String displayTypeKey = "displayType";
     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -63,13 +64,11 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
                 break;
         }
 
-//        viewHolder.mHandle.setOnDragListener(this);
 
         viewHolder.mHandle.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) ==
-                        MotionEvent.ACTION_DOWN) {
+                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
 //                    ClipData data = ClipData.newPlainText("", "");
 //                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
 //                            v);
@@ -95,11 +94,15 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
                 viewHolder.mCardView
                         .setBackgroundColor(mItems.get(position).getStatus() ? Color.TRANSPARENT
                                 : Color.WHITE);
+//                viewHolder.itemView.setBackgroundColor(mItems.get(position).getStatus() ? mContext.getResources().getColor(R.color.background_recyclerview)
+//                        : Color.WHITE);
             }
         } else {
             viewHolder.mCardView
                     .setBackgroundColor(mItems.get(position).getStatus() ? Color.TRANSPARENT
                             : Color.WHITE);
+//            viewHolder.itemView.setBackgroundColor(mItems.get(position).getStatus() ? mContext.getResources().getColor(R.color.background_recyclerview)
+//                    : Color.WHITE);
         }
 
 
@@ -122,22 +125,22 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(view, mClickListener);
+        ViewHolder viewHolder = new ViewHolder(view, mClickListener, mContext);
         return viewHolder;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, OnItemTouchHelperViewHolder {
 
         public TextView mWord, mTranslation;
         public ImageView mOptions, mStatus, mHandle;
-        public CardView mCardView;
-
+        public CardView mCardView, mBackCardView;
+        private Context mContext;
         private OnRecyclerViewClickListener mClickListener;
 
-        public ViewHolder(View view, OnRecyclerViewClickListener clickListener) {
+        public ViewHolder(View view, OnRecyclerViewClickListener clickListener, Context context) {
             super(view);
             this.mClickListener = clickListener;
-
+            this.mContext = context;
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(view.getContext());
             String displayTypeN = sharedPref.getString("displayType", "0");
             int displayType = Integer.parseInt(displayTypeN);
@@ -159,6 +162,7 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
             mOptions = (ImageView) itemView.findViewById(R.id.extended_list_item_options_menu);
             mHandle = (ImageView) itemView.findViewById(R.id.extended_list_item_handle);
             mCardView = (CardView) itemView.findViewById(R.id.extended_list_item_card_view);
+            mBackCardView = (CardView) itemView.findViewById(R.id.extended_list_item_back_card_view);
 
             mOptions.setOnClickListener(this);
             mCardView.setOnClickListener(this);
@@ -190,25 +194,78 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
             return true;
         }
 
+        @Override
+        public void onItemSelected(RecyclerView.ViewHolder viewHolder) {
+//            //itemView.setBackgroundColor(Color.LTGRAY);
+            mCardView.setBackgroundColor(Color.LTGRAY);
+        }
 
+        @Override
+        public void onItemClear(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            //itemView.setBackgroundColor(mContext.getResources().getColor(R.color.background_recyclerview));
+            mCardView.setBackgroundColor(mContext.getResources().getColor(R.color.background_recyclerview));
+        }
+    }
+//
+//    @Override
+//    public boolean onMove(int fromPosition, int toPosition) {
+//        super.onMove(fromPosition, toPosition);
+//        return mOnItemTouchHelper.onMove(fromPosition, toPosition);
+//    }
+
+
+    @Override
+    public boolean onMove(int fromPosition, int toPosition) {
+        super.onMove(fromPosition, toPosition);
+        return mOnItemTouchHelper.onMove(fromPosition, toPosition);
     }
 
     @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        super.onItemMove(fromPosition, toPosition);
-        return mOnItemTouch.onItemMove(fromPosition, toPosition);
-    }
-
-    @Override
-    public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        super.onItemSwiped(viewHolder, direction, position);
-        mOnItemTouch.onItemSwiped(viewHolder, direction, position);
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        mOnItemTouchHelper.onSwiped(viewHolder, direction, position);
     }
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-        mOnItemTouch.onSelectedChanged(viewHolder, actionState);
+
     }
+
+
+//    @Override
+//    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+//        mOnItemTouchHelper.onSelectedChanged(viewHolder, actionState);
+//    }
+
+    //    @Override
+//    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+//        //mOnItemTouchHelper.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+//    }
+//
+//    @Override
+//    public void onClearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+//        //mOnItemTouchHelper.onClearView(recyclerView, viewHolder);
+//    }
+//
+//    @Override
+//    public int convertToAbsoluteDirection(int flags, int layoutDirection) {
+//        return mOnItemTouch.convertToAbsoluteDirection(flags, layoutDirection);
+//    }
+//
+//    @Override
+//    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+//        mOnItemTouch.clearView(recyclerView, viewHolder);
+//    }
+//
+//    @Override
+//    public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+//        mOnItemTouch.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+//    }
+
+//    @Override
+//    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+//        mOnItemTouchHelper.onSelectedChanged(viewHolder, actionState);
+//    }
+
 
     public void orderBy (Context context, List<CustomDictionaryModel> mItems) {
 

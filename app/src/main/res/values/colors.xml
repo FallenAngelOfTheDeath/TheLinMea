@@ -10,4 +10,10 @@
     <color name="superLightGray">#efefef</color>
     <color name="backgroud_edit_text">#80000000</color>
     <color name="colorLBlue">#2196F3</color>
+    <color name="back_item_view_background">#ff2b2f</color>
+    <color name="background_recyclerview">#f5f5f9</color>
+    <color name="favorite">#ec80ff</color>
+    <color name="learned">#eeff75</color>
+    <color name="edit">#ffc74f</color>
+    <color name="delete">#ff373a</color>
 </resources>

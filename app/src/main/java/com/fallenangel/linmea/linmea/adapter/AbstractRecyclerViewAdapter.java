@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 
-import com.fallenangel.linmea.interfaces.OnItemTouch;
+import com.fallenangel.linmea.interfaces.OnItemTouchHelper;
 import com.fallenangel.linmea.interfaces.OnRecyclerViewClickListener;
 import com.fallenangel.linmea.interfaces.OnStartDragListener;
 import com.fallenangel.linmea.model.BaseModel;
@@ -21,12 +21,12 @@ import java.util.Map;
  * Created by NineB on 9/18/2017.
  */
 
-public abstract class AbstractRecyclerViewAdapter<T extends BaseModel, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements OnItemTouch {
+public abstract class AbstractRecyclerViewAdapter<T extends BaseModel, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements OnItemTouchHelper {
 
     protected List<T> mItems;
     protected Context mContext;
     protected OnRecyclerViewClickListener mClickListener;
-    protected OnItemTouch mOnItemTouch;
+    protected OnItemTouchHelper mOnItemTouchHelper;
     protected final OnStartDragListener mDragStartListener;
     protected SparseBooleanArray mSelectedItems;
     protected LayoutInflater mInflater;
@@ -34,12 +34,12 @@ public abstract class AbstractRecyclerViewAdapter<T extends BaseModel, VH extend
 
     private Thread mThread;
 
-    protected AbstractRecyclerViewAdapter(Context context, List<T> items, OnRecyclerViewClickListener clickListener, OnStartDragListener dragStartListener, OnItemTouch onItemTouch){
+    protected AbstractRecyclerViewAdapter(Context context, List<T> items, OnRecyclerViewClickListener clickListener, OnStartDragListener dragStartListener, OnItemTouchHelper onItemTouchHelper){
         this.mContext = context;
         this.mItems = items;
         this.mClickListener = clickListener;
         this.mDragStartListener = dragStartListener;
-        this.mOnItemTouch = onItemTouch;
+        this.mOnItemTouchHelper = onItemTouchHelper;
         mMovedItems = new HashMap<String, Object>();
         mSelectedItems = new SparseBooleanArray();
         mInflater = LayoutInflater.from(context);
@@ -92,7 +92,7 @@ public abstract class AbstractRecyclerViewAdapter<T extends BaseModel, VH extend
     public void removeItem(int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position,mItems.size());
+        //notifyItemRangeChanged(position,mItems.size());
     }
 
     public void setFilter(List<T> item) {
@@ -114,6 +114,13 @@ public abstract class AbstractRecyclerViewAdapter<T extends BaseModel, VH extend
             return ((Integer) o1.getId()).compareTo(o2.getId());
         }
     }
+
+    public void restoreItem(T item, int position) {
+        mItems.add(position, item);
+        // notify item added by position
+        notifyItemInserted(position);
+    }
+
     ////__________________________________MULTI_SELECTION___________________________________
 
     //Put or delete selected position into SparseBooleanArray
@@ -166,9 +173,19 @@ public abstract class AbstractRecyclerViewAdapter<T extends BaseModel, VH extend
     }
 
 
-    ////______________________________________DRAG & DROP_______________________________________
+    ////____________________________________DRAG & DROP/SWIPE_______________________________________
     @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+       // removeItem(position);
+        //mItems.remove(position);
+        //notifyItemRemoved(position);
+     //   notifyItemRangeChanged(position, mItems.size());
+       // mOnItemTouchHelper.onSwiped(viewHolder, direction, position);
+
+    }
+
+    @Override
+    public boolean onMove(int fromPosition, int toPosition) {
 //        if(mSelectedItems.size()>0){
 //            moveSelectedItems(fromPosition, toPosition);
 //        } else {
@@ -181,6 +198,9 @@ public abstract class AbstractRecyclerViewAdapter<T extends BaseModel, VH extend
         }
         mMovedItems.put(mItems.get(toPosition).getUID() + "/id", toPosition);
         mMovedItems.put(mItems.get(fromPosition).getUID() + "/id", fromPosition);
+
+
+        //mOnItemTouchHelper.onMove(fromPosition, toPosition);
         return true;
     }
 
@@ -206,33 +226,11 @@ public abstract class AbstractRecyclerViewAdapter<T extends BaseModel, VH extend
                 toPosition = toPosition - 1;
             }
         }
-
-
-        //do not work
-//            for (int j = 0; j < mSelectedItems.size(); j++) {
-//                if (j < toPosition) {
-//                    for (int i = j; i < toPosition; i++) {
-//                        Collections.swap(mItems, i, i + 1);
-//                        //toPosition++;
-//                    }
-//                } else {
-//                    for (int i = j; i > toPosition; i--) {
-//                        Collections.swap(mItems, i, i - 1);
-//                        //toPosition--;
-//                    }
-//                }
-//        notifyItemMoved(j, toPosition);
-//
-//          }
     }
 
     public Map<String, Object> getMovedItems (){
         return mMovedItems;
     }
-
-//    public String getMovedItemUid (int position){
-//        return mMovedItems.get(position);
-//    }
 
     public void clearMoved(){
         mMovedItems.clear();
@@ -243,13 +241,12 @@ public abstract class AbstractRecyclerViewAdapter<T extends BaseModel, VH extend
     }
 
     @Override
-    public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        mItems.remove(position);
-        notifyItemRemoved(position);
+    public void onItemMoveComplete(RecyclerView.ViewHolder viewHolder) {
+
     }
 
-    @Override
-    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-    }
+    //    @Override
+//    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+//    }
 
 }

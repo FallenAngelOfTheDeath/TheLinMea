@@ -4,6 +4,7 @@ package com.fallenangel.linmea.linmea.ui.dictionary.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -35,7 +36,7 @@ import android.widget.TextView;
 import com.fallenangel.linmea.R;
 import com.fallenangel.linmea.database.FirebaseWrapper;
 import com.fallenangel.linmea.interfaces.OnChildListener;
-import com.fallenangel.linmea.interfaces.OnItemTouch;
+import com.fallenangel.linmea.interfaces.OnItemTouchHelper;
 import com.fallenangel.linmea.interfaces.OnRecyclerViewClickListener;
 import com.fallenangel.linmea.interfaces.OnStartDragListener;
 import com.fallenangel.linmea.linmea.adapter.CustomDictionaryAdapter;
@@ -62,7 +63,7 @@ import static com.fallenangel.linmea.profile.UserMetaData.getUserUID;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CustomDictionaryFragment extends Fragment implements OnRecyclerViewClickListener, View.OnClickListener, OnStartDragListener, OnItemTouch {
+public class CustomDictionaryFragment extends Fragment implements OnRecyclerViewClickListener, View.OnClickListener, OnStartDragListener, OnItemTouchHelper {
 
     //View
     private RelativeLayout mRelativeLayout;
@@ -92,6 +93,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
     //Other
     private  Thread mThread;
+    private Paint mPaint;
 
     //Collection
     private List<CustomDictionaryModel> mItems;
@@ -116,7 +118,8 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         mFromPosIds = new ArrayList<Integer>();
         mFirebaseWrapper = new FirebaseWrapper();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        implenentRecyclerViewAdapter();
+        mPaint = new Paint();
+        implementRecyclerViewAdapter();
     }
 
     @Override
@@ -129,7 +132,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false);
-        implementTextView(rootView);
+        implementView(rootView);
         implementRecyclerView(rootView);
         implementFloatingActionButton(rootView);
         implementAnimation();
@@ -148,11 +151,11 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         resetActionMode();
     }
 
-    private void implenentRecyclerViewAdapter(){
+    private void implementRecyclerViewAdapter(){
         mAdapter = new CustomDictionaryAdapter(getActivity(), mItems, this, this, this);
         mAdapter.clear();
         mRecyclerView.setAdapter(mAdapter);
-        ItemTouchHelper.Callback itemTouchCallBack = new ItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper.Callback itemTouchCallBack = new ItemTouchHelperCallback(getActivity(), mAdapter);
         mItemTouchHelper = new ItemTouchHelper(itemTouchCallBack);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
         if (getDictionary()!= null && getCurrentUser() != null){
@@ -179,7 +182,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private void implementTextView(View rootView){
+    private void implementView(View rootView){
         mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.relative_layout);
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -232,7 +235,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
             public void onChildAdded(DataSnapshot dataSnapshot, String s, int index) {
                 mAdapter.setItems(mItems);
                 mAdapter.notifyDataSetChanged();
-                mAdapter.orderBy(getActivity(), mItems);
+                //mAdapter.orderBy(getActivity(), mItems);
                 mTextView.setVisibility(View.GONE);
                 mDictionarySize = mAdapter.getItemCount();
             }
@@ -615,42 +618,120 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     }
 
     @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
+    public boolean onMove(int fromPosition, int toPosition) {
         mToPosIds.add(toPosition);
         mFromPosIds.add(fromPosition);
         return false;
     }
 
     @Override
-    public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (direction == ItemTouchHelper.LEFT){
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        //if (direction == ItemTouchHelper.LEFT){
             mAdapter.removeItem(position);
-        } else {
+        //} else {
 
-        }
+        //}
     }
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-        if (actionState == ItemTouchHelper.ACTION_STATE_IDLE && actionState != ItemTouchHelper.ACTION_STATE_DRAG) {
-            mThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
 
-                    Map<String, Object> updateMap = mAdapter.getMovedItems();
-                    mDatabaseReference
-                            .child("custom_dictionary")
-                            .child(getUserUID())
-                            .child("dictionaries")
-                            .child(getDictionary())
-                            .updateChildren(updateMap);
-                    mAdapter.clearMoved();
-                }
-            });
-            mThread.setDaemon(true);
-            mThread.start();
-        }
     }
+
+    @Override
+    public void onItemMoveComplete(RecyclerView.ViewHolder viewHolder) {
+        mThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Map<String, Object> updateMap = mAdapter.getMovedItems();
+                mDatabaseReference
+                        .child("custom_dictionary")
+                        .child(getUserUID())
+                        .child("dictionaries")
+                        .child(getDictionary())
+                        .updateChildren(updateMap);
+                mAdapter.clearMoved();
+            }
+        });
+        mThread.setDaemon(true);
+        mThread.start();
+    }
+
+    //    @Override
+//    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+////        Bitmap icon;
+////        if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+////
+////            View itemView = viewHolder.itemView;
+////            float height = (float) itemView.getBottom() - (float) itemView.getTop();
+////            float width = height / 3;
+////
+////            if(dX > 0){
+////                mPaint.setColor(Color.parseColor("#388E3C"));
+////                RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
+////                c.drawRect(background, mPaint);
+////                icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_edit);
+////                RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
+////                c.drawBitmap(icon,null,icon_dest, mPaint);
+////            } else {
+////                mPaint.setColor(Color.parseColor("#D32F2F"));
+////                RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
+////                c.drawRect(background, mPaint);
+////                icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete);
+////                RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
+////                c.drawBitmap(icon,null,icon_dest, mPaint);
+////            }
+////        }
+//    }
+//
+//    @Override
+//    public void onClearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+//
+//    }
+//
+//    @Override
+//    public int convertToAbsoluteDirection(int flags, int layoutDirection) {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+////        final View foregroundView = ((CustomDictionaryAdapter.ViewHolder) viewHolder).mBackCardView;
+////        getDefaultUIUtil().clearView(foregroundView);
+//    }
+//
+//    @Override
+//    public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+//        final View foregroundView = ((CustomDictionaryAdapter.ViewHolder) viewHolder).mBackCardView;
+//        getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
+//    }
+
+                //    @Override
+                //    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+                //        if (actionState == ItemTouchHelper.ACTION_STATE_IDLE && actionState != ItemTouchHelper.ACTION_STATE_DRAG) {
+                //            mThread = new Thread(new Runnable() {
+                //                @Override
+                //                public void run() {
+                //
+                //                    Map<String, Object> updateMap = mAdapter.getMovedItems();
+                //                    mDatabaseReference
+                //                            .child("custom_dictionary")
+                //                            .child(getUserUID())
+                //                            .child("dictionaries")
+                //                            .child(getDictionary())
+                //                            .updateChildren(updateMap);
+                //                    mAdapter.clearMoved();
+                //                }
+                //            });
+                //            mThread.setDaemon(true);
+                //            mThread.start();
+                //        }
+                //        if (viewHolder != null) {
+                //            final View foregroundView = ((CustomDictionaryAdapter.ViewHolder) viewHolder).mBackCardView;
+                //
+                //            getDefaultUIUtil().onSelected(foregroundView);
+                //        }
+                //    }
 
     @Override
     public void onItemClicked(View view, int position) {

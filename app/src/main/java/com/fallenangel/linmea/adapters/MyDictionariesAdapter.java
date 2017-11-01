@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea.interfaces.OnItemTouch;
+import com.fallenangel.linmea.interfaces.OnItemTouchHelper;
 import com.fallenangel.linmea.interfaces.OnRecyclerViewClickListener;
 import com.fallenangel.linmea.interfaces.OnStartDragListener;
 import com.fallenangel.linmea.linmea.adapter.AbstractRecyclerViewAdapter;
@@ -24,8 +24,8 @@ import java.util.List;
 
 public class MyDictionariesAdapter extends AbstractRecyclerViewAdapter<MyDictionaryModel, MyDictionariesAdapter.ViewHolder> {
 
-    public MyDictionariesAdapter(Context context, List<MyDictionaryModel> items, OnRecyclerViewClickListener clickListener, OnStartDragListener dragStartListener, OnItemTouch onItemTouch) {
-        super(context, items, clickListener, dragStartListener, onItemTouch);
+    public MyDictionariesAdapter(Context context, List<MyDictionaryModel> items, OnRecyclerViewClickListener clickListener, OnStartDragListener dragStartListener, OnItemTouchHelper onItemTouchHelper) {
+        super(context, items, clickListener, dragStartListener, onItemTouchHelper);
     }
 
     @Override
@@ -49,6 +49,42 @@ public class MyDictionariesAdapter extends AbstractRecyclerViewAdapter<MyDiction
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
 
     }
+
+
+//    @Override
+//    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+//
+//    }
+//
+//    @Override
+//    public int convertToAbsoluteDirection(int flags, int layoutDirection) {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+//
+//    }
+//
+//    @Override
+//    public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+//
+//    }
+
+//    @Override
+//    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+//
+//    }
+//
+//    @Override
+//    public void onClearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+//
+//    }
+//
+//    @Override
+//    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+//
+//    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
