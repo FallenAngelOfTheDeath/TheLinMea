@@ -133,7 +133,7 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
 
         public TextView mWord, mTranslation;
         public ImageView mOptions, mStatus, mHandle;
-        public CardView mCardView, mBackCardView;
+        public CardView mCardView;
         private Context mContext;
         private OnRecyclerViewClickListener mClickListener;
 
@@ -162,7 +162,6 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
             mOptions = (ImageView) itemView.findViewById(R.id.extended_list_item_options_menu);
             mHandle = (ImageView) itemView.findViewById(R.id.extended_list_item_handle);
             mCardView = (CardView) itemView.findViewById(R.id.extended_list_item_card_view);
-            mBackCardView = (CardView) itemView.findViewById(R.id.extended_list_item_back_card_view);
 
             mOptions.setOnClickListener(this);
             mCardView.setOnClickListener(this);
@@ -203,7 +202,7 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
         @Override
         public void onItemClear(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
             //itemView.setBackgroundColor(mContext.getResources().getColor(R.color.background_recyclerview));
-            mCardView.setBackgroundColor(mContext.getResources().getColor(R.color.background_recyclerview));
+            mCardView.setBackgroundColor(Color.WHITE);
         }
     }
 //
@@ -222,7 +221,7 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        mOnItemTouchHelper.onSwiped(viewHolder, direction, position);
+       // mOnItemTouchHelper.onSwiped(viewHolder, direction, position);
     }
 
     @Override
@@ -230,8 +229,12 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
 
     }
 
-
-//    @Override
+    @Override
+    public void onItemMoveComplete(RecyclerView.ViewHolder viewHolder) {
+        super.onItemMoveComplete(viewHolder);
+        mOnItemTouchHelper.onItemMoveComplete(viewHolder);
+    }
+    //    @Override
 //    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
 //        mOnItemTouchHelper.onSelectedChanged(viewHolder, actionState);
 //    }

@@ -12,8 +12,8 @@
     <color name="colorLBlue">#2196F3</color>
     <color name="back_item_view_background">#ff2b2f</color>
     <color name="background_recyclerview">#f5f5f9</color>
-    <color name="favorite">#ec80ff</color>
-    <color name="learned">#eeff75</color>
-    <color name="edit">#ffc74f</color>
-    <color name="delete">#ff373a</color>
+    <color name="learned">#ec80ff</color>
+    <color name="favorite">#009723</color>
+    <color name="edit">#FF9502</color>
+    <color name="delete">#FF3C30</color>
 </resources>

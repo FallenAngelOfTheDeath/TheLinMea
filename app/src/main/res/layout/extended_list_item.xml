@@ -3,36 +3,6 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:orientation="vertical">
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/extended_list_item_back_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:elevation="4dp"
-        android:background="@color/back_item_view_background">
-
-        <ImageView
-            android:id="@+id/delete_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/ic_delete" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/delete_icon"
-            android:text="@string/delete"
-            android:textColor="#fff"
-            android:textSize="13dp" />
-
-    </android.support.v7.widget.CardView>
-
 <android.support.v7.widget.CardView
         android:id="@+id/extended_list_item_card_view"
         android:layout_width="match_parent"

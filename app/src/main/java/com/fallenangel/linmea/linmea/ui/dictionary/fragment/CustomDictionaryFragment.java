@@ -4,6 +4,7 @@ package com.fallenangel.linmea.linmea.ui.dictionary.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,6 +48,8 @@ import com.fallenangel.linmea.linmea.ui.dictionary.BaseDetailActivity;
 import com.fallenangel.linmea.linmea.user.authentication.user;
 import com.fallenangel.linmea.linmea.utils.callback.ItemTouchHelperCallback;
 import com.fallenangel.linmea.linmea.utils.callback.ToolbarActionMode;
+import com.fallenangel.linmea.linmea.view.UnderlayButton;
+import com.fallenangel.linmea.linmea.view.interfaces.UnderlayButtonClickListener;
 import com.fallenangel.linmea.model.CustomDictionaryModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -84,6 +88,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
     //Helper
     private ItemTouchHelper mItemTouchHelper;
+    private ItemTouchHelperCallback mItemTouchHelperCallback;
     private FirebaseHelper mFirebaseHelper;
     private ActionMode mActionMode;
     private SharedPreferences mSharedPreferences;
@@ -155,12 +160,103 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         mAdapter = new CustomDictionaryAdapter(getActivity(), mItems, this, this, this);
         mAdapter.clear();
         mRecyclerView.setAdapter(mAdapter);
-        ItemTouchHelper.Callback itemTouchCallBack = new ItemTouchHelperCallback(getActivity(), mAdapter);
-        mItemTouchHelper = new ItemTouchHelper(itemTouchCallBack);
+        //final ItemTouchHelperCallback itemTouchCallBack = new ItemTouchHelperCallback(getActivity(), mRecyclerView, mAdapter);
+        //mItemTouchHelper = new ItemTouchHelper(itemTouchCallBack);
+        //mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallBack);
+
+        mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(getActivity(), mRecyclerView, mAdapter) {
+            @Override
+            public void onCreateRightUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new UnderlayButton(
+                        "Delete",
+                        0,
+                        Color.parseColor("#FF3C30"),
+                        new UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                Log.i("fghfghgfhfghgfh", "onClick: ");
+                                // TODO: onDelete
+                                mAdapter.removeItem(pos);
+                               // deleteItem(pos);
+                            }
+                        }));
+                underlayButtons.add(new UnderlayButton(
+                        "Edit",
+                        0,
+                        Color.parseColor("#FF9502"),
+                        new UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: OnTransfer
+                                editItem(pos);
+                            }
+                        }
+                ));
+            }
+
+            @Override
+            public void onCreateLeftUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new UnderlayButton(
+                        "Favorite",
+                        0,
+                        getResources().getColor(R.color.favorite),
+                        new UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: OnTransfer
+                                changeFavoriteStatus(pos);
+                            }
+                        }));
+                underlayButtons.add(new UnderlayButton(
+                        "Learned",
+                        0,
+                        Color.parseColor("#C7C7CB"),
+                        new UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: OnTransfer
+                                changeLearnedStatus(pos);
+                            }
+                        }));
+            }
+
+//            @Override
+//            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+//                underlayButtons.add(new SwipeHelper.UnderlayButton(
+//                        "Delete",
+//                        0,
+//                        Color.parseColor("#FF3C30"),
+//                        new SwipeHelper.UnderlayButtonClickListener() {
+//                            @Override
+//                            public void onClick(int pos) {
+//                                // TODO: onDelete
+//                            }
+//                        }
+//                ));
+//
+//                underlayButtons.add(new SwipeHelper.UnderlayButton(
+//                        "Transfer",
+//                        0,
+//                        Color.parseColor("#FF9502"),
+//                        new SwipeHelper.UnderlayButtonClickListener() {
+//                            @Override
+//                            public void onClick(int pos) {
+//                                // TODO: OnTransfer
+//                            }
+//                        }
+//                ));
+//            }
+        });
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
         if (getDictionary()!= null && getCurrentUser() != null){
             updateData();
         }
+
+
+
         mAdapter.notifyDataSetChanged();
     }
 
@@ -627,7 +723,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         //if (direction == ItemTouchHelper.LEFT){
-            mAdapter.removeItem(position);
+         //   mAdapter.removeItem(position);
         //} else {
 
         //}
@@ -738,11 +834,11 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         if (mActionMode != null){
             itemSelect(view, position);
         }else {
-            Intent intent = new Intent(getActivity(), BaseDetailActivity.class);
-            intent.putExtra("WordUID", mItems.get(position).getUID());
-            intent.putExtra("DictionaryName", getDictionary());
-            intent.putExtra("Mod", "DetailViewMod");
-            startActivity(intent);
+//            Intent intent = new Intent(getActivity(), BaseDetailActivity.class);
+//            intent.putExtra("WordUID", mItems.get(position).getUID());
+//            intent.putExtra("DictionaryName", getDictionary());
+//            intent.putExtra("Mod", "DetailViewMod");
+//            startActivity(intent);
         }
     }
 
