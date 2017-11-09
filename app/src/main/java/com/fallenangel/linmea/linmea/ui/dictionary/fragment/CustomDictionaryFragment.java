@@ -20,7 +20,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +33,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fallenangel.linmea.R;
 import com.fallenangel.linmea.database.FirebaseWrapper;
@@ -125,6 +125,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mPaint = new Paint();
         implementRecyclerViewAdapter();
+
     }
 
     @Override
@@ -138,7 +139,9 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false);
         implementView(rootView);
+
         implementRecyclerView(rootView);
+
         implementFloatingActionButton(rootView);
         implementAnimation();
         return rootView;
@@ -165,99 +168,84 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         //mItemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallBack);
-
-        mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(getActivity(), mRecyclerView, mAdapter) {
-            @Override
-            public void onCreateRightUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-                underlayButtons.add(new UnderlayButton(
-                        "Delete",
-                        0,
-                        Color.parseColor("#FF3C30"),
-                        new UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                Log.i("fghfghgfhfghgfh", "onClick: ");
-                                // TODO: onDelete
-                                mAdapter.removeItem(pos);
-                               // deleteItem(pos);
-                            }
-                        }));
-                underlayButtons.add(new UnderlayButton(
-                        "Edit",
-                        0,
-                        Color.parseColor("#FF9502"),
-                        new UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                // TODO: OnTransfer
-                                editItem(pos);
-                            }
-                        }
-                ));
-            }
-
-            @Override
-            public void onCreateLeftUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-                underlayButtons.add(new UnderlayButton(
-                        "Favorite",
-                        0,
-                        getResources().getColor(R.color.favorite),
-                        new UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                // TODO: OnTransfer
-                                changeFavoriteStatus(pos);
-                            }
-                        }));
-                underlayButtons.add(new UnderlayButton(
-                        "Learned",
-                        0,
-                        Color.parseColor("#C7C7CB"),
-                        new UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                // TODO: OnTransfer
-                                changeLearnedStatus(pos);
-                            }
-                        }));
-            }
-
-//            @Override
-//            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-//                underlayButtons.add(new SwipeHelper.UnderlayButton(
-//                        "Delete",
-//                        0,
-//                        Color.parseColor("#FF3C30"),
-//                        new SwipeHelper.UnderlayButtonClickListener() {
-//                            @Override
-//                            public void onClick(int pos) {
-//                                // TODO: onDelete
-//                            }
-//                        }
-//                ));
-//
-//                underlayButtons.add(new SwipeHelper.UnderlayButton(
-//                        "Transfer",
-//                        0,
-//                        Color.parseColor("#FF9502"),
-//                        new SwipeHelper.UnderlayButtonClickListener() {
-//                            @Override
-//                            public void onClick(int pos) {
-//                                // TODO: OnTransfer
-//                            }
-//                        }
-//                ));
-//            }
-        });
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        implementItemTouchHelper();
 
         if (getDictionary()!= null && getCurrentUser() != null){
             updateData();
         }
-
-
-
         mAdapter.notifyDataSetChanged();
+    }
+
+
+    private void implementItemTouchHelper () {
+        mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(getActivity(), mRecyclerView, mAdapter) {
+            @Override
+            public void onCreateRightUnderlayButton(final RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                UnderlayButton mDelete = new UnderlayButton();
+                mDelete.setText("Delete");
+                mDelete.setTextColor(Color.WHITE);
+                mDelete.setBackgroundColor(Color.parseColor("#FF3C30"));
+                //mDelete.setImageResId(getActivity().getResources(), R.drawable.ic_delete);
+                mDelete.setOnClickListener(new UnderlayButtonClickListener() {
+                    @Override
+                    public void onClick(int pos) {
+                        mAdapter.removeItem(pos);
+                        deleteItem(pos);
+                    }
+                });
+                underlayButtons.add(mDelete);
+
+
+                UnderlayButton mEdit = new UnderlayButton();
+                mEdit.setText("Edit");
+                mEdit.setTextColor(Color.WHITE);
+                mEdit.setBackgroundColor(Color.parseColor("#FF9502"));
+                mEdit.setSide(UnderlayButton.RIGHT);
+                mEdit.setOnClickListener(new UnderlayButtonClickListener() {
+                    @Override
+                    public void onClick(int pos) {
+                        editItem(pos);
+                        Toast.makeText(getActivity(), "position: " + viewHolder.getAdapterPosition(), Toast.LENGTH_LONG).show();
+                    }
+                });
+                underlayButtons.add(mEdit);
+
+
+            }
+
+            @Override
+            public void onCreateLeftUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                UnderlayButton mFavorite = new UnderlayButton();
+                mFavorite.setText("Favorite");
+                mFavorite.setTextColor(Color.WHITE);
+                mFavorite.setBackgroundColor(getResources().getColor(R.color.favorite));
+                mFavorite.setSide(UnderlayButton.LEFT);
+                mFavorite.setOnClickListener(new UnderlayButtonClickListener() {
+                    @Override
+                    public void onClick(int pos) {
+                        changeFavoriteStatus(pos);
+                    }
+                });
+                underlayButtons.add(mFavorite);
+
+                UnderlayButton mLearned = new UnderlayButton();
+                mLearned.setText("Learned");
+                mLearned.setTextColor(Color.WHITE);
+                mLearned.setBackgroundColor(Color.parseColor("#C7C7CB"));
+                mLearned.setSide(UnderlayButton.LEFT);
+                //mDelete.setImageResId(getActivity().getResources(), R.drawable.ic_delete);
+                mLearned.setOnClickListener(new UnderlayButtonClickListener() {
+                    @Override
+                    public void onClick(int pos) {
+                        changeLearnedStatus(pos);
+                    }
+                });
+                underlayButtons.add(mLearned);
+
+
+            }
+        });
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     private void implementFloatingActionButton(View rootView){
