@@ -2,21 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/custom_dictionary_bottom_bar"
+        android:id="@+id/custom_dictionary_page_1_bottom_bar"
         android:enabled="true"
         android:icon="@drawable/ic_widgets"
         android:title="@string/favorite_dictionary"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/favorite_words_bottom_bar"
+        android:id="@+id/custom_dictionary_page_2_bottom_bar"
         android:enabled="true"
-        android:icon="@drawable/ic_favorite_black"
+        android:icon="@drawable/ic_style"
         android:title="@string/favorite"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/all_dictionaries_bottom_bar"
+        android:id="@+id/custom_dictionary_list_bottom_bar"
         android:enabled="true"
         android:icon="@drawable/ic_library_books_black"
         android:title="@string/all_dictionaries"

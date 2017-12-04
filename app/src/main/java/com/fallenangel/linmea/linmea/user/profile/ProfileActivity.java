@@ -23,9 +23,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea.adapters.ViewPagerAdapter;
-import com.fallenangel.linmea.linmea.user.authentication.user;
-import com.fallenangel.linmea.linmea.user.utils.SharedPreferencesUtils;
+import com.fallenangel.linmea._linmea.adapter.ViewPagerAdapter;
+import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
 import com.fallenangel.linmea.linmea.utils.image.Blur;
 import com.fallenangel.linmea.linmea.utils.image.ImageFactoryUtils;
 import com.fallenangel.linmea.profile.fragment.FirstPageProfileFragment;
@@ -77,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        if (user.getCurrentUser() != null){
+        if (User.getCurrentUser() != null){
             implementUI();
 
         }
@@ -92,7 +92,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        mActionBarToolbar.setTitle(user.getCurrentUser().getDisplayName());
+        mActionBarToolbar.setTitle(User.getCurrentUser().getDisplayName());
         mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,7 +159,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.log_out_profile:
-                user.logOut();
+                User.logOut();
                 onBackPressed();
                 break;
         }
@@ -169,7 +169,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void getAvatarImage(ImageView avatarImg){
         InputStream imageStream = null;
 
-        File image = getImageFileFromCache(this, user.getCurrentUserUID());
+        File image = getImageFileFromCache(this, User.getCurrentUserUID());
 
         if (image != null){
             try {
@@ -278,8 +278,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
         if (checkPermissionReadExternalStorage.checkReadPermission(this) && checkPermissionWriteExternalStorage.checkWritePermission(this) && checkPermissionNetwork.checkNetworkPermission(this)) {
-            String savedMD5 = mSharedPreferencesUtils.getFromSharedPreferences(this,"MD5",user.getCurrentUserUID());
-            String fireMD5 = getFireMD5(user.getCurrentUserUID());
+            String savedMD5 = mSharedPreferencesUtils.getFromSharedPreferences(this,"MD5", User.getCurrentUserUID());
+            String fireMD5 = getFireMD5(User.getCurrentUserUID());
 
             Bitmap bitmap = null;
 

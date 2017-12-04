@@ -1,0 +1,127 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="10dp"
+              android:background="@color/background_recyclerview"
+             tools:context="com.fallenangel.linmea._linmea.ui.translator.TranslatorFragment">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="12sp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/source_text"/>
+            <EditText
+                android:id="@+id/input_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_text_to_translate"
+                android:textSize="18sp"
+                android:layout_marginLeft="12sp"
+                android:layout_marginRight="12sp"
+                android:layout_marginBottom="12sp"
+                android:text=""/>
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:textColor="@color/colorBlack"
+                    android:id="@+id/source_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_marginLeft="12dp"
+                    android:textSize="18sp"
+                    android:text="source"/>
+                <ImageView
+                    android:id="@+id/change_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_compare_arrows"
+                    android:layout_weight="0"
+                    />
+                <TextView
+                    android:textColor="@color/colorBlack"
+                    android:text="target"
+                    android:id="@+id/target_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_marginRight="12dp"
+                    android:textSize="18sp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <Button
+                android:id="@+id/translate"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/translate"
+                android:textColor="@color/white"
+                android:shadowColor="@color/colorBlack"
+                android:shadowRadius="1"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12sp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/translation"/>
+            <TextView
+                android:id="@+id/output_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_margin="12sp"
+                android:textColor="@color/colorBlack"
+                android:text=""/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

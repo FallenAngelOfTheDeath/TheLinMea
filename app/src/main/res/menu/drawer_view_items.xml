@@ -21,6 +21,12 @@
             android:title="@string/shared_dictionaries"
         />
 
+        <item
+            android:id="@+id/society_item_nd"
+            android:icon="@drawable/ic_group_black"
+            android:title="@string/society"
+        />
+
     </group>
 
 </menu>

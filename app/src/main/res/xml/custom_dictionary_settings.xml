@@ -84,5 +84,14 @@
             android:defaultValue="true"
             android:title="@string/close_after_added"
             />
+
+
+        <ListPreference
+            android:key="SPEED_OF_TEXT_TO_SPEECH"
+            android:defaultValue="2"
+            android:entries="@array/speed_of_tts"
+            android:summary="@string/speed_of_tts"
+            android:entryValues="@array/speed_of_tts_values"
+            android:title="@string/speed_of_tts" />
     </PreferenceCategory>
 </PreferenceScreen>

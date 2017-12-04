@@ -8,8 +8,8 @@ import android.util.Log;
 
 import com.fallenangel.linmea.R;
 import com.fallenangel.linmea.interfaces.OnResultListener;
-import com.fallenangel.linmea.linmea.user.authentication.user;
-import com.fallenangel.linmea.linmea.user.utils.SharedPreferencesUtils;
+import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
 import com.fallenangel.linmea.profile.UserMetaData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -102,11 +102,11 @@ public class ImageUplDwnlUtils {
     }
 
     public static void saveCurrentFireMD5OfImageFromServer (final Context context, String uid, final String key) {
-        if (user.getCurrentUser().getPhotoUrl() != null) {
+        if (User.getCurrentUser().getPhotoUrl() != null) {
             getMD5ImagesFromFireBase(uid, new OnResultListener<String>() {
                 @Override
                 public String onComplete(String result) {
-                    SharedPreferencesUtils.putToSharedPreferences(context, key, user.getCurrentUserUID(), result);
+                    SharedPreferencesUtils.putToSharedPreferences(context, key, User.getCurrentUserUID(), result);
                     return result;
                 }
 

@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,16 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".linmea.startup.StartUpActivity">
-
-
+        <activity
+            android:name="._linmea.SplashScreen"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
 
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
-
-
+        </activity>
+        <activity android:name=".linmea.startup.StartUpActivity">
         </activity>
         <activity android:name=".authentication.LoginActivity">
         </activity>
@@ -36,35 +37,47 @@
         </activity>
         <activity android:name=".profile.activities.ChangeUserProfileActivity">
         </activity>
-        <activity android:name=".firebase.FireBaseActivity">
+        <activity android:name="._linmea.ui.dictionary.AddCustomDictionaryActivity">
         </activity>
-        <activity android:name=".firebase.AddWordCustomDictionaryActivity">
-        </activity>
-        <activity android:name=".firebase.DictionariesListActivity">
-        </activity>
-        <activity android:name=".ui.MainActivity2">
-        </activity>
-        <activity android:name=".dictionaries.activity.AddCustomDictionaryActivity">
-        </activity>
-        <activity android:name=".dictionaries.activity.DictionaryActivity">
+        <activity android:name="._linmea.ui.dictionary.DictionaryActivity">
         </activity>
         <activity
             android:name=".preference.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
         <activity
-            android:name=".linmea.preference.CustomDictionaryPreference"
+            android:name="._linmea.ui.preference.Preference$CustomDictionaryPreference"
             android:label="@string/title_activity_settings">
         </activity>
-        <activity android:name=".linmea.ui.MainActivity">
+        <activity
+            android:name="._linmea.ui.preference.Preference$MainPreference"
+            android:label="@string/title_activity_settings">
         </activity>
-        <activity android:name=".linmea.startup.FirstStartActivity">
+        <activity
+            android:name="._linmea.ui.preference.Preference$DetailViewPreference"
+            android:label="@string/title_activity_settings">
+        </activity>
+        <activity
+            android:name="._linmea.ui.preference.Preference"
+            android:label="@string/title_activity_settings">
+        </activity>
+        <activity android:name="._linmea.ui.MainActivity">
+        </activity>
+        <activity android:name="._linmea.ui.first_start.FirstStartActivity">
         </activity>
 
         <service
-            android:name=".linmea.service.UpdateUserData"
+            android:name="._linmea.service.UpdateUserData"
             android:enabled="true"
             android:exported="true">
+        </service>
+        <service
+            android:name="._linmea.service.ChatService"
+            android:enabled="true">
+        </service>
+        <service
+            android:name="._test.BoundService"
+            android:enabled="true">
         </service>
 
         <activity
@@ -72,12 +85,24 @@
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
-            android:name=".linmea.ui.dictionary.BaseDetailActivity"
+            android:name="._linmea.ui.dictionary.BaseDetailActivity"
             android:windowSoftInputMode="stateHidden">
         </activity>
-        <activity android:name=".Main2Activity">
-
+        <activity android:name="._linmea.ui.preference.DictionaryCustomizerActivity">
         </activity>
+        <activity android:name="._linmea.ui.preference.MainPreferenceActivity">
+        </activity>
+        <activity android:name="._linmea.ui.society.ChatRoomActivity">
+        </activity>
+
+        <receiver
+            android:name="._linmea.service.BroadReceive"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

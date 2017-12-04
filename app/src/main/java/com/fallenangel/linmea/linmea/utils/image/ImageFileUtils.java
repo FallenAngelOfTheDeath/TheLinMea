@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import com.fallenangel.linmea.linmea.user.authentication.user;
+import com.fallenangel.linmea.linmea.user.authentication.User;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +21,7 @@ public class ImageFileUtils {
 
     public static File  getCacheDir (final Context context, final String fileName) {
 
-        final File localFile = new File(context.getCacheDir().getAbsolutePath(), "user_avatar_"  + user.getCurrentUserUID()+".jpg");
+        final File localFile = new File(context.getCacheDir().getAbsolutePath(), "user_avatar_"  + User.getCurrentUserUID()+".jpg");
 
       //  final File cacheDir = new File(context.getCacheDir().getAbsolutePath());
       //  final File localFile = new File(cacheDir, "user_avatar_"  + fileName + ".jpg");
@@ -103,7 +103,7 @@ public class ImageFileUtils {
 
     public static File getImageFileFromCache(Context context, String userName){
 
-        File localFile = new File(context.getCacheDir().getAbsolutePath(), "user_avatar_"  + user.getCurrentUserUID()+".jpg");
+        File localFile = new File(context.getCacheDir().getAbsolutePath(), "user_avatar_"  + User.getCurrentUserUID()+".jpg");
 
       //  String root = context.getCacheDir().toString();
        // File directory = new File(root);

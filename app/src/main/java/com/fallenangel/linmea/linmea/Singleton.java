@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.fallenangel.linmea.database.FirebaseWrapper;
-import com.fallenangel.linmea.interfaces.OnChildListener;
-import com.fallenangel.linmea.interfaces.OnValueEventListener;
-import com.fallenangel.linmea.linmea.collection.DictionaryCompare;
-import com.fallenangel.linmea.linmea.user.utils.SharedPreferencesUtils;
-import com.fallenangel.linmea.model.CustomDictionaryModel;
+import com.fallenangel.linmea._linmea.data.firebase.FirebaseDictionaryWrapper;
+import com.fallenangel.linmea._linmea.interfaces.OnChildListener;
+import com.fallenangel.linmea._linmea.interfaces.OnValueEventListener;
+import com.fallenangel.linmea._linmea.data.collection.DictionaryCompare;
+import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
+import com.fallenangel.linmea._linmea.model.CustomDictionaryModel;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +31,7 @@ public class Singleton {
     private String mMode;
     private DatabaseReference mDatabaseReference;
 
-    private FirebaseWrapper mFirebaseWrapper = new FirebaseWrapper();
+    private FirebaseDictionaryWrapper mFirebaseDictionaryWrapper = new FirebaseDictionaryWrapper();
 
     public static Singleton getInstance(Context context) {
         if (sSingleton == null){
@@ -58,7 +58,7 @@ public class Singleton {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        CustomDictionaryModel item = mFirebaseWrapper.getCustomDictionaryWord(dataSnapshot);
+                        CustomDictionaryModel item = mFirebaseDictionaryWrapper.getCustomDictionaryWord(dataSnapshot);
                         mItems.add(item);
                         filter(mContext, mItems);
                         filterFavorite(mContext, mItems);
@@ -68,7 +68,7 @@ public class Singleton {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        CustomDictionaryModel item = mFirebaseWrapper.getCustomDictionaryWord(dataSnapshot);
+                        CustomDictionaryModel item = mFirebaseDictionaryWrapper.getCustomDictionaryWord(dataSnapshot);
                         int index = getItemIndex(item, mItems);
                         mItems.set(index, item);
                         filter(mContext, mItems);
@@ -80,7 +80,7 @@ public class Singleton {
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
                 //        int index = -1;
-                        CustomDictionaryModel item = mFirebaseWrapper.getCustomDictionaryWord(dataSnapshot);
+                        CustomDictionaryModel item = mFirebaseDictionaryWrapper.getCustomDictionaryWord(dataSnapshot);
                         for (int i = 0; i < mItems.size(); i++) {
                             if (mItems.get(i).getUID().equals(item.getUID())){
                                // mItems.remove(i);
@@ -223,7 +223,7 @@ public class Singleton {
                 .child(wordUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                item[0] = mFirebaseWrapper.getCustomDictionaryWord(dataSnapshot);
+                item[0] = mFirebaseDictionaryWrapper.getCustomDictionaryWord(dataSnapshot);
                 onValueEventListener.onDataChange(dataSnapshot, item[0]);
             }
 

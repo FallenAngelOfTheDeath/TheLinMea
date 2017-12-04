@@ -16,9 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea.linmea.service.UpdateUserData;
-import com.fallenangel.linmea.linmea.ui.MainActivity;
-import com.fallenangel.linmea.linmea.user.authentication.user;
+import com.fallenangel.linmea._linmea.service.UpdateUserData;
+import com.fallenangel.linmea._linmea.ui.MainActivity;
+import com.fallenangel.linmea.linmea.user.authentication.User;
 import com.fallenangel.linmea.linmea.utils.image.Blur;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
-                    if (user.getCurrentUser() != null){
+                    if (User.getCurrentUser() != null){
                         thread[0] = new Thread(new Runnable() {
                             @Override
                             public void run() {

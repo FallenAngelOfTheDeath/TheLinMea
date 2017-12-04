@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea.linmea.user.authentication.user;
+import com.fallenangel.linmea.linmea.user.authentication.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,11 +42,11 @@ public class SecondPageProfileFragment extends Fragment implements View.OnClickL
         mConfirmEmailAction.setOnClickListener(this);
         mRestorePassword.setOnClickListener(this);
 
-        if (user.getCurrentUser().isEmailVerified() == true) {
-            mConfirmEmail.setText(getString(R.string.user_email_verification) + " " + user.getCurrentUser().isEmailVerified());
+        if (User.getCurrentUser().isEmailVerified() == true) {
+            mConfirmEmail.setText(getString(R.string.user_email_verification) + " " + User.getCurrentUser().isEmailVerified());
             mConfirmEmailAction.setVisibility(View.GONE);
         } else {
-            mConfirmEmail.setText(getString(R.string.user_email_verification) + " " + user.getCurrentUser().isEmailVerified());
+            mConfirmEmail.setText(getString(R.string.user_email_verification) + " " + User.getCurrentUser().isEmailVerified());
         }
     }
 
@@ -54,8 +54,8 @@ public class SecondPageProfileFragment extends Fragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.confirm_email_action_profile:
-                if (user.getCurrentUser().isEmailVerified() == false){
-                    user.getCurrentUser().sendEmailVerification();
+                if (User.getCurrentUser().isEmailVerified() == false){
+                    User.getCurrentUser().sendEmailVerification();
                     Snackbar snackbar = Snackbar
                             .make(mConfirmEmailAction, getActivity().getString(R.string.email_has_been_sent), Snackbar.LENGTH_SHORT);
                     snackbar.setDuration(30000);

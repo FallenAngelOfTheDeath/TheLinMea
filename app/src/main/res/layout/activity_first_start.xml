@@ -8,7 +8,7 @@
     android:id="@+id/first_start_layout"
     android:background="@color/colorBlack"
     android:scaleType="centerCrop"
-    tools:context="com.fallenangel.linmea.linmea.startup.FirstStartActivity">
+    tools:context="com.fallenangel.linmea._linmea.ui.first_start.FirstStartActivity">
 
     <TextView
         android:id="@+id/hello"

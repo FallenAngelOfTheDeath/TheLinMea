@@ -202,13 +202,54 @@
     <string name="biography_hint">Biography</string>
     <string name="copy">Copy</string>
     <string name="select">Select</string>
-    <string name="selection_toggle">selection mode</string>
+    <string name="selection_toggle">Selection mode</string>
     <string name="detail_view">Detail view</string>
     <string name="delete_messege">you are sure that you want to remove this a word, it can\'t be cancelled</string>
     <string name="search_options">Search options</string>
     <string name="search_elements">Search by...</string>
     <string name="pref_search_type">Search by</string>
-
+    <string name="dragAndDrop"><![CDATA[Sorting with drag & drop]]></string>
+    <string name="description_of_auto_rearrangement">auto rearrangement of elements</string>
+    <string name="description_of_drag_and_drop">manual sorting of elements</string>
+    <string name="favorite_title">Favorite status</string>
+    <string name="description_of_favorite">hide or show your favorite items</string>
+    <string name="learned_title">Learned status</string>
+    <string name="description_of_learned">hide or show your learned items</string>
+    <string name="sorting_title">Sorting dictionary elements</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="enter_name_of_dictionary">Enter new name of this dictionary</string>
+    <string name="stave_filter_state">Save filter state</string>
+    <string name="description_save_filter_state">if not checked, filter state will apply only for single time</string>
+    <string name="reset_filter_title">Reset settings</string>
+    <string name="description_reset_filter">reset dictionary settings to default</string>
+    <string name="speed_of_tts">Text to speech speed</string>
+    <string name="lang_is_not_supported">This Language is not supported</string>
+    <string name="name_of_dictionary">set name of dictionary</string>
+    <string name="name">Custom name</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="dict_customizer_dict_description">Choose a dictionary</string>
+    <string name="global_settings">Global dictionary settings</string>
+    <string name="description_of_global_settings">use global settings for this dictionary</string>
+    <string name="dictionary_customizer">Dictionary customizer</string>
+    <string name="display_type_title">Display type</string>
+    <string name="description_of_display_type">display type of dictionary elements</string>
+    <string name="fount_size_of_translation">Fount size of translation</string>
+    <string name="dict_settings_has_been_reset">Dictionary settings has been reset</string>
+    <string name="options_menu_title">Options menu</string>
+    <string name="description_options_menu">select method to call the popup menu</string>
+    <string name="main_preference">Main settings</string>
+    <string name="society">Society</string>
+    <string name="add_new_dictionary">Add NEW</string>
+    <string name="have_not_dict">You are have not dictionary</string>
+    <string name="accept">Accept</string>
+    <string name="find_friend_by_email">Find friend by email</string>
+    <string name="translate">Translate</string>
+    <string name="input_text_to_translate">input text to translate</string>
+    <string name="source_text">Source text</string>
+    <string name="translator">Translator</string>
+    <string name="linked">Linked</string>
+    <string name="tags">Tags</string>
 
 
 </resources>

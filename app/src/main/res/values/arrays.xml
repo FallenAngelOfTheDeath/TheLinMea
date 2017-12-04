@@ -38,6 +38,12 @@
        <item name="3">Translation</item>
        <item name="4">Translation reverse order</item>
     </string-array>
+    <string-array name="sorting_elements">
+       <item name="0">Word</item>
+       <item name="1">Word reverse order</item>
+       <item name="2">Translation</item>
+       <item name="4">Translation reverse order</item>
+    </string-array>
 
     <string-array name="order_values">
         <item name="0">0</item>
@@ -65,6 +71,11 @@
         <item name="2">Only translation</item>
     </string-array>
 
+    <string-array name="options_menu">
+        <item name="0">Options button</item>
+        <item name="1">Long press</item>
+    </string-array>
+
     <string-array name="display_type_values">
         <item name="0">0</item>
         <item name="1">1</item>
@@ -72,9 +83,9 @@
     </string-array>
 
     <string-array name="hide_learned">
-        <item name="0">Learned and not learned</item>
-        <item name="1">Only learned</item>
-        <item name="2">Only not learned</item>
+        <item name="0">Show all items</item>
+        <item name="1">Show only learned</item>
+        <item name="2">Show not learned</item>
     </string-array>
 
     <string-array name="hide_learned_values">
@@ -84,15 +95,32 @@
     </string-array>
 
     <string-array name="hide_favorite">
-        <item name="0">Favorite and not favorite</item>
-        <item name="1">Only favorite</item>
-        <item name="2">Only not favorite</item>
+        <item name="0">Show all items</item>
+        <item name="1">Show only favorite</item>
+        <item name="2">Show not favorite</item>
     </string-array>
 
     <string-array name="hide_favorite_values">
         <item name="0">0</item>
         <item name="1">1</item>
         <item name="2">2</item>
+    </string-array>
+
+    <string-array name="speed_of_tts_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="2">2</item>
+        <item name="3">3</item>
+        <item name="4">4</item>
+    </string-array>
+
+
+    <string-array name="speed_of_tts">
+        <item name="0">Very Slow</item>
+        <item name="1">Slow</item>
+        <item name="2">Normal</item>
+        <item name="3">Fast</item>
+        <item name="4">Very Fast</item>
     </string-array>
 
 </resources>

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 
 import com.fallenangel.linmea.R;
 import com.fallenangel.linmea.interfaces.OnResultListener;
-import com.fallenangel.linmea.linmea.user.utils.SharedPreferencesUtils;
+import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
 import com.fallenangel.linmea.linmea.utils.image.ImageUplDwnlUtils;
 import com.fallenangel.linmea.profile.UserMetaData;
 import com.google.android.gms.tasks.OnCompleteListener;

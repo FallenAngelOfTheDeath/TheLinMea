@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea.linmea.model.UserModel;
-import com.fallenangel.linmea.linmea.user.authentication.user;
+import com.fallenangel.linmea._linmea.model.UserModel;
+import com.fallenangel.linmea.linmea.user.authentication.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,15 +42,15 @@ public class FirstPageProfileFragment extends Fragment {
 
 
         implementUI(rootView);
-        Log.i("ghmjvhjkvgnukmvhu", "onCreateView: " + user.getCurrentUser().getDisplayName());
+        Log.i("ghmjvhjkvgnukmvhu", "onCreateView: " + User.getCurrentUser().getDisplayName());
 
-        mNickNameTextView.setText(getString(R.string.nickname_profile) + " " + user.getCurrentUser().getDisplayName());
-        mEmailTextView.setText(getString(R.string.email_profile) + " " + user.getCurrentUser().getEmail());
+        mNickNameTextView.setText(getString(R.string.nickname_profile) + " " + User.getCurrentUser().getDisplayName());
+        mEmailTextView.setText(getString(R.string.email_profile) + " " + User.getCurrentUser().getEmail());
 
-        if (user.getCurrentUser() != null){
+        if (User.getCurrentUser() != null){
 
             final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-            databaseReference.child("user").child(user.getCurrentUserUID()).addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.child("user").child(User.getCurrentUserUID()).addListenerForSingleValueEvent(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

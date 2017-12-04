@@ -15,8 +15,9 @@ import android.widget.RelativeLayout;
 
 import com.fallenangel.linmea.R;
 import com.fallenangel.linmea.authentication.LoginActivity;
-import com.fallenangel.linmea.linmea.model.UserModel;
-import com.fallenangel.linmea.linmea.user.utils.SharedPreferencesUtils;
+import com.fallenangel.linmea._linmea.model.UserModel;
+import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
 import com.fallenangel.linmea.linmea.utils.image.ImageUplDwnlUtils;
 import com.fallenangel.linmea.profile.utils.DecodeSampledBitmapAsyncTask;
 import com.fallenangel.linmea.profile.utils.ImageAsyncTask;
@@ -33,7 +34,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
-import static com.fallenangel.linmea.linmea.user.utils.SharedPreferencesUtils.getFromSharedPreferences;
+import static com.fallenangel.linmea._linmea.util.SharedPreferencesUtils.getFromSharedPreferences;
 import static com.fallenangel.linmea.profile.UserMetaData.getCurrentUser;
 import static com.fallenangel.linmea.profile.UserMetaData.getUserUID;
 
@@ -110,7 +111,7 @@ public class ChangeUserProfileActivity extends AppCompatActivity implements View
         mDownload.setOnClickListener(this);
 
 
-        Log.i("nmm", "implementView: " + userM.getLastName() + userM.getFirestName());
+        Log.i("nmm", "implementView: " + userM.getLastName() + userM.getFirstName());
     }
 
 
@@ -129,7 +130,7 @@ public class ChangeUserProfileActivity extends AppCompatActivity implements View
 //                    downloadImageAsyncTask.execute(this, user);
                     //get result from async task
                     Uri imageUri = null;
-                    imageUri = ImageUplDwnlUtils.downloadImage(this, com.fallenangel.linmea.linmea.user.authentication.user.getCurrentUserUID(), null);
+                    imageUri = ImageUplDwnlUtils.downloadImage(this, User.getCurrentUserUID(), null);
 //                    try {
 //                        imageUri = downloadImageAsyncTask.get();
 //                    } catch (InterruptedException e) {

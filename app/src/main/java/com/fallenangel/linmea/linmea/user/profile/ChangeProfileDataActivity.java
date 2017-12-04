@@ -18,8 +18,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea.linmea.model.UserModel;
-import com.fallenangel.linmea.linmea.user.authentication.user;
+import com.fallenangel.linmea._linmea.model.UserModel;
+import com.fallenangel.linmea.linmea.user.authentication.User;
 import com.fallenangel.linmea.utils.CheckPermissionReadExternalStorage;
 import com.fallenangel.linmea.utils.ImageUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,8 +42,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
-import static com.fallenangel.linmea.linmea.user.authentication.user.getCurrentUser;
-import static com.fallenangel.linmea.linmea.user.authentication.user.getCurrentUserUID;
+import static com.fallenangel.linmea.linmea.user.authentication.User.getCurrentUser;
+import static com.fallenangel.linmea.linmea.user.authentication.User.getCurrentUserUID;
 import static com.fallenangel.linmea.linmea.utils.image.ImageFileUtils.getImageFileFromCache;
 
 public class ChangeProfileDataActivity extends AppCompatActivity implements View.OnClickListener {
@@ -114,7 +114,7 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
 
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("user").child(com.fallenangel.linmea.linmea.user.authentication.user.getCurrentUserUID()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("user").child(User.getCurrentUserUID()).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -133,7 +133,7 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
                 userM.setCity(mCity2);
 
                 mUserNameEditText.setText(user.getDisplayName());
-                mFirstName.setText(userM.getFirestName());
+                mFirstName.setText(userM.getFirstName());
                 mLastName.setText(userM.getLastName());
 
                 mCity.setText(userM.getCity());
@@ -194,7 +194,7 @@ public class ChangeProfileDataActivity extends AppCompatActivity implements View
     }
 
     private void getAvatarImage(ImageView avatarImg){
-        File image = getImageFileFromCache(this, user.getCurrentUserUID());
+        File image = getImageFileFromCache(this, User.getCurrentUserUID());
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;

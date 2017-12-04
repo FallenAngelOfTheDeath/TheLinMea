@@ -14,17 +14,23 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea.linmea.ui.MainActivity;
-import com.fallenangel.linmea.linmea.user.authentication.user;
+import com.fallenangel.linmea._linmea.ui.MainActivity;
+import com.fallenangel.linmea.linmea.user.authentication.User;
 import com.fallenangel.linmea.linmea.utils.image.Blur;
 import com.fallenangel.linmea.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+
+import static com.fallenangel.linmea.linmea.user.authentication.User.getCurrentUser;
+import static com.fallenangel.linmea.linmea.user.authentication.User.getCurrentUserUID;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -90,7 +96,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 AlertDialog.Builder adb = new AlertDialog.Builder(SignUpActivity.this);
                 adb.setTitle("Limited account");
-                adb.setMessage("Your account is limited, you can add your information about yourself and confirm your account now or at any time");
+                adb.setMessage("Your account is limited, you can add information about yourself and confirm your account now or at any time");
                 adb.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -124,10 +130,31 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void putMainMetadata () {
-        Log.i("0000000", "putMainMetadata: " + user.getCurrentUser().getUid()+" : "+user.getCurrentUser().getProviderData());
-        mDatabaseReference.child("user").child(user.getCurrentUserUID()).child("other_metadata").child("date_of_creation").setValue(ServerValue.TIMESTAMP);
+        Log.i("0000000", "putMainMetadata: " + User.getCurrentUser().getUid()+" : "+ User.getCurrentUser().getProviderData());
+        mDatabaseReference.child("user").child(User.getCurrentUserUID()).child("other_metadata").child("date_of_creation").setValue(ServerValue.TIMESTAMP);
+        if (getCurrentUserUID() != null) {
+            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(emailEditText.getText().toString().substring(0, emailEditText.getText().toString().indexOf("@"))).build();
 
-        mDatabaseReference.child("user").child(user.getCurrentUserUID()).child("other_metadata").child("date_of_creation").setValue(ServerValue.TIMESTAMP);
+            getCurrentUser().updateProfile(profileChangeRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            FirebaseUser newUserData = mAuth.getCurrentUser();
+                            if (task.isSuccessful()) {
+                                Log.d(getString(R.string.LOG_TAG_AUTH), "User name after update is " + newUserData.getDisplayName());
+                            } else {
+                                Log.d(getString(R.string.LOG_TAG_AUTH), "User data is not updated");
+                            }
+
+                        }
+                    });
+
+                }
+            });
+        }
 
     }
 

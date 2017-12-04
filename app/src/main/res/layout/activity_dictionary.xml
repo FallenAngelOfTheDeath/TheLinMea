@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fallenangel.linmea.dictionaries.activity.DictionaryActivity">
+    tools:context="com.fallenangel.linmea._linmea.ui.dictionary.DictionaryActivity">
 
         <LinearLayout
 
@@ -24,13 +24,5 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/dictionary_floating_action_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="@dimen/fab_margin" />
-
 
 </FrameLayout>
