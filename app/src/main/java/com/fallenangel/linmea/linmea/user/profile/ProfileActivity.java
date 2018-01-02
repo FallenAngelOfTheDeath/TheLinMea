@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -115,7 +116,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         getAvatarImage(mAvatarImageView);
 
-        Blur.applyBlur(mCollapsingToolbarLayout, ProfileActivity.this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            Blur.applyBlur(mCollapsingToolbarLayout, ProfileActivity.this);
 
         setupViewPager(mViewPager);
     }

@@ -1,6 +1,8 @@
 package com.fallenangel.linmea._linmea.ui.translator;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +28,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class TranslatorFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "TranslatorFragment";
-    private TextView outputTex, sourceLang, targetLang;
+    private TextView outputTex, sourceLang, targetLang, yandexUrl;
     private EditText inputText;
     private String mLangPair;
     private Toolbar mToolbar;
@@ -52,8 +54,12 @@ public class TranslatorFragment extends Fragment implements View.OnClickListener
         changeLang.setOnClickListener(this);
         inputText = (EditText) rootView.findViewById(R.id.input_text);
         outputTex = (TextView) rootView.findViewById(R.id.output_text);
+        yandexUrl = (TextView) rootView.findViewById(R.id.yandex_link);
         Button translate = (Button) rootView.findViewById(R.id.translate);
         translate.setOnClickListener(this);
+        yandexUrl.setOnClickListener(this);
+        yandexUrl.setClickable(false);
+
         return rootView;
     }
 
@@ -85,6 +91,8 @@ public class TranslatorFragment extends Fragment implements View.OnClickListener
                     e.printStackTrace();
                 }
                 outputTex.setText(translationResult);
+                yandexUrl.setText("“Powered by Yandex.Translate”");
+                yandexUrl.setClickable(true);
                 break;
             case R.id.change_language:
                 switch (getLangPair()){
@@ -102,6 +110,11 @@ public class TranslatorFragment extends Fragment implements View.OnClickListener
                         Log.i(TAG, "onClick: " + getLangPair());
                         break;
                 }
+            case R.id.yandex_link:
+                String url = "http://translate.yandex.com/";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
                 break;
         }
     }

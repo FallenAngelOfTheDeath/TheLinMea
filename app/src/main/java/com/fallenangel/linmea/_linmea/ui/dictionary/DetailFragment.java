@@ -4,6 +4,7 @@ package com.fallenangel.linmea._linmea.ui.dictionary;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
@@ -24,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 
 import com.fallenangel.linmea.R;
 import com.fallenangel.linmea._linmea.adapter.LinkedWordsRVAdapter;
+import com.fallenangel.linmea._linmea.data.SynonymsAntonymsCallbackTask;
 import com.fallenangel.linmea._linmea.data.firebase.FirebaseDictionaryWrapper;
 import com.fallenangel.linmea._linmea.data.firebase.FirebaseHelper;
 import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
@@ -52,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,6 +87,7 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
     private List<CustomDictionaryModel> mLinkedItems = new ArrayList<>();
     private List<CustomDictionaryModel> mItems = new ArrayList<>();
     private SparseBooleanArray mLinkedBooleanArray = new SparseBooleanArray();
+    private SparseBooleanArray mLinkedBooleanArray2 = new SparseBooleanArray();
     private AlertDialog.Builder mAlertDialogBuilder;
     private AlertDialog mAlertDialog;
     boolean[] checkedItems;
@@ -116,6 +121,13 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
         mTextToSpeech =new TextToSpeech(getActivity(), this);
 
         return view;
+    }
+    
+    private String dictionaryEntries(String word) {
+        final String language = "en";
+        //final String word = mItem.getWord();
+        final String word_id = word.toLowerCase(); //word id is case sensitive and lowercase is required
+        return "https://od-api.oxforddictionaries.com:443/api/v1/entries/" + language + "/" + word_id + "/synonyms;antonyms";
     }
 
     private void implementRecyclerView(View rootView) {
@@ -160,18 +172,74 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 CustomDictionaryModel item = mFirebaseDictionaryWrapper.getCustomDictionaryWord(dataSnapshot);
                 mItems.add(item);
-                for (int i = 0; i < mLinkedUIDS.size(); i++) {
-                    if (item.getLinked() != null) {
-                        for (int j = 0; j < item.getLinked().size(); j++) {
-                            if (mLinkedUIDS.get(i)
-                                    .equals(item.getLinked().get(j))) {
-                                mLinkedItems.add(item);
-                            }
-                        }
+                for (int j = 0; j < mLinkedUIDS.size(); j++) {
+                    Log.i(TAG, "size:" + mLinkedUIDS.size() + "1st: " + mLinkedUIDS.get(j));
+                    for (int i = 0; i < mItems.size(); i++) {
+                        Log.i(TAG, "size:" + mItems.size() + "2nd: " + mItems.get(i).getUID());
+                         if(mLinkedUIDS.get(j).equals(mItems.get(i).getUID())){
+//                             if (mLinkedItems.isEmpty()){
+//                                 Log.i(TAG, " isEmpty ");
+//                                 mLinkedItems.add(item);
+//                                 mLinkedBooleanArray.put(i, true);
+//                             } else {
+//                                 for (int k = 0; k < mLinkedItems.size(); k++) {
+//                                     if (!mLinkedItems.get(k).getUID().equals(item.getUID())){
+                                         Log.i(TAG, "if: " + mItems.get(i).getUID());
+                                         mLinkedItems.add(item);
+                                         mLinkedBooleanArray.put(i, true);
+                             Log.i(TAG, "Linked items size: " + mLinkedItems.size());
 
+                             break;
+//                                     }
+//                                 }
+//                             }
+                         }
                     }
-                    mLinkedWordsRVAdapter.notifyDataSetChanged();
                 }
+                mLinkedWordsRVAdapter.notifyDataSetChanged();
+
+
+
+//                    for (int i = 0; i < mItems.size(); i++) {
+//                    if (item.getLinked() != null) {
+//                        for (int j = 0; j < item.getLinked().size(); j++) {
+//                            for (int k = 0; k < mLinkedUIDS.size(); k++) {
+//                                if (mLinkedUIDS.get(k)
+//                                        .equals(item.getLinked().get(j))) {
+//                                    mLinkedItems.add(item);
+//                                    Log.i(TAG, "onChildAdded: " + mLinkedItems.get(j).getUID());
+//                                    Log.i(TAG, "onChildAdded: " + mLinkedItems.get(j).getWord());
+//                                    //checkedItems[i] = true;
+//                                    mLinkedBooleanArray.put(i, true);
+//                                    break;
+//                                } else {
+//                                    // checkedItems[i] = false;
+//                                }
+//                            }
+//
+//                        }
+//
+//                    }
+          //      }
+//                checkedItems = new boolean[mItems.size()];
+//
+//                for (int i = 0; i < mItems.size(); i++) {
+//                    for (int j = 0; j < mItems.size(); j++) {
+//                        for (int k = 0; k < mLinkedUIDS.size(); k++) {
+//                            if (mLinkedUIDS.get(k)
+//                                    .equals(mItems.get(i).getLinked().get(j))){
+//                                checkedItems[i] = true;
+//                                break;
+//                            } else {
+//                                checkedItems[i] = false;
+//                            }
+//
+//                        }
+//
+//                    }
+//                }
+
+
             }
 
             @Override
@@ -321,6 +389,17 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
                     Log.i(TAG, "onDataChangefddddddddddddddddddddddd: " + mLinkedUIDS);
                 }
 
+                AsyncTask str =
+                        new SynonymsAntonymsCallbackTask().execute(dictionaryEntries(mItem.getWord()));
+                Object dt = null;
+                try {
+                    dt = str.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                Log.i(TAG, "onCreateView:dtdtdtdtdtdtd " + dt);
 
                 // if (mItem.getTags() != null)
               //  mTags.addAll(mItem.getLinked());
@@ -493,24 +572,85 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
                                                     for (int i = 0; i < mLinkedUIDS.size(); i++) {
                                                         if (mLinkedUIDS.get(i)
                                                                 .equals(mItems.get(j).getLinked())){
-                                                            checkedItems[j] = true;
+                                                            //checkedItems[j] = true;
                                                             break;
                                                             //mCheckedItemsOfAlertDialog = i;
                                                             //mLinkedBooleanArray.put(j, true);
                                                         } else {
-                                                            checkedItems[j] = false;
+                                                          //  checkedItems[j] = false;
                                                         }
                                                     }
                                                     }
 
-                                                String[] mStringOfDictionaries = mArrayStr.toArray(new String[0]);
+                                               String[] mStringOfDictionaries = mArrayStr.toArray(new String[0]);
 
-                                                if (mItems.isEmpty()){
+//
+//                                                checkedItems = new boolean[mItems.size()];
+//
+                                                for (int j = 0; j < mItems.size(); j++) {
+                                                    //for (int i = 0; i < mLinkedBooleanArray2.size(); i++) {
+                                                        if (mLinkedBooleanArray.get(j) == true){
+                                                            checkedItems[j] = true;
+                                                            Log.i(TAG, "onClicvbbbbbbbbbbbbbk: " + checkedItems[j]);
+                                                        } else {
+                                                            checkedItems[j] = false;
+                                                            Log.i(TAG, "onClicvbbbbbbbbbbbbbk: " + checkedItems[j]);
+                                                        }
+                                                   // }
+                                                }
+                                                Log.i(TAG, "onClick: " + checkedItems + " : " + mLinkedBooleanArray2);
+
+
+
+
+
+
+
+
+                                                    if (mItems.isEmpty()){
                                                     LayoutInflater inflater = LayoutInflater.from(getActivity());
                                                     final View text_view_layout = inflater.inflate(R.layout.text_view_alert_dialog_dictionary, null);
                                                     mAlertDialogBuilder.setView(text_view_layout);
                                                 }else {
                                                     mAlertDialogBuilder.setTitle(R.string.dict_customizer_dict_description);
+                                                    mAlertDialogBuilder.setAdapter(new ArrayAdapter<String>(getActivity(),
+                                                            android.R.layout.simple_list_item_multiple_choice, mStringOfDictionaries), null);
+
+//                                                        ListAdapter adapter = new ArrayAdapter<String>(
+//                                                                getActivity(), R.layout.list_row, items) {
+//
+//                                                            ViewHolder holder;
+//
+//                                                            class ViewHolder {
+//                                                                TextView word, translation;
+//                                                            }
+//
+//                                                            public View getView(int position, View convertView,
+//                                                                                ViewGroup parent) {
+//                                                                final LayoutInflater inflater = (LayoutInflater) getDictionary()
+//                                                                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//
+//                                                                if (convertView == null) {
+//                                                                    convertView = inflater.inflate(
+//                                                                            R.layout.list_row, null);
+//
+//                                                                    holder = new ViewHolder();
+//                                                                    holder.word = (TextView) convertView
+//                                                                            .findViewById(R.id.);
+//                                                                    holder.translation = (TextView) convertView
+//                                                                            .findViewById(R.id.);
+//                                                                    convertView.setTag(holder);
+//                                                                } else {
+//                                                                    // view already defined, retrieve view holder
+//                                                                    holder = (ViewHolder) convertView.getTag();
+//                                                                }
+//                                                                holder.word.setText();
+//                                                                holder.translation.setText();
+//
+//                                                                return convertView;
+//                                                            }
+//                                                        };
+
                                                     mAlertDialogBuilder.setMultiChoiceItems(mStringOfDictionaries, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -525,6 +665,8 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
 //                                                        }
 //                                                    });
                                                 }
+
+
                                                 mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {

@@ -18,11 +18,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+
 //        jackOptions {
 //            enabled true
 //        }
 
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -42,11 +44,15 @@ dependencies {
     //compile 'com.google.android.gms:play-services-identity:8.3.0'
     //compile 'com.google.android.gms:play-services-plus:8.3.0'
     //compile 'com.google.android.gms:play-services-gcm:8.3.0'
+    
 
-    compile 'com.android.support:preference-v7:23.3.0'
-    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.firebase:firebase-core:11.2.0'
+
+
+    compile    'com.android.support:multidex:1.0.1'
+    compile    'com.android.support:preference-v7:23.3.0'
+    compile    'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile    'com.android.support.constraint:constraint-layout:1.0.2'
+    compile    'com.google.firebase:firebase-core:11.2.0'
     compile 'com.google.firebase:firebase-auth:11.2.0'
     compile 'com.google.firebase:firebase-storage:11.2.0'
     compile 'com.google.android.gms:play-services:11.2.0'
@@ -60,6 +66,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+apply plugin: 'com.google.gms.google-services'
 
 
 

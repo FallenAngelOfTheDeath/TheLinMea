@@ -2,6 +2,7 @@ package com.fallenangel.linmea.authentication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -75,7 +76,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passwordEditText = (EditText) findViewById(R.id.password_login);
 
         mLayout.setBackgroundResource(R.drawable.background);
-        Blur.applyBlur(mLayout, LoginActivity.this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            Blur.applyBlur(mLayout, LoginActivity.this);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_sign_in);
         mProgressBar.setVisibility(View.GONE);

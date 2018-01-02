@@ -2,6 +2,7 @@ package com.fallenangel.linmea.authentication;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -64,7 +65,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         password2EditText = (EditText) findViewById(R.id.password_singup_2);
 
         mLayout.setBackgroundResource(R.drawable.background);
-        Blur.applyBlur(mLayout, SignUpActivity.this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            Blur.applyBlur(mLayout, SignUpActivity.this);
     }
 
 

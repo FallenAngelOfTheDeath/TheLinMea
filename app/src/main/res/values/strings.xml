@@ -66,7 +66,7 @@
     <string name="owner_hint">Owner</string>
     <string name="main_dictionary">Main dictionary</string>
     <string name="custom_dictionaries">Custom dictionaries</string>
-    <string name="shared_dictionaries">Shared dictionaries</string>
+    <string name="shared_dictionaries">Translator</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 

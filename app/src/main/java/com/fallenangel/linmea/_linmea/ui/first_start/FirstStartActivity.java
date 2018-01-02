@@ -1,6 +1,7 @@
 package com.fallenangel.linmea._linmea.ui.first_start;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,10 +9,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fallenangel.linmea.R;
+import com.fallenangel.linmea._linmea.ui.MainActivity;
 import com.fallenangel.linmea._linmea.util.LoadDefaultConfig;
 import com.fallenangel.linmea.authentication.LoginActivity;
 import com.fallenangel.linmea.authentication.SignUpActivity;
-import com.fallenangel.linmea._linmea.ui.MainActivity;
 import com.fallenangel.linmea.linmea.utils.image.Blur;
 
 public class FirstStartActivity extends AppCompatActivity implements View.OnClickListener {
@@ -49,7 +50,10 @@ public class FirstStartActivity extends AppCompatActivity implements View.OnClic
 
         mRelativeLayout.setBackgroundResource(R.drawable.background);
 
-        Blur.applyBlur(mRelativeLayout, FirstStartActivity.this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            Blur.applyBlur(mRelativeLayout, FirstStartActivity.this);
+
     }
 
     @Override

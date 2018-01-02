@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
               android:orientation="vertical"
-              android:padding="10dp"
+              android:paddingTop="10dp"
               android:background="@color/background_recyclerview"
              tools:context="com.fallenangel.linmea._linmea.ui.translator.TranslatorFragment">
 
@@ -113,6 +113,15 @@
                 android:text="@string/translation"/>
             <TextView
                 android:id="@+id/output_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_margin="12sp"
+                android:textColor="@color/colorBlack"
+                android:hint="here will be your translated text"
+                android:text=""/>
+            <TextView
+                android:id="@+id/yandex_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
