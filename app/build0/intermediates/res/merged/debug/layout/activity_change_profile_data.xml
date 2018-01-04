@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/superLightGray"
+    android:id="@+id/constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:id="@+id/include_toolbar"/>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_below="@+id/include_toolbar"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="5dp"
+            android:background="@color/cardview_dark_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ScrollView
+                android:padding="@dimen/margin_in_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/avatar_imgview"
+                    android:src="@drawable/avatar"
+                    android:layout_width="@dimen/avatar"
+                    android:layout_height="@dimen/avatar"/>
+                <ImageButton
+                    android:padding="10dp"
+                    android:src="@drawable/ic_more"
+                    android:id="@+id/img_options"
+                    android:background="#00000000"
+                    android:text="@string/take_photo"
+                    android:layout_gravity="bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/avatar_imgview"
+                    android:layout_alignRight="@+id/avatar_imgview"/>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_toRightOf="@+id/avatar_imgview"
+                    android:id="@+id/usernameWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/change_user_name_ed"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:hint="@string/username_hint"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_toRightOf="@+id/avatar_imgview"
+                    android:id="@+id/firstNameWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/usernameWrapper">
+                    <EditText
+                        android:id="@+id/change_first_name_ed"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:hint="@string/first_name_hint"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_toRightOf="@+id/avatar_imgview"
+                    android:layout_below="@+id/firstNameWrapper"
+                    android:id="@+id/lastNameWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/change_last_name_ed"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:hint="@string/last_name_hint"/>
+                </android.support.design.widget.TextInputLayout>
+
+
+                    <LinearLayout
+                        android:layout_below="@+id/avatar_imgview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_below="@+id/avatar_imgview"
+                            android:id="@+id/emailWrapper"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/change_email_ed"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="textEmailAddress"
+                                android:hint="@string/email_hint"/>
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_below="@+id/emailWrapper"
+                            android:id="@+id/cityWrapper"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/change_city_ed"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="text"
+                                android:hint="@string/city_hint"/>
+                        </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_below="@+id/cityWrapper"
+                            android:id="@+id/biographyWrapper"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/change_biography_ed"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:hint="@string/biography_hint"/>
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+            </RelativeLayout>
+            </ScrollView>
+        </android.support.v7.widget.CardView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/update_profile_btn"
+        android:src="@drawable/ic_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignBottom="@id/card_view"
+        android:layout_alignRight="@+id/card_view"/>
+</RelativeLayout>

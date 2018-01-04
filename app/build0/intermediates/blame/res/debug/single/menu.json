@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\menu\\action_mode_menu.xml",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\src\\main\\res\\menu\\action_mode_menu.xml"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\menu\\custom_dictionary_popup_menu.xml",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\src\\main\\res\\menu\\custom_dictionary_popup_menu.xml"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\menu\\bottom_action_bar.xml",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\src\\main\\res\\menu\\bottom_action_bar.xml"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\menu\\profile_menu.xml",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\src\\main\\res\\menu\\profile_menu.xml"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\menu\\toolbar_menu.xml",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\src\\main\\res\\menu\\toolbar_menu.xml"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\menu\\drawer_view_items.xml",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\src\\main\\res\\menu\\drawer_view_items.xml"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\menu\\custom_dictionary_list_popup_menu.xml",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\src\\main\\res\\menu\\custom_dictionary_list_popup_menu.xml"
+    }
+]

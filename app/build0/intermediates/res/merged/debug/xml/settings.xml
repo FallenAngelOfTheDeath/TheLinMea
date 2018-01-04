@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/custom_dictionaries">
+
+        <EditTextPreference
+            android:title="@string/gcm_fallback_notification_channel_label"
+            android:summary="@string/gcm_fallback_notification_channel_label"
+            android:key="prefUsername"/>
+
+        <ListPreference
+            android:key="orderBy"
+            android:entries="@array/order_entries"
+            android:summary="@string/sorting_elements"
+            android:entryValues="@array/order_values"
+            android:title="@string/pref_order_by" />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
