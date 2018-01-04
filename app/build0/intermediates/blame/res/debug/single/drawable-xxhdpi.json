@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_more.png",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxhdpi\\ic_more.png"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_school.png",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxhdpi\\ic_school.png"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_pets_black_24dp.png",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxhdpi\\ic_pets_black_24dp.png"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_layers_black.png",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxhdpi\\ic_layers_black.png"
+    },
+    {
+        "merged": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_star_border.png",
+        "source": "C:\\AndroidStudioProjects\\LinMea\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxhdpi\\ic_star_border.png"
+    }
+]
