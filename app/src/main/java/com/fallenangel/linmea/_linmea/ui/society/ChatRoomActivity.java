@@ -27,7 +27,7 @@ import com.fallenangel.linmea._linmea.interfaces.OnChildListener;
 import com.fallenangel.linmea._linmea.model.MessageModel;
 import com.fallenangel.linmea._test.BoundService;
 import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -9,10 +9,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea._linmea.ui.MainActivity;
-import com.fallenangel.linmea._linmea.util.LoadDefaultConfig;
-import com.fallenangel.linmea.authentication.LoginActivity;
-import com.fallenangel.linmea.authentication.SignUpActivity;
+import com.fallenangel.linmea._modulus.main.ui.MainActivity;
+import com.fallenangel.linmea._modulus.non.utils.LoadDefaultConfig;
+import com.fallenangel.linmea._modulus.auth.ui.LoginActivity;
+import com.fallenangel.linmea._modulus.auth.ui.SignUpActivity;
 import com.fallenangel.linmea.linmea.utils.image.Blur;
 
 public class FirstStartActivity extends AppCompatActivity implements View.OnClickListener {
@@ -62,14 +62,17 @@ public class FirstStartActivity extends AppCompatActivity implements View.OnClic
             case R.id.first_start_sing_in:
                 Intent singInIntent = new Intent(v.getContext(), LoginActivity.class);
                 startActivity(singInIntent);
+                finish();
                 break;
             case R.id.first_start_sing_up:
                 Intent singUpIntent = new Intent(v.getContext(), SignUpActivity.class);
                 startActivity(singUpIntent);
+                finish();
                 break;
             case R.id.first_start_anonymously:
                 Intent anonymouslyIntent = new Intent(v.getContext(), MainActivity.class);
                 startActivity(anonymouslyIntent);
+                finish();
                 break;
         }
     }

@@ -3,7 +3,7 @@ package com.fallenangel.linmea._linmea.data.firebase;
 import com.fallenangel.linmea._linmea.model.MessageModel;
 import com.fallenangel.linmea._linmea.model.UserModel;
 import com.fallenangel.linmea._linmea.model.UserModel.FriendListModel;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.google.firebase.database.DataSnapshot;
 
 import java.security.Key;

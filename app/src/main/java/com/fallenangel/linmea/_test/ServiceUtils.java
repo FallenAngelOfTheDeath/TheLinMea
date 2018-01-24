@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

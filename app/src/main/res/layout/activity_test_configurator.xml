@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_recyclerview"
+    tools:context="com.fallenangel.linmea._linmea.ui.testing.TestConfiguratorActivity">
+    <include
+        android:id="@+id/toooolbar"
+        layout="@layout/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+
+    <ScrollView
+        android:layout_below="@id/toooolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.CardView
+            android:id="@+id/word_cv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/dictionary_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0"
+                        android:src="@drawable/ic_library_books_black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/dictionaryName"
+                            android:textColor="@color/text_bottom_sheet_color"
+                            />
+
+                        <TextView
+                            android:id="@+id/dictionary_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/dict_customizer_dict_description"
+                            android:textColor="@color/text_description_bottom_sheet_color"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/words_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0"
+                        android:src="@drawable/ic_assignment_black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/testing_words"
+                            android:textColor="@color/text_bottom_sheet_color"
+                            />
+
+                        <TextView
+                            android:id="@+id/words_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/words_description"
+                            android:textColor="@color/text_description_bottom_sheet_color"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/test_type_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:weightSum="1">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0"
+                        android:src="@drawable/ic_view_agenda_black_34dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/test_type_title"
+                            android:textColor="@color/text_bottom_sheet_color"/>
+
+                        <TextView
+                            android:id="@+id/test_type_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/test_type_description"
+                            android:textColor="@color/text_description_bottom_sheet_color"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1">
+                <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:src="@drawable/ic_shuffle_black"/>
+
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/test_type_sb_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginLeft="20dp"
+                android:text="@string/testing_type_seek_bar"
+                android:textColor="@color/text_bottom_sheet_color"/>
+
+                <SeekBar
+                android:id="@+id/testing_type_seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:max="128"/>
+
+                </LinearLayout>
+                <TextView
+                android:id="@+id/testing_type_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_bottom_sheet_color"
+                android:text="0"
+                android:textSize="24dp"
+                android:layout_weight="0"/>
+
+                </LinearLayout>
+
+
+
+
+
+
+
+                   <LinearLayout
+                    android:id="@+id/test_side_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:weightSum="1">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0"
+                        android:src="@drawable/ic_code_black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/test_side"
+                            android:textColor="@color/text_bottom_sheet_color"/>
+
+                        <TextView
+                            android:id="@+id/test_side_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/test_type_description"
+                            android:textColor="@color/text_description_bottom_sheet_color"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/question_counter_container"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:padding="10dp"-->
+                    <!--android:weightSum="1">-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_weight="0"-->
+                        <!--android:src="@drawable/ic_shuffle_black"/>-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_weight="1">-->
+
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="top"-->
+                            <!--android:layout_marginLeft="20dp"-->
+                            <!--android:text="@string/question_counter"-->
+                            <!--android:textColor="@color/text_bottom_sheet_color"/>-->
+
+                        <!--<SeekBar-->
+                            <!--android:id="@+id/question_counter_seek_bar"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginLeft="10dp"-->
+                            <!--android:max="128"/>-->
+
+                    <!--</LinearLayout>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/question_counter"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textColor="@color/text_bottom_sheet_color"-->
+                        <!--android:text="0"-->
+                        <!--android:textSize="24dp"-->
+                        <!--android:layout_weight="0"/>-->
+
+                <!--</LinearLayout>-->
+
+
+
+
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/word_repetition_counter_container"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:padding="10dp"-->
+                    <!--android:weightSum="1">-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_weight="0"-->
+                        <!--android:src="@drawable/ic_replay_black"/>-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_weight="1">-->
+
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="top"-->
+                            <!--android:layout_marginLeft="20dp"-->
+                            <!--android:text="@string/word_repetition_counter"-->
+                            <!--android:textColor="@color/text_bottom_sheet_color"/>-->
+
+                        <!--<SeekBar-->
+                            <!--android:id="@+id/word_repetition_counter_seek_bar"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginLeft="10dp"-->
+                            <!--android:max="10"/>-->
+
+                    <!--</LinearLayout>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/word_repetition_counter"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textColor="@color/text_bottom_sheet_color"-->
+                        <!--android:text="0"-->
+                        <!--android:textSize="24dp"-->
+                        <!--android:layout_weight="0"/>-->
+
+                <!--</LinearLayout>-->
+
+                <LinearLayout
+                    android:id="@+id/input_type_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0"
+                        android:src="@drawable/ic_power_input_black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/input_type"
+                            android:textColor="@color/text_bottom_sheet_color"
+                            />
+
+                        <TextView
+                            android:id="@+id/input_type_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/input_type_description"
+                            android:textColor="@color/text_description_bottom_sheet_color"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/answer_count_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:weightSum="1">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0"
+                        android:src="@drawable/ic_question_answer_black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/answer_count"
+                            android:textColor="@color/text_bottom_sheet_color"/>
+
+                        <SeekBar
+                            android:id="@+id/answer_count_seek_bar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:max="6"/>
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/answer_count_counter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_bottom_sheet_color"
+                        android:text="0"
+                        android:textSize="24dp"
+                        android:layout_weight="0"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/timer_count_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:weightSum="1">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0"
+                        android:src="@drawable/ic_timer_black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/timer_count"
+                            android:textColor="@color/text_bottom_sheet_color"/>
+
+                        <SeekBar
+                            android:id="@+id/timer_count_seek_bar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:max="256"/>
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/timer_count_counter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_bottom_sheet_color"
+                        android:text="0"
+                        android:textSize="24dp"
+                        android:layout_weight="0"/>
+
+                </LinearLayout>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/bottomSheetLine" />
+
+                <TextView
+                    android:id="@+id/start_test"
+                    android:textSize="24dp"
+                    android:textColor="@color/colorAccent"
+                    android:padding="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_test"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </ScrollView>
+</RelativeLayout>

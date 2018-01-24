@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.fallenangel.linmea.R;
 import com.fallenangel.linmea._linmea.model.UserModel;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

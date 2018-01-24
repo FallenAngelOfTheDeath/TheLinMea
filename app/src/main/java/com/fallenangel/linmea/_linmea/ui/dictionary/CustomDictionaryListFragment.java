@@ -1,6 +1,7 @@
 package com.fallenangel.linmea._linmea.ui.dictionary;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -26,18 +27,20 @@ import com.fallenangel.linmea._linmea.adapter.ItemSwipeHelperCallback;
 import com.fallenangel.linmea._linmea.data.firebase.FirebaseDictionaryWrapper;
 import com.fallenangel.linmea._linmea.data.firebase.FirebaseHelper;
 import com.fallenangel.linmea._linmea.interfaces.OnChildListener;
-import com.fallenangel.linmea._linmea.model.MyDictionaryModel;
-import com.fallenangel.linmea._linmea.view.UnderlayButton;
 import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
-import com.fallenangel.linmea.linmea.user.authentication.User;
-import com.google.firebase.auth.FirebaseAuth;
+import com.fallenangel.linmea._linmea.model.MyDictionaryModel;
+import com.fallenangel.linmea._linmea.ui.testing.TestConfiguratorActivity;
+import com.fallenangel.linmea._modulus.auth.User;
+import com.fallenangel.linmea._modulus.main.supclasses.SuperFragment;
+import com.fallenangel.linmea._modulus.non.view.UnderlayButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static com.fallenangel.linmea._linmea.util.SharedPreferencesUtils.putToSharedPreferences;
 import static com.fallenangel.linmea.profile.UserMetaData.getUserUID;
@@ -45,16 +48,16 @@ import static com.fallenangel.linmea.profile.UserMetaData.getUserUID;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CustomDictionaryListFragment extends Fragment implements OnRecyclerViewClickListener, View.OnClickListener {
+public class CustomDictionaryListFragment extends SuperFragment implements OnRecyclerViewClickListener, View.OnClickListener {
 
 
     private static final String TAG = "CDLF";
     //Helper
     private ItemTouchHelper mItemTouchHelper;
-    private FirebaseHelper<MyDictionaryModel> mFirebaseHelper;
+    private FirebaseHelper<MyDictionaryModel> mFirebaseHelper = new FirebaseHelper<>(null, null, null, null);
+    ItemSwipeHelperCallback itemSwipeHelperCallback;
 
 
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
     private RecyclerView mRecyclerView;
     private FloatingActionButton mFloatingActionButton;
     private DictionariesAdapter mAdapter;
@@ -63,8 +66,9 @@ public class CustomDictionaryListFragment extends Fragment implements OnRecycler
     private FirebaseDictionaryWrapper mFirebaseDictionaryWrapper = new FirebaseDictionaryWrapper();
 
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference();
+
+    @Inject DatabaseReference databaseReference;
+    @Inject Context context;
 
     public CustomDictionaryListFragment() {
     }
@@ -78,6 +82,7 @@ public class CustomDictionaryListFragment extends Fragment implements OnRecycler
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        getAppComponent().inject(this);
     }
 
     @Override
@@ -126,7 +131,7 @@ public class CustomDictionaryListFragment extends Fragment implements OnRecycler
     }
 
     private void implementItemTouchHelper () {
-        mItemTouchHelper = new ItemTouchHelper(new ItemSwipeHelperCallback(getActivity(), ItemSwipeHelperCallback.BOTH_SIDE, mRecyclerView, mAdapter) {
+        mItemTouchHelper = new ItemTouchHelper(itemSwipeHelperCallback = new ItemSwipeHelperCallback(getActivity(), ItemSwipeHelperCallback.BOTH_SIDE, mRecyclerView, mAdapter) {
             @Override
             public void onCreateRightUnderlayButton(final RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 UnderlayButton mDelete = new UnderlayButton(getActivity(), R.drawable.ic_action_delete);
@@ -161,18 +166,18 @@ public class CustomDictionaryListFragment extends Fragment implements OnRecycler
 
             @Override
             public void onCreateLeftUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-                UnderlayButton mFavorite = new UnderlayButton(getActivity(), R.drawable.ic_action_delete);
-                mFavorite.setText("as default");
-                mFavorite.setTextColor(Color.WHITE);
-                mFavorite.setBackgroundColor(getResources().getColor(R.color.favorite));
-                //mFavorite.setSide(UnderlayButton.LEFT);
-//                mFavorite.setOnClickListener(new UnderlayButtonClickListener() {
-//                    @Override
-//                    public void onClick(int pos) {
-//                        setAsDefaultDict(pos);
-//                    }
-//                });
-                underlayButtons.add(mFavorite);
+//                UnderlayButton mFavorite = new UnderlayButton(getActivity(), R.drawable.ic_action_delete);
+//                mFavorite.setText("as default");
+//                mFavorite.setTextColor(Color.WHITE);
+//                mFavorite.setBackgroundColor(getResources().getColor(R.color.favorite));
+//                //mFavorite.setSide(UnderlayButton.LEFT);
+////                mFavorite.setOnClickListener(new UnderlayButtonClickListener() {
+////                    @Override
+////                    public void onClick(int pos) {
+////                        setAsDefaultDict(pos);
+////                    }
+////                });
+//                underlayButtons.add(mFavorite);
             }
         });
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -357,6 +362,9 @@ public class CustomDictionaryListFragment extends Fragment implements OnRecycler
                     case R.id.popup_menu_default_dict:
                         setAsDefaultDict(position);
                         break;
+                    case R.id.popup_menu_testing:
+                        startTesting(position);
+                        break;
 
                 }
                 return true;
@@ -365,6 +373,7 @@ public class CustomDictionaryListFragment extends Fragment implements OnRecycler
         });
         popupMenu.show();
     }
+
 
     private void deleteDictionary(final int position){
         AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
@@ -391,8 +400,8 @@ public class CustomDictionaryListFragment extends Fragment implements OnRecycler
 
     private void setAsDefaultDict (final int position) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-        adb.setTitle("Set dictionary as default");
-        adb.setMessage("you are want to set dictionary as default");
+        adb.setTitle("Set OxfordDictionary as default");
+        adb.setMessage("you are want to set OxfordDictionary as default");
         adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -405,5 +414,10 @@ public class CustomDictionaryListFragment extends Fragment implements OnRecycler
         adb.show();
     }
 
-
+    private void startTesting(int position){
+        final MyDictionaryModel items = mAdapter.getItems(position);
+        Intent startTesting = new Intent(getActivity(), TestConfiguratorActivity.class);
+        startTesting.putExtra("DictionaryName", items.getName());
+        startActivity(startTesting);
+    }
 }

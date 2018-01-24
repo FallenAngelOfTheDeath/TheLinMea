@@ -12,4 +12,7 @@
         <item
             android:id="@+id/popup_menu_default_dict"
             android:title="@string/set_default_dictionary" />
+        <item
+            android:id="@+id/popup_menu_testing"
+            android:title="@string/testing" />
 </menu>

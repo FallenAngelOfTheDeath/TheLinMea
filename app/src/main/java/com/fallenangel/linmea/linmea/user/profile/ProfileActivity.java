@@ -25,7 +25,7 @@ import android.widget.ImageView;
 
 import com.fallenangel.linmea.R;
 import com.fallenangel.linmea._linmea.adapter.ViewPagerAdapter;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
 import com.fallenangel.linmea.linmea.utils.image.Blur;
 import com.fallenangel.linmea.linmea.utils.image.ImageFactoryUtils;

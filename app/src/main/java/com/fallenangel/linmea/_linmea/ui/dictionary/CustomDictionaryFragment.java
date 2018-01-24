@@ -1,6 +1,8 @@
 package com.fallenangel.linmea._linmea.ui.dictionary;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,37 +50,47 @@ import com.fallenangel.linmea._linmea.adapter.ItemSwipeHelperCallback;
 import com.fallenangel.linmea._linmea.data.firebase.FirebaseDictionaryWrapper;
 import com.fallenangel.linmea._linmea.data.firebase.FirebaseHelper;
 import com.fallenangel.linmea._linmea.interfaces.OnChildListener;
+import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
 import com.fallenangel.linmea._linmea.interfaces.OnStartDragListener;
 import com.fallenangel.linmea._linmea.interfaces.UnderlayButtonClickListener;
 import com.fallenangel.linmea._linmea.model.CustomDictionaryModel;
 import com.fallenangel.linmea._linmea.model.DictionaryCustomizer;
 import com.fallenangel.linmea._linmea.ui.preference.DictionaryCustomizerActivity;
 import com.fallenangel.linmea._linmea.ui.preference.MainPreferenceActivity;
-import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
-import com.fallenangel.linmea._linmea.view.UnderlayButton;
+import com.fallenangel.linmea._linmea.ui.testing.TestConfiguratorActivity;
+import com.fallenangel.linmea._modulus.auth.User;
+import com.fallenangel.linmea._modulus.main.supclasses.SuperFragment;
+import com.fallenangel.linmea._modulus.non.Constant;
+import com.fallenangel.linmea._modulus.non.view.UnderlayButton;
+import com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey;
+import com.fallenangel.linmea._modulus.prferences.enums.PreferenceMode;
+import com.fallenangel.linmea._modulus.prferences.utils.PreferenceUtils;
 import com.fallenangel.linmea.interfaces.OnItemTouchHelper;
-import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
-import com.fallenangel.linmea.linmea.user.authentication.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fallenangel.linmea._linmea.model.DictionaryCustomizer.DICTIONARY;
-import static com.fallenangel.linmea._linmea.model.DictionaryCustomizer.DRAG_AND_DROP;
-import static com.fallenangel.linmea._linmea.model.DictionaryCustomizer.MAIN_GLOBAL_SETTINGS;
-import static com.fallenangel.linmea._linmea.util.SharedPreferencesUtils.getFromSharedPreferences;
+import javax.inject.Inject;
+
+import rx.schedulers.Schedulers;
+
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.DICTIONARY;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.DICTIONARY_PAGE;
+import static com.fallenangel.linmea._modulus.prferences.utils.PreferenceUtils.getStringPreference;
 import static com.fallenangel.linmea.profile.UserMetaData.getCurrentUser;
 import static com.fallenangel.linmea.profile.UserMetaData.getUserUID;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CustomDictionaryFragment extends Fragment implements OnRecyclerViewClickListener, View.OnClickListener, OnStartDragListener, OnItemTouchHelper, CompoundButton.OnCheckedChangeListener, UnderlayButtonClickListener {
+public class CustomDictionaryFragment extends SuperFragment implements OnRecyclerViewClickListener, View.OnClickListener, OnStartDragListener, OnItemTouchHelper, CompoundButton.OnCheckedChangeListener, UnderlayButtonClickListener {
+
+    @Inject Context mContext;
+    @Inject DatabaseReference mDatabaseReference;
 
     //View
     private RelativeLayout mRelativeLayout;
@@ -92,6 +105,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     private ViewGroup viewGroup;
     private Switch mBottomSheetDragAndDropSwitch;
     private Toolbar mToolbar;
+    private  Button mConfiguratorButton;
 
     //Animation
     private Animation mFabOpen, mFabClose, mRotateForward, mRotateBackward;
@@ -104,16 +118,17 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
     //Helper
     private ItemTouchHelper mItemTouchHelper;
-    private ItemSwipeHelperCallback mItemSwipeHelperCallback;
-    private FirebaseHelper<CustomDictionaryModel> mFirebaseHelper;
+    private FirebaseHelper<CustomDictionaryModel> mFirebaseHelper = new FirebaseHelper<>(null, null, null, null);
     private ActionMode mActionMode;
     private SharedPreferences mSharedPreferences;
     private AlertDialog.Builder mAlertDialogBuilder;
     private AlertDialog mAlertDialog;
-    private DictionaryCustomizer mDictionaryCustomizer;
+    @Inject
+    public DictionaryCustomizer mDictionaryCustomizer;
+    ItemSwipeHelperCallback itemSwipeHelperCallback;
 
     //DataBase
-    private DatabaseReference mDatabaseReference;
+    //private DatabaseReference mDatabaseReference;
 
     //Other
     private Thread mThread;
@@ -129,16 +144,11 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
     //
     private int mDictionarySize;
-    private String mMode;
-    private int mFavorite;
-    private int mLearned;
-    private String mName;
-    private int mDragAndDrop;
+    private PreferenceMode mMode;
     private String mSortedStringOfUIDS;
     //public PageID mPageID;
     private int mCheckedItemOfAlertDialog;
     private int mPickedFilterValue;
-    private Boolean mDragAndDropMode;
     private int mDisplayType;
     //
     private static final String TAG = "CDF";
@@ -153,7 +163,8 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
+        getAppComponent().inject(this);
+        mMode = getDictionaryMod();
     }
 
     @Override
@@ -161,7 +172,8 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false);
         viewGroup = (ViewGroup) rootView.findViewById(R.id.coordinator_layout);
-        mDictionaryCustomizer = new DictionaryCustomizer(getActivity(), mMode);
+//        mDictionaryCustomizer = new DictionaryCustomizer(getActivity(), mMode);
+        mDictionaryCustomizer.loadMode(mMode);
         //mDisplayType = Integer.parseInt(getFromSharedPreferences(getActivity(), mMode, DISPLAY_TYPE));
         implementView(rootView);
         implementRecyclerView(rootView);
@@ -174,21 +186,22 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     public void onStart() {
         super.onStart();
         //to onCreate
-        mMode = getDictionaryMod();
         mDisplayType = mDictionaryCustomizer.getDisplayType();
         mSortedStringOfUIDS = getSortedStringOfUIDS();
         mItems = new ArrayList<CustomDictionaryModel>();
         mToPosIds = new ArrayList<Integer>();
         mFromPosIds = new ArrayList<Integer>();
         mFirebaseDictionaryWrapper = new FirebaseDictionaryWrapper();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mPaint = new Paint();
         //mPageID = new PageID();
-        Log.i(TAG, "onStart 0: " + mMode);
+       // Log.i(TAG, "onStart 0: " + mMode);
         //putTestPref();
         if (User.getCurrentUser() != null) {
-            getDictionarySettings();
-            implementRecyclerViewAdapter();
+            //getDictionarySettings();
+
+            rx.Observable
+                    .just(implementRecyclerViewAdapter())
+                    .observeOn(Schedulers.computation());
         }
 
     }
@@ -207,10 +220,12 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         resetActionMode();
     }
 
-    private void implementRecyclerViewAdapter() {
+    private CustomDictionaryAdapter implementRecyclerViewAdapter() {
         //mItems = getSortedList();
-        DictionaryCustomizer dc = new DictionaryCustomizer(getActivity(), mMode);
-        mAdapter = new CustomDictionaryAdapter(getActivity(), mMode, mItems, this, this, this, dc);
+        DictionaryCustomizer dc = new DictionaryCustomizer(getActivity());
+        dc.loadMode(getMode());
+
+        mAdapter = new CustomDictionaryAdapter(getActivity(), mItems, this, this, this, dc);
         mAdapter.clear();
         mRecyclerView.setAdapter(mAdapter);
         //final ItemTouchHelperCallback itemTouchCallBack = new ItemTouchHelperCallback(getActivity(), mRecyclerView, mAdapter);
@@ -224,9 +239,20 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
         if (getDictionary() != null && getCurrentUser() != null) {
             //getFirebaseData();
-            updateData();
+//            mThread = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    updateData();
+//                }
+//            });
+//            mThread.start();
+            rx.Observable
+                    .just(updateData())
+                    .subscribeOn(Schedulers.io());
+                    //.observeOn(AndroidSchedulers.mainThread())
         }
         mAdapter.notifyDataSetChanged();
+        return mAdapter;
     }
 
 //    private void implementItemTouchHelper(){
@@ -307,7 +333,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 //    }
     private void implementItemTouchHelper() {
 
-        mItemTouchHelper = new ItemTouchHelper(new ItemSwipeHelperCallback(getActivity(), ItemSwipeHelperCallback.BOTH_SIDE, mRecyclerView, mAdapter) {
+        mItemTouchHelper = new ItemTouchHelper( itemSwipeHelperCallback = new ItemSwipeHelperCallback(getActivity(), ItemSwipeHelperCallback.BOTH_SIDE, mRecyclerView, mAdapter) {
             @Override
             public void onCreateRightUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 UnderlayButton mDelete = new UnderlayButton(getActivity(), R.drawable.ic_action_delete);
@@ -378,33 +404,50 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.relative_layout);
         mCoordinatorLayout = (CoordinatorLayout) rootView.findViewById(R.id.coordinator_layout);
         mTextView = new TextView(getActivity());
-        mProgressBar = new ProgressBar(getActivity());
-        mProgressBar.setId(Integer.valueOf(1));
         mToolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mDictionaryCustomizer.getDictionaryName());
+
+        mProgressBar = new ProgressBar(getActivity());
+        mConfiguratorButton = new Button(mContext);
+
+        mProgressBar.setId(Integer.valueOf(1));
+
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-        RelativeLayout.LayoutParams layoutParamsText = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParamsText.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        layoutParamsText.addRule(RelativeLayout.BELOW, mProgressBar.getId());
+        if (mDictionaryCustomizer.getDictionary() != null) {
 
-        if (getDictionary() != null) {
+            RelativeLayout.LayoutParams lpText = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lpText.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+            lpText.addRule(RelativeLayout.BELOW, mProgressBar.getId());
+
+
+            mProgressBar.setVisibility(View.GONE);
             mTextView.setText("DICTIONARY IS EMPTY");
+            mRelativeLayout.addView(mProgressBar, layoutParams);
+            mRelativeLayout.addView(mTextView, lpText);
         } else {
-            mTextView.setText("DICTIONARY NOT SELECTED");
+
+            RelativeLayout.LayoutParams lpButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lpButton.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+            mConfiguratorButton.setText("DICTIONARY NOT SELECTED\nConfigurat your dictionary");
+            mConfiguratorButton.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
+            mConfiguratorButton.setTextColor(Color.WHITE);
+            mConfiguratorButton.setPadding(50, 10, 50, 10);
+            mConfiguratorButton.setOnClickListener(this);
+
+            mRelativeLayout.addView(mConfiguratorButton, lpButton);
         }
         mTextView.setTextSize(18);
 
-        mRelativeLayout.addView(mProgressBar, layoutParams);
-        mRelativeLayout.addView(mTextView, layoutParamsText);
 
 
     }
 
     private void openBottomSheetDialog(){
-        View view = getLayoutInflater(getArguments()).inflate(R.layout.bottom_sheet, null);
+        @SuppressLint("RestrictedApi") View view = getLayoutInflater(getArguments()).inflate(R.layout.bottom_sheet, null);
         mBottomSheetDialog = new BottomSheetDialog(getActivity());
         mBottomSheetDialog.setContentView(view);
         //TextView camera_sel = (TextView) view.findViewById(R.id.camera);
@@ -418,8 +461,8 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         TextView textViewSorting = (TextView) view.findViewById(R.id.bottom_sheet_description_of_auto_rearrangement);
 
 
-        textViewFavorite.setText(switchHelper(getFavorite(), R.array.hide_favorite));
-        textViewLearned.setText(switchHelper(getLearned(), R.array.hide_learned));
+        textViewFavorite.setText(switchHelper(mDictionaryCustomizer.getFavorite(), R.array.hide_favorite));
+        textViewLearned.setText(switchHelper(mDictionaryCustomizer.getLearned(), R.array.hide_learned));
 
         lnFavorite.setOnClickListener(this);
         lnLearned.setOnClickListener(this);
@@ -427,7 +470,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         mBottomSheetDragAndDropSwitch.setOnCheckedChangeListener(this);
 
         TextView dictName = (TextView) view.findViewById(R.id.bottom_sheet_dictionary_name);
-        dictName.setText(getName());
+        dictName.setText(mDictionaryCustomizer.getDictionaryName());
         dictName.setOnClickListener(this);
 
 //        lnFavorite.setOnClickListener(new View.OnClickListener() {
@@ -478,17 +521,13 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s, int index) {
-                //favFilter(mItems);
-                // mAdapter.setItems(mItems);
-                //  mAdapter.notifyDataSetChanged();
-//                //mAdapter.orderBy(getActivity(), mItems);
-                //loadDictionarySetting(mItems, mFavorite);
+
+
                 mTextView.setVisibility(View.GONE);
                 mProgressBar.setVisibility(View.GONE);
-                //mDictionarySize = mAdapter.getItemCount();
+                mConfiguratorButton.setVisibility(View.GONE);
                 mDictionarySize = mAdapter.getNotFilteredSize();
-                Log.i(TAG, "onChildAdded: " + s);
-                
+
             }
 
             @Override
@@ -500,7 +539,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                 mProgressBar.setVisibility(View.GONE);
 //                mDictionarySize = mAdapter.getItemCount();
                 mDictionarySize = mAdapter.getNotFilteredSize();
-                Log.i(TAG, "onChildChanged: ");
+               // Log.i(TAG, "onChildChanged: ");
             }
 
             @Override
@@ -528,13 +567,13 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s, int index) {
                 //mAdapter.notifyDataSetChanged();
-                Log.i(TAG, "onChildMoved: ");
+               // Log.i(TAG, "onChildMoved: ");
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 mProgressBar.setVisibility(View.GONE);
-                Log.i(TAG, "onCancelled: ");
+              //  Log.i(TAG, "onCancelled: ");
             }
 
             @Override
@@ -600,21 +639,21 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
             return dictionary;
         }
         if (intent.getStringExtra("DictionaryName") == null && getCurrentUser() != null) {
-            //dictionary = getFromSharedPreferences(getActivity(), "DefaultDictionaryName", getUserUID());
-            dictionary = getFromSharedPreferences(getActivity(), mMode, DICTIONARY);
+            //OxfordDictionary = getFromSharedPreferences(getActivity(), "DefaultDictionaryName", getUserUID());
+            dictionary = PreferenceUtils.getStringPreference(getActivity(), getMode(), DICTIONARY);
             return dictionary;
         } else {
             return null;
         }
     }
 
-    private String getDictionaryMod(){
-        String dictMod = null;
+    private PreferenceMode getDictionaryMod(){
+        PreferenceMode dictMod = null;
         if (this.getArguments() != null){
-            dictMod = getArguments().getString("DictionaryMode");
+            dictMod = (PreferenceMode) getArguments().get(DICTIONARY_PAGE.name());
         }
         if (dictMod == null) {
-            dictMod = MAIN_GLOBAL_SETTINGS;
+            dictMod = PreferenceMode.MAIN_GLOBAL_SETTINGS;
         }
         return dictMod;
     }
@@ -623,69 +662,72 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     *   Dictionary mode
      */
 
-    private void getDictionarySettings(){
-        getLearned();
-        getFavorite();
-        getName();
-        getDragAndDropMode();
+//    private void getDictionarySettings(){
+//
+//        mDictionaryCustomizer.getLearned();
+//        mDictionaryCustomizer.getFavorite();
+//        mDictionaryCustomizer.getDictionaryName();
+//        mDictionaryCustomizer.getDragAndDrop();
+//
+////        getLearned();
+////        getFavorite();
+////        getName();
+////        getDragAndDropMode();
+//
+////        mFavorite = Integer.parseInt(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"FAVORITE"));
+////        mLearned = Integer.parseInt(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"LEARNED"));
+////        mName = SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"CUSTOM_NAME");
+////        Log.i(TAG, "getDictionarySettings: " +
+////                mFavorite + " : " +
+////                mLearned  + " : " +
+////                mName);
+//    }
 
-//        mFavorite = Integer.parseInt(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"FAVORITE"));
-//        mLearned = Integer.parseInt(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"LEARNED"));
-//        mName = SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"CUSTOM_NAME");
-        Log.i(TAG, "getDictionarySettings: " +
-                mFavorite + " : " +
-                mLearned  + " : " +
-                mName);
-    }
-
-    public String getMode() {
+    public PreferenceMode getMode() {
         return mMode;
     }
 
-    public Boolean getDragAndDropMode() {
-        mDragAndDropMode = Boolean.valueOf(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode, DRAG_AND_DROP));
-        return mDragAndDropMode;
-    }
+//    public Boolean getDragAndDropMode() {
+//        mDragAndDropMode = Boolean.valueOf(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode, DRAG_AND_DROP));
+//        return mDragAndDropMode;
+//    }
+//
+//    public String getName() {
+//        mName = SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"CUSTOM_NAME");
+//        return mName;
+//    }
+//
+//    public void setName(String name) {
+//        SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode,"CUSTOM_NAME",name);
+//        mName = name;
+//    }
+//
+//    public int getFavorite() {
+//        mFavorite = Integer.parseInt(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"FAVORITE"));
+//        return mFavorite;
+//    }
+//
+//    public int getLearned() {
+//       // SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode,"LEARNED", String.valueOf(1));
+//
+//        mLearned = Integer.parseInt(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"LEARNED"));
+//    //    Log.i(TAG, "getLearned: " + mLearned);
+//        return mLearned;
+//    }
 
-    public String getName() {
-        mName = SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"CUSTOM_NAME");
-        return mName;
-    }
 
-    public void setName(String name) {
-        SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode,"CUSTOM_NAME",name);
-        mName = name;
-    }
 
-    public int getFavorite() {
-        mFavorite = Integer.parseInt(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"FAVORITE"));
-        return mFavorite;
-    }
-
-    public int getLearned() {
-       // SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode,"LEARNED", String.valueOf(1));
-
-        mLearned = Integer.parseInt(SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode,"LEARNED"));
-        Log.i(TAG, "getLearned: " + mLearned);
-        return mLearned;
-    }
-
-    public void setMode(String mode) {
-        SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode,"CUSTOM_NAME", mode);
-        mMode = mode;
-    }
-
-    public void setFavorite(int favorite) {
-        SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode,"FAVORITE", String.valueOf(favorite));
-        Log.i(TAG, "setFavorite: " + favorite + " :Str: " + String.valueOf(favorite));
-        mFavorite = favorite;
-    }
-
-    public void setLearned(int learned) {
-        SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode,"LEARNED", String.valueOf(learned));
-        Log.i(TAG, "setLearned: " + learned + " :Str: " + String.valueOf(learned));
-        mLearned = learned;
-    }
+//    public void setFavorite(int favorite) {
+//        SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode,"FAVORITE", String.valueOf(favorite));
+//       // Log.i(TAG, "setFavorite: " + favorite + " :Str: " + String.valueOf(favorite));
+//        mFavorite = favorite;
+//    }
+//
+//    public void setLearned(int learned) {
+//        SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode,"LEARNED", String.valueOf(learned));
+//        //Log.i(TAG, "setLearned: " + learned + " :Str: " + String.valueOf(learned));
+//        mLearned = learned;
+//    }
 
     private CustomDictionaryModel filter(CustomDictionaryModel item){
         CustomDictionaryModel filteredItem = null;
@@ -706,20 +748,20 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
 
     private CustomDictionaryModel learnedItemFilter (CustomDictionaryModel item){
-        Log.i(TAG, "favItemFilter: " + getFavorite());
-        switch (getLearned()){
+    //    Log.i(TAG, "favItemFilter: " + getFavorite());
+        switch (mDictionaryCustomizer.getLearned()){
             case 0:
-                Log.i(TAG, "learnedItemFilter: 0 : " + item.getUID() + " : " + item.getStatus() );
+              //  Log.i(TAG, "learnedItemFilter: 0 : " + item.getUID() + " : " + item.getStatus() );
                 //if (item.getStatus() || !item.getStatus())
                 return item;
                 //break;
             case 1:
-                Log.i(TAG, "learnedItemFilter: 1 : " + item.getUID() + " : " + item.getStatus() );
+              //  Log.i(TAG, "learnedItemFilter: 1 : " + item.getUID() + " : " + item.getStatus() );
                 if (item.getStatus())
                     return item;
                 break;
             case 2:
-                Log.i(TAG, "learnedItemFilter: 2 : " + item.getUID() + " : " + item.getStatus() );
+                //Log.i(TAG, "learnedItemFilter: 2 : " + item.getUID() + " : " + item.getStatus() );
                 if (!item.getStatus())
                     return item;
                 break;
@@ -729,20 +771,20 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
 
     private CustomDictionaryModel favItemFilter (CustomDictionaryModel item){
-        Log.i(TAG, "favItemFilter: " + getFavorite());
-        switch (getFavorite()){
+       // Log.i(TAG, "favItemFilter: " + getFavorite());
+        switch (mDictionaryCustomizer.getFavorite()){
             case 0:
-                Log.i(TAG, "favItemFilter: 0 : " + item.getUID() + " : " + item.getFavorite() );
+            //    Log.i(TAG, "favItemFilter: 0 : " + item.getUID() + " : " + item.getFavorite() );
                 //if (item.getFavorite() || !item.getFavorite())
                 return item;
                 //break;
             case 1:
-                Log.i(TAG, "favItemFilter: 3 : " + item.getUID() + " : " + item.getFavorite() );
+              //  Log.i(TAG, "favItemFilter: 3 : " + item.getUID() + " : " + item.getFavorite() );
                 if (item.getFavorite())
                     return item;
                 break;
             case 2:
-                Log.i(TAG, "favItemFilter: 2 : " + item.getUID() + " : " + item.getFavorite() );
+              //  Log.i(TAG, "favItemFilter: 2 : " + item.getUID() + " : " + item.getFavorite() );
                 if (!item.getFavorite())
                     return item;
                 break;
@@ -751,7 +793,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     }
 
     private String getSortedStringOfUIDS (){
-        mSortedStringOfUIDS = SharedPreferencesUtils.getFromSharedPreferences(getActivity(), mMode, "STRING_OF_SORTED_UID");
+        mSortedStringOfUIDS = getStringPreference(getActivity(), getMode(), PreferenceKey.STRING_OF_SORTED_UID);
         if (mSortedStringOfUIDS == null){
             mSortedStringOfUIDS = "";
         }
@@ -814,6 +856,9 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
             case R.id.cd_selection_toggle:
                 selectionMode();
                 break;
+            case R.id.cd_start_test:
+                startTesting();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -850,11 +895,17 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
     private void actionAdd(){
         Intent addWordIntent = new Intent(getActivity(), BaseDetailActivity.class);
-        addWordIntent.putExtra("DictionaryName", getFromSharedPreferences(getActivity(), mMode, DictionaryCustomizer.DICTIONARY));
+        addWordIntent.putExtra("DictionaryName", PreferenceUtils.getStringPreference(getActivity(), mMode, DICTIONARY));
         //addWordIntent.putExtra("DictionaryName", getFromSharedPreferences(getActivity(), "DefaultDictionaryName", getUserUID()));
         addWordIntent.putExtra("DictionarySize", mDictionarySize);
         addWordIntent.putExtra("Mod", "AddMOD");
         startActivity(addWordIntent);
+    }
+
+    private void startTesting(){
+        Intent startTesting = new Intent(getActivity(), TestConfiguratorActivity.class);
+        startTesting.putExtra("DictionaryName", getDictionary());
+        startActivity(startTesting);
     }
 
     private String switchHelper(int value, int arrayRes){
@@ -870,7 +921,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
         return null;
     }
 
-    private void actionSort(){
+    private void dictionaryCustomizerIntent(){
 //        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 //        Switch sw = new Switch(getActivity());
 //        sw.setTextOn("start");
@@ -886,8 +937,8 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 //        builder.show();
 
         Intent dictionaryCustomizerIntent = new Intent(getActivity(), DictionaryCustomizerActivity.class);
-        dictionaryCustomizerIntent.putExtra(DictionaryCustomizerActivity.DICTIONARY_PAGE, mMode);
-        dictionaryCustomizerIntent.putExtra(DictionaryCustomizerActivity.DICTIONARY, getDictionary());
+        dictionaryCustomizerIntent.putExtra(DICTIONARY_PAGE.name(), mMode);
+        dictionaryCustomizerIntent.putExtra(DICTIONARY.name(), getDictionary());
         startActivity(dictionaryCustomizerIntent);
 
     }
@@ -936,7 +987,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
 
     public void deleteItem (final int position){
         final CustomDictionaryModel item = mItems.get(position);
-        Log.i(TAG, "deleteItem: " + position + " : " + item.getId() + " : " + item.getUID() + " : " + item.getWord());
+       // Log.i(TAG, "deleteItem: " + position + " : " + item.getId() + " : " + item.getUID() + " : " + item.getWord());
         mDatabaseReference.child("custom_dictionary")
                 .child(getUserUID())
                 .child("dictionaries")
@@ -1056,22 +1107,39 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     */
     @Override
     public void onClick(View v) {
+        if (Constant.DEBUG == 1) Log.d(TAG, "onClick view id: " + v.getId());
         // FloatingActionButton OnClick
         switch (v.getId()){
+            case -1:
+                dictionaryCustomizerIntent();
+                break;
 
             // Floating Action Buttons
             case R.id.floating_action_button:
                 animateFAB();
                 break;
             case R.id.floating_action_button_add:
-                actionAdd();
+                if (getDictionary() != null){
+                    actionAdd();
+                } else{
+                    AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+                   // adb.setTitle(getResources().getString("First time select or create dictionary");
+                    adb.setMessage("First time select or create dictionary");
+                    adb.setPositiveButton("Create new", (dialog, which) -> {
+                        Intent addDictionary = new Intent(v.getContext(), AddCustomDictionaryActivity.class);
+                        startActivity(addDictionary);
+                    });
+                    adb.setNegativeButton("Select", (dialogInterface, i) -> dictionaryCustomizerIntent());
+                    adb.setNeutralButton("Cancel", null);
+                    adb.show();
+                }
                 break;
             case R.id.floating_action_button_filter:
                 openBottomSheetDialog();
                 animateFAB();
                 break;
             case R.id.floating_action_button_sort:
-                actionSort();
+                dictionaryCustomizerIntent();
                 animateFAB();
                 break;
 
@@ -1080,7 +1148,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                 mAlertDialogBuilder = new AlertDialog.Builder(getActivity());
                 mAlertDialogBuilder.setTitle(R.string.favorite_title);
 
-                mCheckedItemOfAlertDialog = getFavorite();
+                mCheckedItemOfAlertDialog = mDictionaryCustomizer.getFavorite();
                 mAlertDialogBuilder.setSingleChoiceItems(R.array.hide_favorite, mCheckedItemOfAlertDialog, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -1090,7 +1158,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                 mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        setFavorite(mPickedFilterValue);
+                        mDictionaryCustomizer.setFavorite(mPickedFilterValue);
                         mAdapter.clear();
                         updateData();
                     }
@@ -1103,7 +1171,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                 AlertDialog.Builder adbL = new AlertDialog.Builder(getActivity());
                 adbL.setTitle(R.string.learned_title);
 
-                mCheckedItemOfAlertDialog = getLearned();
+                mCheckedItemOfAlertDialog = mDictionaryCustomizer.getLearned();
                 adbL.setSingleChoiceItems(R.array.hide_learned, mCheckedItemOfAlertDialog, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -1113,7 +1181,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                 adbL.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        setLearned(mPickedFilterValue);
+                        mDictionaryCustomizer.setLearned(mPickedFilterValue);
                          mAdapter.clear();
                          updateData();
                     }
@@ -1138,7 +1206,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                 mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        setName(dictNameET.getText().toString());
+                        mDictionaryCustomizer.setDictionaryName(dictNameET.getText().toString());
                     }
                 });
                 mAlertDialogBuilder.setNegativeButton(getString(R.string.cancel), null);
@@ -1173,8 +1241,8 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     public void onItemMoveComplete(RecyclerView.ViewHolder viewHolder) {
         Gson gson = new Gson();
         String sortedJson = gson.toJson(mAdapter.getSortedString());
-        SharedPreferencesUtils.putToSharedPreferences(getActivity(), mMode, "STRING_OF_SORTED_UID", sortedJson);
-        Log.i(TAG, "onMove: " + sortedJson + " : " + mAdapter.getSortedString());
+        PreferenceUtils.putPreference(getActivity(), getMode(), PreferenceKey.STRING_OF_SORTED_UID, sortedJson);
+       // Log.i(TAG, "onMove: " + sortedJson + " : " + mAdapter.getSortedString());
                     //        mThread = new Thread(new Runnable() {
                     //            @Override
                     //            public void run() {
@@ -1183,7 +1251,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                     //                        .child("custom_dictionary")
                     //                        .child(getUserUID())
                     //                        .child("dictionaries")
-                    //                        .child(getDictionary())
+                    //                        .child(getDictionaryName())
                     //                        .updateChildren(updateMap);
                     //                mAdapter.clearMoved();
                     //            }
@@ -1192,81 +1260,6 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                     //        mThread.start();
     }
 
-    //    @Override
-//    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-////        Bitmap icon;
-////        if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
-////
-////            View itemView = viewHolder.itemView;
-////            float height = (float) itemView.getBottom() - (float) itemView.getTop();
-////            float width = height / 3;
-////
-////            if(dX > 0){
-////                mPaint.setColor(Color.parseColor("#388E3C"));
-////                RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
-////                c.drawRect(background, mPaint);
-////                icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_edit);
-////                RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-////                c.drawBitmap(icon,null,icon_dest, mPaint);
-////            } else {
-////                mPaint.setColor(Color.parseColor("#D32F2F"));
-////                RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
-////                c.drawRect(background, mPaint);
-////                icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete);
-////                RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-////                c.drawBitmap(icon,null,icon_dest, mPaint);
-////            }
-////        }
-//    }
-//
-//    @Override
-//    public void onClearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-//
-//    }
-//
-//    @Override
-//    public int convertToAbsoluteDirection(int flags, int layoutDirection) {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-////        final View foregroundView = ((CustomDictionaryAdapter.ViewHolder) viewHolder).mBackCardView;
-////        getDefaultUIUtil().clearView(foregroundView);
-//    }
-//
-//    @Override
-//    public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-//        final View foregroundView = ((CustomDictionaryAdapter.ViewHolder) viewHolder).mBackCardView;
-//        getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
-//    }
-
-                //    @Override
-                //    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-                //        if (actionState == ItemTouchHelper.ACTION_STATE_IDLE && actionState != ItemTouchHelper.ACTION_STATE_DRAG) {
-                //            mThread = new Thread(new Runnable() {
-                //                @Override
-                //                public void run() {
-                //
-                //                    Map<String, Object> updateMap = mAdapter.getMovedItems();
-                //                    mDatabaseReference
-                //                            .child("custom_dictionary")
-                //                            .child(getUserUID())
-                //                            .child("dictionaries")
-                //                            .child(getDictionary())
-                //                            .updateChildren(updateMap);
-                //                    mAdapter.clearMoved();
-                //                }
-                //            });
-                //            mThread.setDaemon(true);
-                //            mThread.start();
-                //        }
-                //        if (viewHolder != null) {
-                //            final View foregroundView = ((CustomDictionaryAdapter.ViewHolder) viewHolder).mBackCardView;
-                //
-                //            getDefaultUIUtil().onSelected(foregroundView);
-                //        }
-                //    }
 
     @Override
     public void onItemClicked(View view, int position) {
@@ -1348,7 +1341,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
                         break;
                     case R.id.popup_menu_move_to:
                         final CustomDictionaryModel item0 = mItems.get(position);
-                        Log.i(TAG, "deleteItem: " + position + " : " + item0.getId() + " : " + item0.getUID() + " : " + item0.getWord());
+                       // Log.i(TAG, "deleteItem: " + position + " : " + item0.getId() + " : " + item0.getUID() + " : " + item0.getWord());
 
                         break;
                     case R.id.popup_menu_share:
@@ -1372,7 +1365,7 @@ public class CustomDictionaryFragment extends Fragment implements OnRecyclerView
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
             case R.id.bottom_sheet_drag_and_drop_switch:
-                mBottomSheetDragAndDropSwitch.setChecked(getDragAndDropMode());
+                mBottomSheetDragAndDropSwitch.setChecked(mDictionaryCustomizer.getDragAndDrop());
                 mDictionaryCustomizer.setDragAndDrop(isChecked);
                 //mAdapter.setDragAndDropMode(isChecked);
 

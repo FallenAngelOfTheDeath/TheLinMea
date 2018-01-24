@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.fallenangel.linmea.R;
 import com.fallenangel.linmea._linmea.model.UserModel;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.fallenangel.linmea.utils.CheckPermissionReadExternalStorage;
 import com.fallenangel.linmea.utils.ImageUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,8 +42,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
-import static com.fallenangel.linmea.linmea.user.authentication.User.getCurrentUser;
-import static com.fallenangel.linmea.linmea.user.authentication.User.getCurrentUserUID;
+import static com.fallenangel.linmea._modulus.auth.User.getCurrentUser;
+import static com.fallenangel.linmea._modulus.auth.User.getCurrentUserUID;
 import static com.fallenangel.linmea.linmea.utils.image.ImageFileUtils.getImageFileFromCache;
 
 public class ChangeProfileDataActivity extends AppCompatActivity implements View.OnClickListener {

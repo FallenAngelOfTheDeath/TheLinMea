@@ -1809,7 +1809,7 @@ int id tabMode 0x7f100029
 int id tab_dots_profile 0x7f100104
 int id tab_host 0x7f100133
 int id terrain 0x7f100064
-int id test 0x7f10007f
+int id testConfig 0x7f10007f
 int id test_button 0x7f10016d
 int id text 0x7f100136
 int id text1 0x7f100058
@@ -2278,7 +2278,7 @@ int string view_options 0x7f090110
 int string wallet_buy_button_place_holder 0x7f090069
 int string ward_has_been_added 0x7f090111
 int string welcome 0x7f090112
-int string word 0x7f090113
+int string newWord 0x7f090113
 int string word_hint 0x7f090114
 int style AlertDialog_AppCompat 0x7f0b00a7
 int style AlertDialog_AppCompat_Light 0x7f0b00a8

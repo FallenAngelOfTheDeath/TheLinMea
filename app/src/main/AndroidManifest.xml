@@ -1,109 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.fallenangel.linmea">
+    package="com.fallenangel.linmea">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />
+
     <application
+        android:name=".LinMea"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".LinMea"
         android:theme="@style/AppTheme">
         <activity
-            android:name="._linmea.SplashScreen"
+            android:name="._modulus.main.ui.SplashScreen"
             android:theme="@style/SplashTheme">
             <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".linmea.startup.StartUpActivity">
-        </activity>
-        <activity android:name=".authentication.LoginActivity">
-        </activity>
-        <activity android:name=".authentication.SignUpActivity">
-        </activity>
-        <activity android:name=".linmea.user.profile.ProfileActivity">
-        </activity>
-        <activity android:name=".authentication.ChangePasswordActivity">
-        </activity>
-        <activity android:name=".linmea.user.profile.ChangeProfileDataActivity">
-        </activity>
-        <activity android:name=".profile.activities.ChangeUserProfileActivity">
-        </activity>
-        <activity android:name="._linmea.ui.dictionary.AddCustomDictionaryActivity">
-        </activity>
+        <activity android:name=".linmea.startup.StartUpActivity" />
+        <activity android:name="._modulus.auth.ui.LoginActivity" />
+        <activity android:name="._modulus.auth.ui.SignUpActivity" />
+        <activity android:name=".linmea.user.profile.ProfileActivity" />
+        <activity android:name=".authentication.ChangePasswordActivity" />
+        <activity android:name=".linmea.user.profile.ChangeProfileDataActivity" />
+        <activity android:name=".profile.activities.ChangeUserProfileActivity" />
+        <activity android:name="._linmea.ui.dictionary.AddCustomDictionaryActivity" />
         <activity android:name="._linmea.ui.dictionary.DictionaryActivity">
+            <intent-filter android:label="@string/custom_dictionaries">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="linmea"
+                    android:pathPrefix="/dictionary_"
+                    android:scheme="app" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".preference.SettingsActivity"
-            android:label="@string/title_activity_settings">
-        </activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name="._linmea.ui.preference.Preference$CustomDictionaryPreference"
-            android:label="@string/title_activity_settings">
-        </activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name="._linmea.ui.preference.Preference$MainPreference"
-            android:label="@string/title_activity_settings">
-        </activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name="._linmea.ui.preference.Preference$DetailViewPreference"
-            android:label="@string/title_activity_settings">
-        </activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name="._linmea.ui.preference.Preference"
-            android:label="@string/title_activity_settings">
-        </activity>
-        <activity android:name="._linmea.ui.MainActivity">
-        </activity>
-        <activity android:name="._linmea.ui.first_start.FirstStartActivity">
-        </activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name="._modulus.main.ui.MainActivity" />
+        <activity android:name="._linmea.ui.first_start.FirstStartActivity" />
 
         <service
             android:name="._linmea.service.UpdateUserData"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true" />
         <service
             android:name="._linmea.service.ChatService"
-            android:enabled="true">
-        </service>
+            android:enabled="true" />
         <service
             android:name="._test.BoundService"
-            android:enabled="true">
-        </service>
+            android:enabled="true" />
 
         <activity
             android:name=".linmea.ui.dictionary.WordDetailActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="._linmea.ui.dictionary.BaseDetailActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-        <activity android:name="._linmea.ui.preference.DictionaryCustomizerActivity">
-        </activity>
-        <activity android:name="._linmea.ui.preference.MainPreferenceActivity">
-        </activity>
-        <activity android:name="._linmea.ui.society.ChatRoomActivity">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name="._linmea.ui.preference.DictionaryCustomizerActivity" />
+        <activity android:name="._linmea.ui.preference.MainPreferenceActivity" />
+        <activity android:name="._linmea.ui.society.ChatRoomActivity" />
 
         <receiver
             android:name="._linmea.service.BroadReceive"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <activity android:name="._linmea.ui.testing.TestingActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name="._linmea.ui.testing.TestConfiguratorActivity" />
+        <activity
+            android:name="._modulus.grammar.ui.DetailGrammarActivity"
+            android:label="@string/title_activity_detail_grammar" />
+        <activity android:name="._modulus.grammar.ui.GrammarsListActivity" />
+        <activity
+            android:name="._modulus.auth.ui.UserProfileActivity"
+            android:label="@string/title_activity_user_profile"
+            android:parentActivityName="._modulus.main.supclasses.SuperAppCompatActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fallenangel.linmea._modulus.main.supclasses.SuperAppCompatActivity" />
+        </activity>
+        <activity android:name="._modulus.main.supclasses.SuperAppCompatActivity" />
+        <activity
+            android:name="._linmea.ui.testing.tests.TestResultActivity"
+            android:label="@string/title_activity_test_result"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

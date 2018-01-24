@@ -17,7 +17,7 @@ import com.fallenangel.linmea._linmea.model.MessageModel;
 import com.fallenangel.linmea.interfaces.OnItemTouchHelper;
 import com.fallenangel.linmea.interfaces.OnItemTouchHelperViewHolder;
 import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 
 import java.util.List;
 

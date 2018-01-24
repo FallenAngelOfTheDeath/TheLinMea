@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fallenangel.linmea._linmea.ui.dictionary.BaseDetailActivity">
+    tools:context="com.fallenangel.linmea._linmea.ui.dictionaryName.BaseDetailActivity">
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"

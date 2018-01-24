@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/extended_list_item_status_image_view"
-                android:text="@string/word"
+                android:text="@string/newWord"
                 android:textAppearance="?android:textAppearanceLarge"
                 android:textSize="@dimen/default_text_size"/>
 

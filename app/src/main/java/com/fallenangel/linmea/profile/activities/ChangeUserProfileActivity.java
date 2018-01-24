@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea.authentication.LoginActivity;
+import com.fallenangel.linmea._modulus.auth.ui.LoginActivity;
 import com.fallenangel.linmea._linmea.model.UserModel;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
 import com.fallenangel.linmea.linmea.utils.image.ImageUplDwnlUtils;
 import com.fallenangel.linmea.profile.utils.DecodeSampledBitmapAsyncTask;

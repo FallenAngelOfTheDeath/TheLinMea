@@ -1,11 +1,9 @@
 package com.fallenangel.linmea._linmea.model;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import android.graphics.Color;
 
-import com.fallenangel.linmea.R;
-import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
+import com.fallenangel.linmea._modulus.prferences.enums.PreferenceMode;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,10 +13,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fallenangel.linmea._linmea.util.SharedPreferencesUtils.getFromSharedPreferences;
-import static com.fallenangel.linmea._linmea.util.SharedPreferencesUtils.getIntFromSharedPreferences;
-import static com.fallenangel.linmea._linmea.util.SharedPreferencesUtils.putToSharedPreferences;
-import static com.fallenangel.linmea.linmea.user.authentication.User.getCurrentUserUID;
+import static com.fallenangel.linmea._modulus.auth.User.getCurrentUserUID;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.COLOR_OF_SELECTED;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.CUSTOM_NAME;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.DEFAULT_START_UP_PAGE;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.DICTIONARY;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.DISPLAY_TYPE;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.DRAG_AND_DROP;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.FAVORITE;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.FOUNT_SIZE_TRANSLATION;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.FOUNT_SIZE_WORD;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.GLOBAL_SETTINGS;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.LEARNED;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.LEARNED_COLOR;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.OPTIONS_MENU;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.TEXT_TO_SPEECH_SPEED;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceMode.MAIN_GLOBAL_SETTINGS;
+import static com.fallenangel.linmea._modulus.prferences.utils.PreferenceUtils.getBooleanPreference;
+import static com.fallenangel.linmea._modulus.prferences.utils.PreferenceUtils.getIntPreference;
+import static com.fallenangel.linmea._modulus.prferences.utils.PreferenceUtils.getStringPreference;
+import static com.fallenangel.linmea._modulus.prferences.utils.PreferenceUtils.putPreference;
 
 /**
  * Created by NineB on 11/19/2017.
@@ -26,54 +40,55 @@ import static com.fallenangel.linmea.linmea.user.authentication.User.getCurrentU
 
 public class DictionaryCustomizer {
 
-    public interface UpdateUI{
-        void updateUI();
-    }
-
     private Context mContext;
 
-    private AlertDialog.Builder mAlertDialogBuilder;
-    private AlertDialog mAlertDialog;
-    private UpdateUI updateUI;
+//    public static final String DICTIONARY_PAGE = "DICTIONARY_PAGE";
+//    public static final String DICTIONARY = "DICTIONARY";
+//    public static final String CUSTOM_NAME = "CUSTOM_NAME";
+//    public static final String STRING_OF_SORTED_UID = "STRING_OF_SORTED_UID";
+//    public static final String REARRANGEMENT = "REARRANGEMENT";
+//    public static final String FAVORITE = "FAVORITE";
+//    public static final String LEARNED = "LEARNED";
+//    public static final String GLOBAL_SETTINGS = "GLOBAL_SETTINGS";
+//    public static final String DRAG_AND_DROP = "DRAG_AND_DROP";
+//    public static final String FOUNT_SIZE_WORD = "FOUNT_SIZE_WORD";
+//    public static final String FOUNT_SIZE_TRANSLATION = "FOUNT_SIZE_TRANSLATION";
+//    public static final String DISPLAY_TYPE = "DISPLAY_TYPE";
+//
+//    public static final String OPTIONS_MENU = "OPTIONS_MENU";
+//
+//    public static final String CUSTOM_DICTIONARY_PAGE_1 = "CUSTOM_DICTIONARY_PAGE_1";
+//    public static final String CUSTOM_DICTIONARY_PAGE_2 = "CUSTOM_DICTIONARY_PAGE_2";
+//    //public static final String SINGLE_PAGE = "SINGLE_PAGE";
+//    public static final String CUSTOM_DICTIONARY_LIST = "CUSTOM_DICTIONARY_LIST";
+//    public static final String MAIN_GLOBAL_SETTINGS = "MAIN_GLOBAL_SETTINGS";
+//    public static final String TEXT_TO_SPEECH_SPEED = "TEXT_TO_SPEECH_SPEED";
+//    public static final String LEARNED_COLOR = "LEARNED_COLOR";
+//    public static final String COLOR_OF_SELECTED = "COLOR_OF_SELECTED";
 
-    public static final String DICTIONARY_PAGE = "DICTIONARY_PAGE";
-    public static final String DICTIONARY = "DICTIONARY";
-    public static final String CUSTOM_NAME = "CUSTOM_NAME";
-    public static final String STRING_OF_SORTED_UID = "STRING_OF_SORTED_UID";
-    public static final String REARRANGEMENT = "REARRANGEMENT";
-    public static final String FAVORITE = "FAVORITE";
-    public static final String LEARNED = "LEARNED";
-    public static final String GLOBAL_SETTINGS = "GLOBAL_SETTINGS";
-    public static final String DRAG_AND_DROP = "DRAG_AND_DROP";
-    public static final String FOUNT_SIZE_WORD = "FOUNT_SIZE_WORD";
-    public static final String FOUNT_SIZE_TRANSLATION = "FOUNT_SIZE_TRANSLATION";
-    public static final String DISPLAY_TYPE = "DISPLAY_TYPE";
-
-    public static final String OPTIONS_MENU = "OPTIONS_MENU";
-
-    public static final String CUSTOM_DICTIONARY_PAGE_1 = "CUSTOM_DICTIONARY_PAGE_1";
-    public static final String CUSTOM_DICTIONARY_PAGE_2 = "CUSTOM_DICTIONARY_PAGE_2";
-    //public static final String SINGLE_PAGE = "SINGLE_PAGE";
-    public static final String CUSTOM_DICTIONARY_LIST = "CUSTOM_DICTIONARY_LIST";
-    public static final String MAIN_GLOBAL_SETTINGS = "MAIN_GLOBAL_SETTINGS";
-    public static final String TEXT_TO_SPEECH_SPEED = "TEXT_TO_SPEECH_SPEED";
-
-    private String mDictionary, mDictionaryName, mDictionaryPage, mStringOfSortingUIDS;
+    private PreferenceMode mMode;
+    private String mDictionary, mDictionaryName, mStringOfSortingUIDS;
     private int mSorting, mFavorite, mLearned,  mFountSizeWord, mFountSizeTranslation, mDisplayType;
     private Boolean mDragAndDrop, mGlobalSettings;
     private List<String> mListOfDictionaries;
-    private int mOptionsMenu;
-    private int mTTSSpeed;
 
-    private int mCheckedItemOfAlertDialog;
-    private int mPickedFilterValue;
+    private int mOptionsMenu, mTTSSpeed, mLearnedColor, mColorOfSelected;
+    private PreferenceMode mDefaultPage;
 
-    public DictionaryCustomizer(Context context, String dictionaryPage) {
+    public DictionaryCustomizer(Context context, PreferenceMode mode) {
         this.mContext = context;
-        this.mDictionaryPage = dictionaryPage;
+        this.mMode = mode;
         mListOfDictionaries = new ArrayList<>();
     }
 
+    public DictionaryCustomizer(Context context){
+        this.mContext = context;
+    }
+
+    public void loadMode(PreferenceMode mode){
+        this.mMode = mode;
+        mListOfDictionaries = new ArrayList<>();
+    }
 
     /*
     * Data
@@ -112,232 +127,8 @@ public class DictionaryCustomizer {
         return mListOfDictionaries;
     }
 
-//    public void alertDialogDict(){
-//        mAlertDialogBuilder = new AlertDialog.Builder(mContext);
-//
-//        for (int i = 0; i < mListOfDictionaries.size(); i++) {
-//            if (mListOfDictionaries.contains(getDictionary())){
-//                mCheckedItemOfAlertDialog = i;
-//            }
-//        }
-//        String[] mStringOfDictionaries = mListOfDictionaries.toArray(new String[0]);
-//
-//        if (mListOfDictionaries.isEmpty()){
-//            LayoutInflater inflater = LayoutInflater.from(mContext);
-//            final View text_view_layout = inflater.inflate(R.layout.text_view_alert_dialog_dictionary, null);
-//            mAlertDialogBuilder.setView(text_view_layout);
-//        }else {
-//            mAlertDialogBuilder.setTitle(R.string.dict_customizer_dict_description);
-//            mAlertDialogBuilder.setSingleChoiceItems(mStringOfDictionaries, mCheckedItemOfAlertDialog, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    mPickedFilterValue = which;
-//                }
-//            });
-//        }
-//        mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                setDictionary(mListOfDictionaries.get(mPickedFilterValue));
-//                //updateUI.updateUI();
-//            }
-//        });
-//        mAlertDialogBuilder.setNeutralButton(R.string.add_new_dictionary, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                Intent addDictionary = new Intent(mContext, AddCustomDictionaryActivity.class);
-//                mContext.startActivity(addDictionary);
-//            }
-//        });
-//        mAlertDialogBuilder.setNegativeButton(mContext.getString(R.string.cancel), null);
-//        mAlertDialog = mAlertDialogBuilder.create();
-//        mAlertDialog.show();
-//    }
-
-    public void alertDialogDictCustomName() {
-//        final EditText dictNameET = new EditText(mContext);
-//        mAlertDialogBuilder = new AlertDialog.Builder(mContext);
-//        mAlertDialogBuilder.setTitle(R.string.enter_name_of_dictionary);
-//        mAlertDialogBuilder.setView(dictNameET);
-//        mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                setDictionaryName(dictNameET.getText().toString());
-//                //updateUI.updateUI();
-//            }
-//        });
-//        mAlertDialogBuilder.setNegativeButton(mContext.getString(R.string.cancel), null);
-//        mAlertDialogBuilder.show();
-    }
-
-    public void alertDialogDictFavorite(){
-//        mAlertDialogBuilder = new AlertDialog.Builder(mContext);
-//        mAlertDialogBuilder.setTitle(R.string.favorite_title);
-//        mCheckedItemOfAlertDialog = getFavorite();
-//        mAlertDialogBuilder.setSingleChoiceItems(R.array.hide_favorite, mCheckedItemOfAlertDialog, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                mPickedFilterValue = which;
-//            }
-//        });
-//        mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                setFavorite(mPickedFilterValue);
-//                //updateUI.updateUI();
-//            }
-//        });
-//        mAlertDialogBuilder.setNegativeButton(mContext.getString(R.string.cancel), null);
-//        mAlertDialog = mAlertDialogBuilder.create();
-//        mAlertDialog.show();
-    }
-
-    public void alertDialogDictLearned(){
-//        mAlertDialogBuilder = new AlertDialog.Builder(mContext);
-//        mAlertDialogBuilder.setTitle(R.string.learned_title);
-//
-//        mCheckedItemOfAlertDialog = getLearned();
-//        mAlertDialogBuilder.setSingleChoiceItems(R.array.hide_learned, mCheckedItemOfAlertDialog, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                mPickedFilterValue = which;
-//            }
-//        });
-//        mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                setLearned(mPickedFilterValue);
-//                //updateUI.updateUI();
-//            }
-//        });
-//        mAlertDialogBuilder.setNegativeButton(mContext.getString(R.string.cancel), null);
-//        mAlertDialog = mAlertDialogBuilder.create();
-//        mAlertDialog.show();
-    }
-
-    public void alertDialogDictRearrangement(){
-        mAlertDialogBuilder = new AlertDialog.Builder(mContext);
-        mAlertDialogBuilder.setTitle(R.string.sorting_elements);
-       // final String[] array = mContext.getResources().getStringArray(R.array.sorting_elements);
-        mCheckedItemOfAlertDialog = getFavorite();
-        mAlertDialogBuilder.setSingleChoiceItems(R.array.sorting_elements, mCheckedItemOfAlertDialog, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mPickedFilterValue = which;
-            }
-        });
-        mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //array.c
-                setSorting(mPickedFilterValue);
-                //updateUI.updateUI();
-            }
-        });
-        mAlertDialogBuilder.setNegativeButton(mContext.getString(R.string.cancel), null);
-        mAlertDialog = mAlertDialogBuilder.create();
-        mAlertDialog.show();
-    }
-
-    public void alertDialogDictDisplayType(){
-//        mAlertDialogBuilder = new AlertDialog.Builder(mContext);
-//        mAlertDialogBuilder.setTitle(R.string.display_type_title);
-//        final String[] array = mContext.getResources().getStringArray(R.array.display_type);
-//        mCheckedItemOfAlertDialog = getDisplayType();
-//        mAlertDialogBuilder.setSingleChoiceItems(R.array.display_type, mCheckedItemOfAlertDialog, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                mPickedFilterValue = which;
-//            }
-//        });
-//        mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                setDisplayType(mPickedFilterValue);
-//                //updateUI.updateUI();
-//            }
-//        });
-//        mAlertDialogBuilder.setNegativeButton(mContext.getString(R.string.cancel), null);
-//        mAlertDialog = mAlertDialogBuilder.create();
-//        mAlertDialog.show();
-    }
-
-    public void alertDialogDictResetFilter(){
-//        mAlertDialogBuilder = new AlertDialog.Builder(mContext);
-//        mAlertDialogBuilder.setTitle(mContext.getResources().getString(R.string.reset_filter_title));
-//        mAlertDialogBuilder.setMessage(mContext.getResources().getString(R.string.description_reset_filter));
-//        mAlertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                LoadDefaultConfig ldc = new LoadDefaultConfig(mContext);
-//                switch (mDictionaryPage){
-//                    case CUSTOM_DICTIONARY_PAGE_1:
-//                        ldc.loadDefaultCustomDictPageOne();
-//                        break;
-//                    case CUSTOM_DICTIONARY_PAGE_2:
-//                        ldc.loadDefaultCustomDictPageTwo();
-//                        break;
-//                    case MAIN_GLOBAL_SETTINGS:
-//                        ldc.loadDefaultCustomDictSinglePage();
-//                        break;
-//                    case CUSTOM_DICTIONARY_LIST:
-//                        break;
-//                }
-//                Toast.makeText(mContext, mContext.getResources().getString(R.string.dict_settings_has_been_reset), Toast.LENGTH_SHORT);
-//            }
-//        });
-//        mAlertDialogBuilder.setNegativeButton("No", null);
-//        mAlertDialogBuilder.show();
-    }
-
-    public void alertDialogOptionsMenu(){
-        mAlertDialogBuilder = new AlertDialog.Builder(mContext);
-        mAlertDialogBuilder.setTitle(mContext.getResources().getString(R.string.options_menu_title));
-        //mAlertDialogBuilder.setMessage(mContext.getResources().getString(R.string.description_options_menu));
-        mCheckedItemOfAlertDialog = getOptionsMenu();
-        mAlertDialogBuilder.setSingleChoiceItems(R.array.options_menu, mCheckedItemOfAlertDialog, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mPickedFilterValue = which;
-            }
-        });
-        mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setOptionsMenu(mPickedFilterValue);
-                //updateUI.updateUI();
-            }
-        });
-        mAlertDialogBuilder.setNegativeButton(mContext.getString(R.string.cancel), null);
-        mAlertDialog = mAlertDialogBuilder.create();
-        mAlertDialog.show();
-    }
-
-    public void alertDialogTTSSpeed(){
-        mAlertDialogBuilder = new AlertDialog.Builder(mContext);
-        mAlertDialogBuilder.setTitle(mContext.getResources().getString(R.string.speed_of_tts));
-        //mAlertDialogBuilder.setMessage(mContext.getResources().getString(R.string.description_options_menu));
-        mCheckedItemOfAlertDialog = getTTSSpeed(mContext);
-        mAlertDialogBuilder.setSingleChoiceItems(R.array.speed_of_tts, mCheckedItemOfAlertDialog, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mPickedFilterValue = which;
-            }
-        });
-        mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setTTSSpeed(mContext, mPickedFilterValue);
-                //updateUI.updateUI();
-            }
-        });
-        mAlertDialogBuilder.setNegativeButton(mContext.getString(R.string.cancel), null);
-        mAlertDialog = mAlertDialogBuilder.create();
-        mAlertDialog.show();
-    }
-
-    public String switchHelper(int value, int arrayRes){
-        String[] arrayStr = mContext.getResources().getStringArray(arrayRes);
+    public static String switchHelper(Context context, int value, int arrayRes){
+        String[] arrayStr = context.getResources().getStringArray(arrayRes);
         switch (value){
             case 0:
                 return arrayStr[0];
@@ -353,13 +144,23 @@ public class DictionaryCustomizer {
         return null;
     }
 
+    public PreferenceMode getDefaultPage() {
+        mDefaultPage = PreferenceMode.strToEnum(getStringPreference(mContext, MAIN_GLOBAL_SETTINGS, DEFAULT_START_UP_PAGE));
+        return mDefaultPage;
+    }
+
+    public void setDefaultPage(PreferenceMode mDefaultPage) {
+        putPreference(mContext, MAIN_GLOBAL_SETTINGS, DEFAULT_START_UP_PAGE, mDefaultPage.name());
+        this.mDefaultPage = mDefaultPage;
+    }
+
     public Boolean getGlobalSettings() {
-        mGlobalSettings = Boolean.valueOf(getFromSharedPreferences(mContext, mDictionaryPage, GLOBAL_SETTINGS));
+        mGlobalSettings = getBooleanPreference(mContext, mMode, GLOBAL_SETTINGS);
         return mGlobalSettings;
     }
 
     public void setGlobalSettings(Boolean globalSettings) {
-        putToSharedPreferences(mContext, mDictionaryPage, GLOBAL_SETTINGS, String.valueOf(globalSettings));
+        putPreference(mContext, mMode, GLOBAL_SETTINGS, globalSettings);
         mGlobalSettings = globalSettings;
     }
 
@@ -368,24 +169,20 @@ public class DictionaryCustomizer {
     }
 
     public void setDictionary(String dictionary) {
-        putToSharedPreferences(mContext, mDictionaryPage, DICTIONARY, dictionary);
+        putPreference(mContext, mMode, DICTIONARY, dictionary);
         mDictionary = dictionary;
     }
 
     public String getDictionaryName() {
-        mDictionaryName = getFromSharedPreferences(mContext, mDictionaryPage, CUSTOM_NAME);
+        mDictionaryName = getStringPreference(mContext, mMode, CUSTOM_NAME);
         return mDictionaryName;
     }
-    public static String getDictionaryName(Context context, String dictionaryPage) {
-        return getFromSharedPreferences(context, dictionaryPage, CUSTOM_NAME);
+    public static String getDictionaryName(Context context, PreferenceMode dictionaryPage) {
+        return getStringPreference(context, dictionaryPage, CUSTOM_NAME);
     }
 
     public void setDictionaryName(String dictionaryName) {
-        putToSharedPreferences(mContext, mDictionaryPage, CUSTOM_NAME, dictionaryName);
-        //String path = "custom_dictionary/" + getCurrentUserUID() + "/meta_data";
-        //mDatabaseReference
-        //      .child(path).setValue(dictionaryName);
-        // .updateChildren(hashMap);
+        putPreference(mContext, mMode, CUSTOM_NAME, dictionaryName);
         mDictionaryName = dictionaryName;
     }
 
@@ -398,39 +195,38 @@ public class DictionaryCustomizer {
     }
 
     public int getFavorite() {
-        mFavorite = Integer.parseInt(getFromSharedPreferences(mContext, mDictionaryPage, LEARNED));
+        mFavorite = getIntPreference(mContext, mMode, FAVORITE);
         return mFavorite;
     }
 
     public void setFavorite(int favorite) {
-        putToSharedPreferences(mContext, mDictionaryPage, LEARNED, String.valueOf(favorite));
+        putPreference(mContext, mMode, FAVORITE, favorite);
         mFavorite = favorite;
     }
 
     public int getLearned() {
-        mLearned = Integer.parseInt(getFromSharedPreferences(mContext, mDictionaryPage, LEARNED));
+        mLearned = getIntPreference(mContext, mMode, LEARNED);
         return mLearned;
     }
 
     public void setLearned(int learned) {
-        putToSharedPreferences(mContext, mDictionaryPage, LEARNED, String.valueOf(learned));
+        putPreference(mContext, mMode, LEARNED, learned);
         mLearned = learned;
     }
 
     public Boolean getDragAndDrop() {
-        mDragAndDrop = Boolean.valueOf(getFromSharedPreferences(mContext, mDictionaryPage, DRAG_AND_DROP));
+        mDragAndDrop = getBooleanPreference(mContext, mMode, DRAG_AND_DROP);
         return mDragAndDrop;
     }
 
     public void setDragAndDrop(Boolean dragAndDrop) {
-        putToSharedPreferences(mContext, mDictionaryPage, DRAG_AND_DROP , String.valueOf(dragAndDrop));
+        putPreference(mContext, mMode, DRAG_AND_DROP, dragAndDrop);
         mDragAndDrop = dragAndDrop;
     }
 
     public List<String> getListOfDictionaries() {
         getDictionaryList();
-        //Log.i(TAG, "getListOfDictionaries: " +mListOfDictionaries);
-        //Log.i(TAG, "getListOfDictionaries: " + mListOfDictionaries);
+
         return mListOfDictionaries;
     }
 
@@ -439,51 +235,80 @@ public class DictionaryCustomizer {
     }
 
     public int getFountSizeWord() {
-        mFountSizeWord = Integer.parseInt(getFromSharedPreferences(mContext, mDictionaryPage, FOUNT_SIZE_WORD));
+        mFountSizeWord = getIntPreference(mContext, mMode, FOUNT_SIZE_WORD);
         return mFountSizeWord;
     }
 
     public void setFountSizeWord(int fountSizeWord) {
-        putToSharedPreferences(mContext, mDictionaryPage, FOUNT_SIZE_WORD , String.valueOf(fountSizeWord));
+        putPreference(mContext, mMode, FOUNT_SIZE_WORD, fountSizeWord);
         mFountSizeWord = fountSizeWord;
     }
 
     public int getFountSizeTranslation() {
-        mFountSizeTranslation = Integer.parseInt(getFromSharedPreferences(mContext, mDictionaryPage, FOUNT_SIZE_TRANSLATION));
+        mFountSizeTranslation = getIntPreference(mContext, mMode, FOUNT_SIZE_TRANSLATION);
         return mFountSizeTranslation;
     }
 
     public void setFountSizeTranslation(int fountSizeTranslation) {
-        putToSharedPreferences(mContext, mDictionaryPage, FOUNT_SIZE_TRANSLATION, String.valueOf(fountSizeTranslation));
+        putPreference(mContext, mMode, FOUNT_SIZE_TRANSLATION, fountSizeTranslation);
         mFountSizeTranslation = fountSizeTranslation;
     }
 
     public int getDisplayType() {
-        mDisplayType = getIntFromSharedPreferences(mContext, mDictionaryPage, DISPLAY_TYPE);
+        mDisplayType = getIntPreference(mContext, mMode, DISPLAY_TYPE);
         return mDisplayType;
     }
 
     public void setDisplayType(int displayType) {
-        putToSharedPreferences(mContext, mDictionaryPage, DISPLAY_TYPE , displayType);
+        putPreference(mContext, mMode, DISPLAY_TYPE, displayType);
         mDisplayType = displayType;
     }
 
     public int getOptionsMenu() {
-        mOptionsMenu = getIntFromSharedPreferences(mContext, MAIN_GLOBAL_SETTINGS, OPTIONS_MENU);
+        mOptionsMenu = getIntPreference(mContext, MAIN_GLOBAL_SETTINGS, OPTIONS_MENU);
         return mOptionsMenu;
     }
 
     public void setOptionsMenu(int optionsMenu) {
-        putToSharedPreferences(mContext, MAIN_GLOBAL_SETTINGS, OPTIONS_MENU, optionsMenu);
+        putPreference(mContext, MAIN_GLOBAL_SETTINGS, OPTIONS_MENU, optionsMenu);
         mOptionsMenu = optionsMenu;
     }
 
     public static int getTTSSpeed(Context context) {
-        return SharedPreferencesUtils.getIntFromSharedPreferences(context, GLOBAL_SETTINGS, TEXT_TO_SPEECH_SPEED);
+        return getIntPreference(context, MAIN_GLOBAL_SETTINGS, TEXT_TO_SPEECH_SPEED);
+    }
+
+    public int getTTSSpeedNonStat() {
+        mTTSSpeed = getIntPreference(mContext, MAIN_GLOBAL_SETTINGS, TEXT_TO_SPEECH_SPEED);
+        return mTTSSpeed;
     }
 
     public void setTTSSpeed(Context context, int TTSSpeed) {
-        SharedPreferencesUtils.putToSharedPreferences(context, GLOBAL_SETTINGS, TEXT_TO_SPEECH_SPEED, TTSSpeed);
+        putPreference(context, MAIN_GLOBAL_SETTINGS, TEXT_TO_SPEECH_SPEED, TTSSpeed);
         mTTSSpeed = TTSSpeed;
+    }
+
+    public int getLearnedColor() {
+        mLearnedColor = getIntPreference(mContext, MAIN_GLOBAL_SETTINGS, LEARNED_COLOR);
+        return mLearnedColor;
+    }
+
+    public static int getLearnedColorStatic(Context mContext) {
+        return getIntPreference(mContext, MAIN_GLOBAL_SETTINGS, LEARNED_COLOR);
+    }
+
+    public void setLearnedColor(Context context, int alpha, int red, int green, int blue) {
+        this.mLearnedColor = Color.argb(alpha, red, green, blue);
+        putPreference(context, MAIN_GLOBAL_SETTINGS, LEARNED_COLOR, mLearnedColor);
+    }
+
+    public int getColorOfSelected() {
+        mColorOfSelected = getIntPreference(mContext, MAIN_GLOBAL_SETTINGS, COLOR_OF_SELECTED);
+        return mColorOfSelected;
+    }
+
+    public void setColorOfSelected(Context context, int alpha, int red, int green, int blue) {
+        this.mColorOfSelected = Color.argb(alpha, red, green, blue);
+        putPreference(context, MAIN_GLOBAL_SETTINGS, COLOR_OF_SELECTED, mColorOfSelected);
     }
 }

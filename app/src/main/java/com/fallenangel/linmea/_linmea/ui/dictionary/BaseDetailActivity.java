@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.fallenangel.linmea.R;
 
-public class BaseDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class BaseDetailActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
 
@@ -20,7 +20,12 @@ public class BaseDetailActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_base_detail);
         commitFragment(new DetailFragment());
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setNavigationOnClickListener(this);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setTitle(getDictionary());
         setSupportActionBar(mToolbar);
@@ -63,8 +68,4 @@ public class BaseDetailActivity extends AppCompatActivity implements View.OnClic
         return bundle;
     }
 
-    @Override
-    public void onClick(View v) {
-        finish();
-    }
 }

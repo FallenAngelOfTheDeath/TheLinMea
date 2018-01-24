@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    android:id="@+id/extended_list_item_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+    android:padding="2dp"
+        android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:layout_alignParentLeft="true"
+                android:id="@+id/extended_list_item_status_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_school"/>
+
+            <TextView
+                android:id="@+id/extended_list_item_word_text_view"
+                android:layout_toRightOf="@id/extended_list_item_status_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/newWord"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="@dimen/default_text_size"/>
+                <TextView
+                    android:id="@+id/s"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/extended_list_item_word_text_view"
+                    android:text="-"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textSize="@dimen/default_text_size"/>
+        <TextView
+            android:id="@+id/extended_list_item_translation_text_view"
+            android:layout_toRightOf="@id/s"
+            android:layout_toLeftOf="@id/extended_list_item_handle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/translation"
+            android:layout_centerVertical="true"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+
+    <ImageView
+        android:layout_toLeftOf="@id/extended_list_item_options_menu"
+        android:id="@+id/extended_list_item_handle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_marginRight="5dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_reorder" />
+
+            <ImageView
+                android:id="@+id/extended_list_item_options_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="@dimen/cardview_options_margin"
+                android:text="&#8942;"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:src="@drawable/ic_more"/>
+
+</RelativeLayout>
+</android.support.v7.widget.CardView>

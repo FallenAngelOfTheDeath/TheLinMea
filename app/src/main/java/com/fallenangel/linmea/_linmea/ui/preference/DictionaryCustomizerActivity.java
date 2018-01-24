@@ -4,12 +4,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,55 +17,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea._linmea.data.firebase.FirebaseDictionaryWrapper;
-import com.fallenangel.linmea._linmea.data.firebase.FirebaseHelper;
 import com.fallenangel.linmea._linmea.model.DictionaryCustomizer;
-import com.fallenangel.linmea._linmea.model.DictionaryCustomizer.UpdateUI;
-import com.fallenangel.linmea._linmea.model.MyDictionaryModel;
 import com.fallenangel.linmea._linmea.ui.dictionary.AddCustomDictionaryActivity;
-import com.fallenangel.linmea._linmea.util.LoadDefaultConfig;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.fallenangel.linmea._modulus.main.supclasses.SuperAppCompatActivity;
+import com.fallenangel.linmea._modulus.non.utils.LoadDefaultConfig;
+import com.fallenangel.linmea._modulus.prferences.enums.PreferenceMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.fallenangel.linmea._linmea.util.SharedPreferencesUtils.putToSharedPreferences;
+import javax.inject.Inject;
 
-public class DictionaryCustomizerActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.DICTIONARY;
+import static com.fallenangel.linmea._modulus.prferences.enums.PreferenceKey.DICTIONARY_PAGE;
+
+public class DictionaryCustomizerActivity extends SuperAppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "DCA";
     private LinearLayout mDictionaryContainer, mDictionaryNameContainer, mSortingContainer, mFavoriteContainer, mLearnedContainer, mResetFilterContainer, mDisplayTypeContainer;
     private TextView mDictionaryDescription, mDictionaryNameDescription, mSortingDescription, mFavoriteDescription, mLearnedDescription, mResetFilterDescription, mFountSizeWordCounter, mFountSizeTranslationCounter, mDisplayTypeDscription;
     private Switch mDragAndDropSwitch;
-    private CheckBox mGlobalSettingsCheckBox;
+   // private CheckBox mGlobalSettingsCheckBox;
     private Toolbar mToolbar;
     private SeekBar mFountSizeWordSeekBar, mFountSizeTranslationSeekBar;
-    
-    private FirebaseHelper<MyDictionaryModel> mFirebaseHelper;
-    private FirebaseDictionaryWrapper mFirebaseDictionaryWrapper = new FirebaseDictionaryWrapper();
+
     private AlertDialog.Builder mAlertDialogBuilder;
     private AlertDialog mAlertDialog;
-    private DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-    private DictionaryCustomizer mDictionaryCustomizer;
+    @Inject public DictionaryCustomizer mDictionaryCustomizer;
 
-    private String mDictionary, mDictionaryName, mDictionaryPage, mStringOfSortingUIDS;
-    private int mSorting, mFavorite, mLearned;
-    private Boolean mDragAndDrop, mGlobalSettings;
-    private List<String> mListOfDictionaries = new ArrayList<>();
 
     private Intent intent;
-    private UpdateUI mUpdateUI;
-
-    public static final String DICTIONARY_PAGE = "DICTIONARY_PAGE";
-    public static final String DICTIONARY = "DICTIONARY";
-    public static final String CUSTOM_NAME = "CUSTOM_NAME";
-  //  public static final String STRING_OF_SORTED_UID = "STRING_OF_SORTED_UID";
-    public static final String REARRANGEMENT = "REARRANGEMENT";
-    public static final String FAVORITE = "FAVORITE";
-    public static final String LEARNED = "LEARNED";
-    public static final String GLOBAL_SETTINGS = "GLOBAL_SETTINGS";
-    public static final String DRAG_AND_DROP = "DRAG_AND_DROP";
 
     private int mCheckedItemOfAlertDialog;
     private int mPickedFilterValue;
@@ -77,10 +55,7 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
     @Override
     protected void onStart() {
         super.onStart();
-        LoadDefaultConfig ldc = new LoadDefaultConfig(this);
-        ldc.loadDefaultCustomDictPageOne();
-        ldc.loadDefaultCustomDictPageTwo();
-        ldc.loadDefaultCustomDictSinglePage();
+
 
     }
 
@@ -88,9 +63,10 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dictionary_customizer);
+        getAppComponent().inject(this);
 
         intent = getIntent();
-        mDictionaryCustomizer = new DictionaryCustomizer(this,getDictionaryPageFromIntent());
+        mDictionaryCustomizer.loadMode(getDictionaryPageFromIntent());
         mDictList = mDictionaryCustomizer.getListOfDictionaries();
 
         implementUI();
@@ -120,6 +96,12 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
                 mFountSizeTranslationSeekBar.setEnabled(true);
                 mFountSizeTranslationSeekBar.setOnSeekBarChangeListener(this);
                 break;
+            case 3:
+                mFountSizeWordSeekBar.setOnSeekBarChangeListener(this);
+                mFountSizeTranslationSeekBar.setOnSeekBarChangeListener(this);
+                mFountSizeWordSeekBar.setEnabled(true);
+                mFountSizeTranslationSeekBar.setEnabled(true);
+                break;
         }
     }
 
@@ -133,7 +115,7 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
         mDisplayTypeContainer = (LinearLayout) findViewById(R.id.dict_customizer_display_type_container);
 
         mDragAndDropSwitch = (Switch) findViewById(R.id.dict_customizer_drag_and_drop_switch);
-        mGlobalSettingsCheckBox = (CheckBox) findViewById(R.id.dict_customizer_use_global_settings_checkbox);
+       // mGlobalSettingsCheckBox = (CheckBox) findViewById(R.id.dict_customizer_use_global_settings_checkbox);
         mFountSizeWordSeekBar = (SeekBar) findViewById(R.id.dict_customizer_word_size_seek_bar);
         mFountSizeTranslationSeekBar = (SeekBar) findViewById(R.id.dict_customizer_translation_size_seek_bar);
 
@@ -162,17 +144,14 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
         mResetFilterContainer.setOnClickListener(this);
 
         mDragAndDropSwitch.setOnCheckedChangeListener(this);
-        mGlobalSettingsCheckBox.setOnCheckedChangeListener(this);
+       // mGlobalSettingsCheckBox.setOnCheckedChangeListener(this);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        mToolbar.setNavigationOnClickListener(this);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setTitle(R.string.dictionary_customizer);
+
+
     }
 
     private void globalSettingsChange(Boolean bool){
@@ -190,7 +169,7 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
             mResetFilterContainer.setOnClickListener(this);
 
             mDragAndDropSwitch.setOnCheckedChangeListener(this);
-            mGlobalSettingsCheckBox.setOnCheckedChangeListener(this);
+            //mGlobalSettingsCheckBox.setOnCheckedChangeListener(this);
         } else {
             mFavoriteContainer.setOnClickListener(null);
             mLearnedContainer.setOnClickListener(null);
@@ -205,67 +184,43 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
             mResetFilterContainer.setOnClickListener(this);
 
             mDragAndDropSwitch.setOnCheckedChangeListener(null);
-            mGlobalSettingsCheckBox.setOnCheckedChangeListener(this);
+           // mGlobalSettingsCheckBox.setOnCheckedChangeListener(this);
         }
 
 
     }
 
-    private void putTestSettings(){
-        putToSharedPreferences(this, mDictionaryPage, CUSTOM_NAME, "DICT_TEST");
-        //getFromSharedPreferences(this, mDictionaryPage, REARRANGEMENT);
-        putToSharedPreferences(this, mDictionaryPage, FAVORITE, "0");
-        putToSharedPreferences(this, mDictionaryPage, LEARNED, "0");
-        putToSharedPreferences(this, mDictionaryPage, DRAG_AND_DROP, "true");
-        putToSharedPreferences(this, mDictionaryPage, GLOBAL_SETTINGS, "true");
-        //getDictionaryList();
-    }
-    
-    private void loadCurrentSettings(){
-//        setDictionaryName(getFromSharedPreferences(this, mDictionaryPage, CUSTOM_NAME));
-//        //getFromSharedPreferences(this, mDictionaryPage, REARRANGEMENT);
-//        setFavorite(Integer.parseInt(getFromSharedPreferences(this, mDictionaryPage, FAVORITE)));
-//        setLearned(Integer.parseInt(getFromSharedPreferences(this, mDictionaryPage, LEARNED)));
-//        setDragAndDrop(Boolean.valueOf(getFromSharedPreferences(this, mDictionaryPage, DRAG_AND_DROP)));
-//        setDragAndDrop(Boolean.valueOf(getFromSharedPreferences(this, mDictionaryPage, GLOBAL_SETTINGS)));
-//        getDictionaryList();
-//        Log.i("TYDASDIOS", "loadCurrentSettings: " + mItems);
-    }
 
-    private void setGlobalSettingsView(){
-
-    }
-    
     private void applyDataToUI(){
         updateUIforDisplayType();
-        mDictionaryDescription.setText(getDictionaryFromIntent());
+        mDictionaryDescription.setText(getDictionaryNameFromIntent());
         mDictionaryNameDescription.setText(mDictionaryCustomizer.getDictionaryName());
-        mFavoriteDescription.setText(mDictionaryCustomizer.switchHelper(mDictionaryCustomizer.getFavorite(), R.array.hide_favorite));
-        mLearnedDescription.setText(mDictionaryCustomizer.switchHelper(mDictionaryCustomizer.getLearned(), R.array.hide_learned));
+        mFavoriteDescription.setText(mDictionaryCustomizer.switchHelper(getApplicationContext(), mDictionaryCustomizer.getFavorite(), R.array.hide_favorite));
+        mLearnedDescription.setText(mDictionaryCustomizer.switchHelper(getApplicationContext(),mDictionaryCustomizer.getLearned(), R.array.hide_learned));
         mFountSizeWordSeekBar.setProgress(mDictionaryCustomizer.getFountSizeWord());
         mFountSizeTranslationSeekBar.setProgress(mDictionaryCustomizer.getFountSizeTranslation());
         mFountSizeWordCounter.setText(String.valueOf(mDictionaryCustomizer.getFountSizeWord()));
         mFountSizeTranslationCounter.setText(String.valueOf(mDictionaryCustomizer.getFountSizeTranslation()));
-        mDisplayTypeDscription.setText(mDictionaryCustomizer.switchHelper(mDictionaryCustomizer.getDisplayType(), R.array.display_type));
+        mDisplayTypeDscription.setText(mDictionaryCustomizer.switchHelper(getApplicationContext(),mDictionaryCustomizer.getDisplayType(), R.array.display_type));
         mDragAndDropSwitch.setChecked(mDictionaryCustomizer.getDragAndDrop());
-        mGlobalSettingsCheckBox.setChecked(mDictionaryCustomizer.getGlobalSettings());
+      //  mGlobalSettingsCheckBox.setChecked(mDictionaryCustomizer.getGlobalSettings());
     }
 
     public void updateUI(){
         updateUIforDisplayType();
         Log.i(TAG, "updateUI: " + mDictionaryCustomizer.getDictionary());
         if (mDictionaryCustomizer.getDictionary() == null){
-            mDictionaryDescription.setText(getDictionaryFromIntent());
+            mDictionaryDescription.setText(getDictionaryNameFromIntent());
         } else {
             mDictionaryDescription.setText(mDictionaryCustomizer.getDictionary());
         }
         mDictionaryNameDescription.setText(mDictionaryCustomizer.getDictionaryName());
-        mFavoriteDescription.setText(mDictionaryCustomizer.switchHelper(mDictionaryCustomizer.getFavorite(), R.array.hide_favorite));
-        mLearnedDescription.setText(mDictionaryCustomizer.switchHelper(mDictionaryCustomizer.getLearned(), R.array.hide_learned));
-        mDisplayTypeDscription.setText(mDictionaryCustomizer.switchHelper(mDictionaryCustomizer.getDisplayType(), R.array.display_type));
+        mFavoriteDescription.setText(mDictionaryCustomizer.switchHelper(getApplicationContext(),mDictionaryCustomizer.getFavorite(), R.array.hide_favorite));
+        mLearnedDescription.setText(mDictionaryCustomizer.switchHelper(getApplicationContext(),mDictionaryCustomizer.getLearned(), R.array.hide_learned));
+        mDisplayTypeDscription.setText(mDictionaryCustomizer.switchHelper(getApplicationContext(),mDictionaryCustomizer.getDisplayType(), R.array.display_type));
 //        mSortingDescription.setText(mDictionaryCustomizer.getSorting());
         mDragAndDropSwitch.setChecked(mDictionaryCustomizer.getDragAndDrop());
-        mGlobalSettingsCheckBox.setChecked(mDictionaryCustomizer.getGlobalSettings());
+      //  mGlobalSettingsCheckBox.setChecked(mDictionaryCustomizer.getGlobalSettings());
     }
 
 
@@ -351,6 +306,9 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case -1:
+                finish();
+                break;
             case 0:
                 break;
             case R.id.dict_customizer_dict_container:
@@ -486,20 +444,21 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LoadDefaultConfig ldc = new LoadDefaultConfig(getApplicationContext());
-                        switch (mDictionaryPage){
-                            case DictionaryCustomizer.CUSTOM_DICTIONARY_PAGE_1:
+                        switch (getDictionaryPageFromIntent()){
+                            case CUSTOM_DICTIONARY_PAGE_1:
                                 ldc.loadDefaultCustomDictPageOne();
                                 break;
-                            case DictionaryCustomizer.CUSTOM_DICTIONARY_PAGE_2:
+                            case CUSTOM_DICTIONARY_PAGE_2:
                                 ldc.loadDefaultCustomDictPageTwo();
                                 break;
-                            case DictionaryCustomizer.MAIN_GLOBAL_SETTINGS:
+                            case MAIN_GLOBAL_SETTINGS:
                                 ldc.loadDefaultCustomDictSinglePage();
                                 break;
-                            case DictionaryCustomizer.CUSTOM_DICTIONARY_LIST:
+                            case CUSTOM_DICTIONARY_LIST:
                                 break;
                         }
                         updateUI();
+                        applyDataToUI();
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.dict_settings_has_been_reset), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -525,6 +484,7 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
                         mDictionaryCustomizer.setFountSizeWord(mFountSizeWordSeekBar.getProgress());
                         Log.i(TAG, "onClick: " + mFountSizeWordSeekBar.getProgress() + " : " + mFountSizeTranslationSeekBar.getProgress());
                         //updateUI.updateUI();
+
                         updateUI();
                     }
                 });
@@ -543,7 +503,7 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
                 mDictionaryCustomizer.setDragAndDrop(isChecked);
                 break;
             case R.id.dict_customizer_use_global_settings_checkbox:
-                mGlobalSettingsCheckBox.setChecked(isChecked);
+              //  mGlobalSettingsCheckBox.setChecked(isChecked);
                 mDictionaryCustomizer.setGlobalSettings(isChecked);
                 globalSettingsChange(isChecked);
                 break;
@@ -561,19 +521,16 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
                     //        mGlobalSettings = globalSettings;
                     //    }
                     //
-                    //    public String getDictionary() {
+                    //    public String getDictionaryName() {
                     //        return mDictionary;
                     //    }
                     //
-                        public String getDictionaryFromIntent(){
-                            intent = getIntent();
-                            String str = intent.getStringExtra(DICTIONARY);
-                            Log.i(TAG, "getDictionaryFromIntent: " + str);
-                            return str;
+                        public String getDictionaryNameFromIntent(){
+                            return getIntent().getStringExtra(DICTIONARY.name());
                         }
 
-                        public String getDictionaryPageFromIntent(){
-                            return intent.getStringExtra(DICTIONARY_PAGE);
+                        public PreferenceMode getDictionaryPageFromIntent(){
+                            return (PreferenceMode) intent.getSerializableExtra(DICTIONARY_PAGE.name());
                         }
 
     @Override
@@ -605,7 +562,7 @@ public class DictionaryCustomizerActivity extends AppCompatActivity implements V
         }
     }
     //
-                    //    public void setDictionary(String dictionary) {
+                    //    public void setDictionaryName(String dictionary) {
                     //        putToSharedPreferences(this, mDictionaryPage, DICTIONARY, dictionary);
                     //        mDictionary = dictionary;
                     //    }

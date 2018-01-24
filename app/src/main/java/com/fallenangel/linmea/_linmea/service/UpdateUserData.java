@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.fallenangel.linmea.interfaces.OnResultListener;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.fallenangel.linmea._linmea.util.SharedPreferencesUtils;
 import com.fallenangel.linmea.linmea.utils.image.ImageUplDwnlUtils;
 

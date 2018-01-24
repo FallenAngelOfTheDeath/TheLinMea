@@ -110,7 +110,7 @@ MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\NineB\.a
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:11:9-43
 	android:theme
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:15:9-40
-activity#com.fallenangel.linmea._linmea.SplashScreen
+activity#com.fallenangel.linmea._modulus.main.ui.SplashScreen
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:16:9-22:20
 	android:theme
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:17:19-53
@@ -130,11 +130,11 @@ activity#com.fallenangel.linmea.linmea.startup.StartUpActivity
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:25:9-27:20
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:25:19-65
-activity#com.fallenangel.linmea.authentication.LoginActivity
+activity#com.fallenangel.linmea._modulus.auth.ui.LoginActivity
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:28:9-29:20
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:28:19-63
-activity#com.fallenangel.linmea.authentication.SignUpActivity
+activity#com.fallenangel.linmea._modulus.auth.ui.SignUpActivity
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:30:9-31:20
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:30:19-64
@@ -166,11 +166,11 @@ activity#com.fallenangel.linmea.firebase.DictionariesListActivity
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:44:9-45:20
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:44:19-68
-activity#com.fallenangel.linmea._linmea.ui.dictionary.AddCustomDictionaryActivity
+activity#com.fallenangel.linmea._linmea.ui.dictionaryName.AddCustomDictionaryActivity
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:46:9-47:20
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:46:19-84
-activity#com.fallenangel.linmea._linmea.ui.dictionary.DictionaryActivity
+activity#com.fallenangel.linmea._linmea.ui.dictionaryName.DictionaryActivity
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:48:9-49:20
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:48:19-75
@@ -186,7 +186,7 @@ ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:54:9
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:56:13-60
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:55:13-73
-activity#com.fallenangel.linmea._linmea.ui.MainActivity
+activity#com.fallenangel.linmea._modulus.main.ui.MainActivity
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:58:9-59:20
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:58:19-58
@@ -202,13 +202,13 @@ ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:63:9
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:66:13-36
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:64:13-59
-activity#com.fallenangel.linmea.linmea.ui.dictionary.WordDetailActivity
+activity#com.fallenangel.linmea.linmea.ui.dictionaryName.WordDetailActivity
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:69:9-72:20
 	android:windowSoftInputMode
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:71:13-54
 	android:name
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:70:13-68
-activity#com.fallenangel.linmea._linmea.ui.dictionary.BaseDetailActivity
+activity#com.fallenangel.linmea._linmea.ui.dictionaryName.BaseDetailActivity
 ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:73:9-76:20
 	android:windowSoftInputMode
 		ADDED from C:\AndroidStudioProjects\LinMea\app\src\main\AndroidManifest.xml:75:13-54

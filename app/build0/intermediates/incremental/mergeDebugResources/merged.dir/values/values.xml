@@ -11,7 +11,7 @@
 </array>
     <string-array name="display_type">
         <item name="0">Word and Translation</item>
-        <item name="1">Only word</item>
+        <item name="1">Only newWord</item>
         <item name="2">Only translation</item>
     </string-array>
     <string-array name="display_type_values">
@@ -809,7 +809,7 @@
 </attr><attr name="environment">
 <enum name="production" value="1"/>
 
-<enum name="test" value="3"/>
+<enum name="testConfig" value="3"/>
 
 <enum name="sandbox" value="0"/>
 
@@ -1217,7 +1217,7 @@
     <string name="city_hint">City</string>
     <string name="city_profile">City: </string>
     <string name="click_to_confirm_email">Click here to send email verification</string>
-    <string name="close_after_added">Close screen after added word</string>
+    <string name="close_after_added">Close screen after added newWord</string>
     <string msgid="2523291102206661146" name="common_google_play_services_enable_button">Enable</string>
     <string msgid="227660514972886228" name="common_google_play_services_enable_text"><ns1:g id="app_name">%1$s</ns1:g> won\'t work unless you enable Google Play services.</string>
     <string msgid="5122002158466380389" name="common_google_play_services_enable_title">Enable Google Play services</string>
@@ -1240,14 +1240,14 @@
     <string name="custom_dictionaries">Custom dictionaries</string>
     <string name="custom_dictionary_list">Other dictionaries</string>
     <string name="date_profile_created">Date of profile created:</string>
-    <string name="default_custom_dictionary">Default custom dictionary</string>
+    <string name="default_custom_dictionary">Default custom dictionaryName</string>
     <string name="default_web_client_id" translatable="false">516307553257-ra5sd19pem4qc3og422u0jbbp36t6qvk.apps.googleusercontent.com</string>
     <string name="delete">Delete</string>
-    <string name="delete_messege">you are sure that you want to remove this a word, it can\'t be cancelled</string>
+    <string name="delete_messege">you are sure that you want to remove this a newWord, it can\'t be cancelled</string>
     <string name="description_hint">Description</string>
     <string name="detail_view">Detail view</string>
     <string name="dictionary_name">Dictionary name</string>
-    <string name="display_elements">display of dictionary elements</string>
+    <string name="display_elements">display of dictionaryName elements</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="edit">Edit</string>
@@ -1261,9 +1261,9 @@
     <string name="favorite_dictionary">Dictionary</string>
     <string name="favorite_words">Favorite words</string>
     <string name="fcm_fallback_notification_channel_label">Miscellaneous</string>
-    <string name="field_of_a_word_or_translation_is_empty">field of a word or translation is empty</string>
+    <string name="field_of_a_word_or_translation_is_empty">field of a newWord or translation is empty</string>
     <string name="filter_elements">0</string>
-    <string name="filter_type">filter your dictionary</string>
+    <string name="filter_type">filter your dictionaryName</string>
     <string name="fire_base">Fire Base</string>
     <string name="firebase_database_url" translatable="false">https://linmea-1e338.firebaseio.com</string>
     <string name="first_name_hint">First name</string>
@@ -1294,7 +1294,7 @@
     <string name="log_out">Log out</string>
     <string name="login">Log in</string>
     <string name="lorem">На презентации Google I/O 15, компания Google представила новую версию библиотеки поддержки которая реализует несколько компонентов, сильно связанных со спецификациями Material Design, среди этих компонентов вы можете найти новые типы ViewGroup такие как AppbarLayout, CollapsingToolbarLayout и CoordinatorLayout.  При правильном комбинировании и настройке данные Viewgroup могут быть очень мощным инструментом, по этому я решил написать статью с некоторыми настройками и советами.  CoordinatorLayout  Как и предполагает его название, цель и философия этой ViewGroup является координация view элементов, которые находятся внутри него.  Рассмотрим следующую картинку:</string>
-    <string name="main_dictionary">Main dictionary</string>
+    <string name="main_dictionary">Main dictionaryName</string>
     <string name="move_to">move to</string>
     <string name="mr_button_content_description">Cast button</string>
     <string name="mr_cast_button_connected">Cast button. Connected</string>
@@ -1379,7 +1379,7 @@
     <string name="singin">Sign IN</string>
     <string name="singup">Sing UP</string>
     <string name="size_hint">Size</string>
-    <string name="sorting_elements">sorting dictionary elements</string>
+    <string name="sorting_elements">sorting dictionaryName elements</string>
     <string name="status">Status</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <string name="tagmanager_preview_dialog_button">Continue</string>
@@ -1405,7 +1405,7 @@
     <string name="wallet_buy_button_place_holder">Buy with Google</string>
     <string name="ward_has_been_added">Word has been added</string>
     <string name="welcome">Welcome</string>
-    <string name="word">Word</string>
+    <string name="newWord">Word</string>
     <string name="word_hint">Word</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>

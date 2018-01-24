@@ -29,9 +29,11 @@
         android:background="@color/colorPrimary"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_action_bar"/>
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
+
+
+    <!--app:menu="@menu/bottom_action_bar"-->
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nvView"

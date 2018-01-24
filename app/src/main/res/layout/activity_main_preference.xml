@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
@@ -55,7 +56,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0"
-                            android:src="@drawable/ic_more"/>
+                            android:src="@drawable/ic_more_vert_black_34dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -80,7 +81,6 @@
                                 android:textColor="@color/text_description_bottom_sheet_color"/>
                         </LinearLayout>
                     </LinearLayout>
-
                     <LinearLayout
                         android:id="@+id/pref_tts_menu_container"
                         android:layout_width="match_parent"
@@ -120,35 +120,159 @@
                                 android:textColor="@color/text_description_bottom_sheet_color"/>
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/color_picker_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_settings"
                         android:paddingLeft="@dimen/padding_settings"
-                        android:text="@string/global_settings"
-                        android:textColor="@color/colorAccent"/>
-                    <include
-                        layout="@layout/dictionary_customizer"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0"
+                            android:src="@drawable/ic_color_lens_black"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/color_of_learned"
+                                android:textColor="@color/text_bottom_sheet_color"/>
+
+                            <TextView
+                                android:id="@+id/color_picker_description"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/select_color"
+                                android:textColor="@color/text_description_bottom_sheet_color"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/color_of_selected_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/include_dc"
-                        />
+                        android:paddingTop="@dimen/padding_settings"
+                        android:paddingLeft="@dimen/padding_settings"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0"
+                            android:src="@drawable/ic_border_color_black"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/color_of_selected"
+                                android:textColor="@color/text_bottom_sheet_color"/>
+
+                            <TextView
+                                android:id="@+id/color_of_selected_description"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/select_color"
+                                android:textColor="@color/text_description_bottom_sheet_color"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/default_page_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_settings"
+                        android:paddingLeft="@dimen/padding_settings"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0"
+                            android:src="@drawable/ic_pages_black"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/default_page"
+                                android:textColor="@color/text_bottom_sheet_color"/>
+
+                            <TextView
+                                android:id="@+id/default_page_description"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/select_default_page"
+                                android:textColor="@color/text_description_bottom_sheet_color"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
+            <!--<android.support.v7.widget.CardView-->
+
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:layout_marginBottom="10dp">-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:paddingTop="@dimen/padding_settings"-->
+                        <!--android:paddingLeft="@dimen/padding_settings"-->
+                        <!--android:text="@string/global_settings"-->
+                        <!--android:textColor="@color/colorAccent"/>-->
+                    <!--<include-->
+                        <!--layout="@layout/dictionary_customizer"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/include_dc"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
 
         </LinearLayout>
 

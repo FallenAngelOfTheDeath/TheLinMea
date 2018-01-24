@@ -10,7 +10,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.fallenangel.linmea._linmea.view.UnderlayButton;
+import com.fallenangel.linmea._modulus.non.view.UnderlayButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,13 +25,13 @@ public abstract class SwipeHelper extends ItemTouchHelper.Callback {
     private static final String TAG = "ItemTouchHelperCallback";
     public static final int BUTTON_WIDTH = 160;
     private RecyclerView recyclerView;
-    private List<com.fallenangel.linmea._linmea.view.UnderlayButton> buttons;
+    private List<UnderlayButton> buttons;
     private GestureDetector gestureDetector;
     private int swipedPos = -1;
     private float swipeThreshold = 0.5f;
     //private Map<Integer, List<UnderlayButton>> buttonsBuffer;
-    private Map<Integer, List<com.fallenangel.linmea._linmea.view.UnderlayButton>> mLeftButtonsBuffer;
-    private Map<Integer, List<com.fallenangel.linmea._linmea.view.UnderlayButton>> mRightButtonsBuffer;
+    private Map<Integer, List<UnderlayButton>> mLeftButtonsBuffer;
+    private Map<Integer, List<UnderlayButton>> mRightButtonsBuffer;
     private Queue<Integer> recoverQueue;
     private Context mContext;
     private int mSwipeFlags;
@@ -264,7 +264,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.Callback {
 //import android.view.MotionEvent;
 //import android.view.View;
 //
-//import com.fallenangel.linmea._linmea.view.UnderlayButton;
+//import com.fallenangel.linmea._modulus.non.view.UnderlayButton;
 //import com.fallenangel.linmea.interfaces.OnItemTouchHelperViewHolder;
 //
 //import java.util.ArrayList;

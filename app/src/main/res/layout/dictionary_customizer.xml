@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="@string/dictionary"
+                android:text="@string/dictionaryName"
                 android:textColor="@color/text_bottom_sheet_color"
                 />
 
@@ -362,48 +362,48 @@
                 android:textColor="@color/text_description_bottom_sheet_color"/>
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/dict_customizer_use_global_settings_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/dict_customizer_use_global_settings_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:weightSum="1">-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0"
-            android:src="@drawable/ic_settings_black_34dp"/>
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="0"-->
+            <!--android:src="@drawable/ic_settings_black_34dp"/>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginLeft="20dp"
-                android:text="@string/global_settings"
-                android:textColor="@color/text_bottom_sheet_color"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="20dp"
-                android:text="@string/description_of_global_settings"
-                android:textColor="@color/text_description_bottom_sheet_color"/>
-        </LinearLayout>
-        <CheckBox
-            android:id="@+id/dict_customizer_use_global_settings_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_horizontal"
-            android:layout_weight="0"/>
-    </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_weight="1">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="top"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:text="@string/global_settings"-->
+                <!--android:textColor="@color/text_bottom_sheet_color"/>-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:text="@string/description_of_global_settings"-->
+                <!--android:textColor="@color/text_description_bottom_sheet_color"/>-->
+        <!--</LinearLayout>-->
+        <!--<CheckBox-->
+            <!--android:id="@+id/dict_customizer_use_global_settings_checkbox"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="right|center_horizontal"-->
+            <!--android:layout_weight="0"/>-->
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/dict_customizer_reset_filter_container"

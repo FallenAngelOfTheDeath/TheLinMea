@@ -13,12 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallenangel.linmea.R;
+import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
 import com.fallenangel.linmea._linmea.interfaces.OnStartDragListener;
 import com.fallenangel.linmea._linmea.model.CustomDictionaryModel;
 import com.fallenangel.linmea._linmea.model.DictionaryCustomizer;
 import com.fallenangel.linmea.interfaces.OnItemTouchHelper;
 import com.fallenangel.linmea.interfaces.OnItemTouchHelperViewHolder;
-import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
 
 import java.util.List;
 
@@ -28,20 +28,18 @@ import java.util.List;
 
 public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomDictionaryModel, CustomDictionaryAdapter.ViewHolder> {
 
-    private String mMode;
     private Boolean mDragAndDrop;
-    private int mDisplayType, mFountSizeWord, mFountSizeTranslation, mOptionsMenu;
+    private int mDisplayType, mFountSizeWord, mFountSizeTranslation, mOptionsMenu, mLearnedColor, mSelectedColor;
 
-    public static final String CUSTOM_DICTIONARY_PAGE_1 = "CUSTOM_DICTIONARY_PAGE_1";
-    public static final String CUSTOM_DICTIONARY_PAGE_2 = "CUSTOM_DICTIONARY_PAGE_2";
-    public static final String DRAG_AND_DROP = "DRAG_AND_DROP";
+//    public static final String CUSTOM_DICTIONARY_PAGE_1 = "CUSTOM_DICTIONARY_PAGE_1";
+//    public static final String CUSTOM_DICTIONARY_PAGE_2 = "CUSTOM_DICTIONARY_PAGE_2";
+//    public static final String DRAG_AND_DROP = "DRAG_AND_DROP";
 
     private DictionaryCustomizer mDictionaryCustomizer;
 
-    public CustomDictionaryAdapter(Context context, String mode, List<CustomDictionaryModel> items, OnRecyclerViewClickListener clickListener, OnStartDragListener dragStartListener, OnItemTouchHelper onItemTouchHelper, DictionaryCustomizer dictionaryCustomizer) {
+    public CustomDictionaryAdapter(Context context, List<CustomDictionaryModel> items, OnRecyclerViewClickListener clickListener, OnStartDragListener dragStartListener, OnItemTouchHelper onItemTouchHelper, DictionaryCustomizer dictionaryCustomizer) {
         super(context, items, clickListener, dragStartListener, onItemTouchHelper);
        // this.mDictionaryCustomizer = dictionaryCustomizer;
-        this.mMode = mode;
         this.mDictionaryCustomizer = dictionaryCustomizer;
         //mDictionaryCustomizer = new DictionaryCustomizer(mContext, mMode);
         mDisplayType = mDictionaryCustomizer.getDisplayType();
@@ -49,6 +47,8 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
         mFountSizeTranslation = mDictionaryCustomizer.getFountSizeTranslation();
         mDragAndDrop = mDictionaryCustomizer.getDragAndDrop();
         mOptionsMenu = mDictionaryCustomizer.getOptionsMenu();
+        mLearnedColor = mDictionaryCustomizer.getLearnedColor();
+        mSelectedColor = mDictionaryCustomizer.getColorOfSelected();
     }
 //    String displayTypeKey = "displayType";
 //    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -85,49 +85,57 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
                 viewHolder.mTranslation.setText(data.getTranslationString());
                 viewHolder.mTranslation.setTextSize(mFountSizeTranslation);
                 break;
+            case 3:
+                viewHolder.mWord.setText(data.getWord());
+                viewHolder.mTranslation.setText(data.getTranslationString());
+                viewHolder.mWord.setTextSize(mFountSizeWord);
+                viewHolder.tvS.setTextSize(mFountSizeWord);
+                viewHolder.mTranslation.setTextSize(mFountSizeTranslation);
+                break;
         }
 
 
-        viewHolder.mHandle.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+        viewHolder.mHandle.setOnTouchListener((v, event) -> {
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
 //                    ClipData data = ClipData.newPlainText("", "");
 //                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
 //                            v);
 //                    v.startDrag(data, shadowBuilder, v, 0);
-                    mDragStartListener.onStartDrag(viewHolder);
-                }
-                return false;
+                mDragStartListener.onStartDrag(viewHolder);
             }
+            return false;
         });
 
-        if (data.getFavorite() == true){
+        if (data.getFavorite() == true) {
             viewHolder.mStatus.setImageResource(R.drawable.ic_favorite);
         } else {
             viewHolder.mStatus.setImageResource(R.drawable.ic_school);
 
         }
-
         changingBackgroundColors(viewHolder, data, position);
     }
 
     private void changingBackgroundColors(ViewHolder viewHolder, CustomDictionaryModel data, int position){
         if (mSelectedItems.size() > 0){
+
             viewHolder.mCardView
-                    .setBackgroundColor(mSelectedItems.get(position) ? 0x9934B5E4
+                    .setBackgroundColor(mSelectedItems.get(position) ? mSelectedColor//0x9934B5E4
                             : Color.WHITE);
+
+
             if (data.getStatus() == true && !mSelectedItems.get(position)){
                 viewHolder.mCardView
-                        .setBackgroundColor(mItems.get(position).getStatus() ? mContext.getResources().getColor(R.color.learnedCardView)
+                        .setBackgroundColor(mItems.get(position).getStatus() ? mLearnedColor
                                 : Color.WHITE);
+
 //                viewHolder.itemView.setBackgroundColor(mItems.get(position).getStatus() ? mContext.getResources().getColor(R.color.background_recyclerview)
 //                        : Color.WHITE);
             }
         } else {
             viewHolder.mCardView
-                    .setBackgroundColor(mItems.get(position).getStatus() ? mContext.getResources().getColor(R.color.learnedCardView)
+                    .setBackgroundColor(mItems.get(position).getStatus() ? mLearnedColor
                             : Color.WHITE);
+
 //            viewHolder.itemView.setBackgroundColor(mItems.get(position).getStatus() ? mContext.getResources().getColor(R.color.background_recyclerview)
 //                    : Color.WHITE);
         }
@@ -146,6 +154,9 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
             case 2:
                 layout = R.layout.translation_list_item;
                 break;
+            case 3:
+                layout = R.layout.simple_item;
+                break;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
 
@@ -155,7 +166,7 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, OnItemTouchHelperViewHolder {
 
-        public TextView mWord, mTranslation;
+        public TextView mWord, mTranslation, tvS;
         public ImageView mOptions, mStatus, mHandle;
         public CardView mCardView;
         private Context mContext;
@@ -178,6 +189,11 @@ public class CustomDictionaryAdapter extends AbstractRecyclerViewAdapter<CustomD
                     mWord = (TextView) itemView.findViewById(R.id.extended_list_item_word_text_view);
                     break;
                 case 2:
+                    mTranslation = (TextView) itemView.findViewById(R.id.extended_list_item_translation_text_view);
+                    break;
+                case 3:
+                    tvS = (TextView) itemView.findViewById(R.id.s);
+                    mWord = (TextView) itemView.findViewById(R.id.extended_list_item_word_text_view);
                     mTranslation = (TextView) itemView.findViewById(R.id.extended_list_item_translation_text_view);
                     break;
             }

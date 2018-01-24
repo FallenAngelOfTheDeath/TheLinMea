@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "516307553257-emeak9bg6eqif09oqvknan8i7vukifj1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fallenangel.linmea",
+            "certificate_hash": "732e35b55c9d33d7dd1516befb789dd09025c459"
+          }
+        },
+        {
           "client_id": "516307553257-m5dg6vrcclcgkl9l6n79h9b0rf60lk4j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

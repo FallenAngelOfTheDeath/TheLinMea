@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/popup_detail_view"
+        android:title="@string/detail_view"/>
+    <item
+        android:title="@string/change_learned"
+        android:id="@+id/popup_learned"/>
+    <item
+        android:title="@string/change_favorite"
+        android:id="@+id/popup_favorite"/>
+</menu>

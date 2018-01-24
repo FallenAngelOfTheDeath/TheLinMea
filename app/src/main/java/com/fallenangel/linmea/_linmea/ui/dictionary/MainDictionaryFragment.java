@@ -28,7 +28,7 @@ public class MainDictionaryFragment extends Fragment implements OnRecyclerViewCl
 
     private RecyclerView mRecyclerView;
     private MainDictionaryAdapter mAdapter;
-
+    private FirebaseHelperMainDict mMainDBHelper;
     private List<MainDictionaryModel> mItems = new ArrayList<>();
 
     public MainDictionaryFragment() {

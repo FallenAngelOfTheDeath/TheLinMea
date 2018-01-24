@@ -21,7 +21,7 @@ import com.fallenangel.linmea._linmea.data.firebase.FirebaseSocietyWrapper;
 import com.fallenangel.linmea._linmea.interfaces.OnFriendRequestClickListener;
 import com.fallenangel.linmea._linmea.model.UserModel;
 import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -237,7 +237,7 @@ public class FriendsFragment extends Fragment implements OnRecyclerViewClickList
                                 if (editText.getText().toString().contains("@")){
                                     if (dataSnapshot.child("email").getValue().toString().toLowerCase()
                                             .equals(editText.getText().toString())){
-                                        User.addFriend(dataSnapshot.getKey());
+//                                        User.addFriend(dataSnapshot.getKey());
                                     }
                                 }else{
 //                                    if (dataSnapshot.child("nickname").getValue().toString().toLowerCase()
@@ -280,7 +280,7 @@ public class FriendsFragment extends Fragment implements OnRecyclerViewClickList
 
     @Override
     public void onAccept(View view, int position) {
-        User.acceptFriendRequest(mFriends.get(position).getUID());
+//        User.acceptFriendRequest(mFriends.get(position).getUID());
 
         final UserModel.FriendListModel friend = new UserModel.FriendListModel();
         friend.setUID(mFriends.get(position).getUID());
@@ -291,7 +291,7 @@ public class FriendsFragment extends Fragment implements OnRecyclerViewClickList
 
     @Override
     public void onCancel(View view, int position) {
-        User.cancelFriendRequest(mFriends.get(position).getUID());
+//        User.cancelFriendRequest(mFriends.get(position).getUID());
         mAdapter.removeItem(position);
         mAdapter.notifyDataSetChanged();
     }

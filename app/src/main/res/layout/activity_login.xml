@@ -77,13 +77,13 @@
             android:orientation="horizontal">
 
 
-            <CheckBox
-                style="@style/TextShadow"
-                android:id="@+id/remember_me_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/rememberme"/>
+            <!--<CheckBox-->
+                <!--style="@style/TextShadow"-->
+                <!--android:id="@+id/remember_me_login"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:text="@string/rememberme"/>-->
 
             <TextView
                 style="@style/TextShadow"
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:gravity="center"
+                android:gravity="right"
                 android:text="@string/restorepassword"/>
         </LinearLayout>
 

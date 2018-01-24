@@ -9,6 +9,7 @@
     <color name="lightGray">#686868</color>
     <color name="bottomSheetLine">#999999</color>
     <color name="learnedCardView">#b3daff</color>
+    <color name="selectedColor">#543974C0</color>
     <color name="superLightGray">#efefef</color>
     <color name="backgroud_edit_text">#80000000</color>
     <color name="colorLBlue">#2196F3</color>

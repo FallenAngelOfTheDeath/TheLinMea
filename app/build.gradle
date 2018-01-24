@@ -8,10 +8,10 @@ android {
 //    }
 
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.fallenangel.linmea"
-        minSdkVersion 14
+        minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -33,7 +33,14 @@ android {
     }
     productFlavors {
     }
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+//    compileOptions {
+//        targetCompatibility 1.7
+//        sourceCompatibility 1.7
+//    }
 }
 
 dependencies {
@@ -44,15 +51,12 @@ dependencies {
     //compile 'com.google.android.gms:play-services-identity:8.3.0'
     //compile 'com.google.android.gms:play-services-plus:8.3.0'
     //compile 'com.google.android.gms:play-services-gcm:8.3.0'
-    
 
-
-
-    compile    'com.android.support:multidex:1.0.1'
-    compile    'com.android.support:preference-v7:23.3.0'
-    compile    'com.android.support:appcompat-v7:26.0.0-alpha1'
-    compile    'com.android.support.constraint:constraint-layout:1.0.2'
-    compile    'com.google.firebase:firebase-core:11.2.0'
+    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.android.support:preference-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.firebase:firebase-core:11.2.0'
     compile 'com.google.firebase:firebase-auth:11.2.0'
     compile 'com.google.firebase:firebase-storage:11.2.0'
     compile 'com.google.android.gms:play-services:11.2.0'
@@ -63,43 +67,24 @@ dependencies {
     compile 'com.android.support:support-vector-drawable:25.3.1'
     compile 'com.android.support:design:26.0.0-alpha1'
     compile 'com.google.code.gson:gson:2.8.2'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.google.dagger:dagger-android:2.14.1'
+    compile 'com.google.dagger:dagger-android-support:2.14.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+    compile 'com.pes.materialcolorpicker:library:1.2.0'
+
     testCompile 'junit:junit:4.12'
 }
 
 apply plugin: 'com.google.gms.google-services'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+apply plugin: 'com.android.application'
+//apply plugin: 'me.tatarka.retrolambda'
 
 
 apply plugin: 'com.google.gms.google-services'

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fallenangel.linmea.linmea.ui.dictionary.WordDetailActivity">
+    tools:context="com.fallenangel.linmea.linmea.ui.dictionaryName.WordDetailActivity">
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -38,8 +38,8 @@
                                     android:textColor="@color/lightGray"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/word"
-                                    android:hint="@string/word"
+                                    android:text="@string/newWord"
+                                    android:hint="@string/newWord"
                                     android:textSize="18sp"/>
                             </android.support.design.widget.TextInputLayout>
                             <ImageView
@@ -175,6 +175,57 @@
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/oxford_card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="@dimen/cardview_corner_radius">
+                    <LinearLayout
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="12sp"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/oxford"/>
+                        <TextView
+                            android:id="@+id/oxford_lexical_category"
+                            android:layout_marginBottom="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lexicalCategory"
+                            android:textColor="@color/colorBlack"
+                            android:textIsSelectable="true"
+                            android:textSize="16sp"/>
+                        <!--<TextView-->
+                            <!--android:id="@+id/oxford_synonyms"-->
+                            <!--android:layout_marginBottom="10dp"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="@string/synonyms"-->
+                            <!--android:textSize="18sp"/>-->
+                        <!--<TextView-->
+                            <!--android:id="@+id/oxford_antonyms"-->
+                            <!--android:layout_marginBottom="10dp"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="@string/antonyms"-->
+                            <!--android:textSize="18sp"/>-->
+                        <!--<TextView-->
+                            <!--android:id="@+id/oxford_examples"-->
+                            <!--android:layout_marginBottom="10dp"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="@string/examples"-->
+                            <!--android:textSize="18sp"/>-->
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
                 <!--<android.support.v7.widget.CardView-->
                     <!--android:id="@+id/tags_card_view"-->
                     <!--android:layout_width="match_parent"-->

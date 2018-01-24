@@ -11,7 +11,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.fallenangel.linmea._linmea.view.UnderlayButton;
+import com.fallenangel.linmea._modulus.non.view.UnderlayButton;
 import com.fallenangel.linmea.interfaces.OnItemTouchHelper;
 import com.fallenangel.linmea.interfaces.OnItemTouchHelperViewHolder;
 

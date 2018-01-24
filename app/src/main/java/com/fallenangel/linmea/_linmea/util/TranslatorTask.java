@@ -1,6 +1,5 @@
 package com.fallenangel.linmea._linmea.util;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,10 +17,10 @@ import java.net.URL;
 
 public class TranslatorTask extends AsyncTask<String, Void, String> {
 
-    private Context mContext;
+    private AsyncResponse delegate;
 
-    public TranslatorTask(Context context) {
-        mContext = context;
+    public TranslatorTask(AsyncResponse delegate) {
+        this.delegate = delegate;
     }
 
     @Override
@@ -70,12 +69,17 @@ public class TranslatorTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        super.onPostExecute(s);
+      //  super.onPostExecute(s);
+        delegate.onPostExecute(s);
     }
 
     @Override
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
+    }
+
+    public interface AsyncResponse {
+        void onPostExecute(String s);
     }
 
 }

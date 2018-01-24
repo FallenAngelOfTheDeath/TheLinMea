@@ -23,7 +23,7 @@ public class FirebaseHelperMainDict {
     private Context mContext;
     private List<MainDictionaryModel> mItems;
     private String mPath;
-    private MainDictWrapper mMainDictWrapper;
+    private MainDictWrapper mMainDictWrapper  = new MainDictWrapper();
 
     public FirebaseHelperMainDict (Context context, List<MainDictionaryModel> items, String path) {
         this.mContext = context;

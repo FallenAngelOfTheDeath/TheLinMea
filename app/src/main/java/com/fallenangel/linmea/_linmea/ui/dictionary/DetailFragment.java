@@ -4,7 +4,6 @@ package com.fallenangel.linmea._linmea.ui.dictionary;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
@@ -30,31 +29,36 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea._linmea.adapter.LinkedWordsRVAdapter;
-import com.fallenangel.linmea._linmea.data.SynonymsAntonymsCallbackTask;
+import com.fallenangel.linmea._linmea.adapter.LinkedWordAdapter;
 import com.fallenangel.linmea._linmea.data.firebase.FirebaseDictionaryWrapper;
 import com.fallenangel.linmea._linmea.data.firebase.FirebaseHelper;
 import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
 import com.fallenangel.linmea._linmea.interfaces.OnValueEventListener;
 import com.fallenangel.linmea._linmea.model.CustomDictionaryModel;
 import com.fallenangel.linmea._linmea.model.DictionaryCustomizer;
+import com.fallenangel.linmea._linmea.model.OxfordDictionary;
 import com.fallenangel.linmea._linmea.ui.preference.Preference;
-import com.fallenangel.linmea.linmea.user.authentication.User;
+import com.fallenangel.linmea._modulus.auth.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -70,28 +74,39 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
     private RecyclerView mLinkedRV, mTagsRV;
     private ImageView mAddLinked;
     private Toolbar mActionBarToolbar;
-    private FirebaseHelper<CustomDictionaryModel> mFirebaseHelper;
+    private FirebaseHelper<CustomDictionaryModel> mFirebaseHelper = new FirebaseHelper<>(null, null, null,null);
     private FirebaseDictionaryWrapper mFirebaseDictionaryWrapper = new FirebaseDictionaryWrapper();
     private DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+    OxfordDictionary oxfordDictionary = null;
     private String mod;
     private int mDictionarySize;
     private TextToSpeech mTextToSpeech;
     private ImageView mPlayWord;
-    private LinkedWordsRVAdapter mLinkedWordsRVAdapter;
+    private LinkedWordAdapter mLinkedWordAdapter;
     ///TextToSpeech tts;
     private static int speedOfTTS = 2;
     //private static final String SPEED_OF_TEXT_TO_SPEECH_PREF_ID = "SPEED_OF_TEXT_TO_SPEECH";
     private ChildEventListener childEventListener;
     private List<String> mLinkedUIDS = new ArrayList<>();
             //mTags = new ArrayList<>();
-    private List<CustomDictionaryModel> mLinkedItems = new ArrayList<>();
+
+    private HashSet<CustomDictionaryModel> mLinkedItems = new HashSet<>();
+
     private List<CustomDictionaryModel> mItems = new ArrayList<>();
     private SparseBooleanArray mLinkedBooleanArray = new SparseBooleanArray();
-    private SparseBooleanArray mLinkedBooleanArray2 = new SparseBooleanArray();
     private AlertDialog.Builder mAlertDialogBuilder;
     private AlertDialog mAlertDialog;
     boolean[] checkedItems;
     ArrayList<String> mArrayStr;
+
+
+
+    //Oxford
+   // private int oxfordKnifeSwitch = 1;
+
+    private TextView mLexicalCategory;
+    private CardView mOxfordCardView;
+
     public DetailFragment() {
         // Required empty public constructor
     }
@@ -108,6 +123,30 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+//                HashSet<CustomDictionaryModel> d = new HashSet<>();
+//
+//        CustomDictionaryModel m1 = new CustomDictionaryModel();
+//        CustomDictionaryModel m2 = new CustomDictionaryModel();
+//        m1.setNewWord("fsdfsd");
+//        ArrayList<String> fgd = new ArrayList<>();
+//        fgd.add("dsads");
+//        m1.setTranslation(fgd);
+//        m2.setNewWord("452452");
+//        ArrayList<String> fgd2 = new ArrayList<>();
+//        fgd.add("0410");
+//        m1.setTranslation(fgd2);
+//
+//        d.add(m1);
+//        d.add(m2);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //implUI();
+        //setMods();
     }
 
     @Override
@@ -118,31 +157,19 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
         implementRecyclerView(view);
         setMods();
 
-        mTextToSpeech =new TextToSpeech(getActivity(), this);
+        mTextToSpeech = new TextToSpeech(getActivity(), this);
 
         return view;
-    }
-    
-    private String dictionaryEntries(String word) {
-        final String language = "en";
-        //final String word = mItem.getWord();
-        final String word_id = word.toLowerCase(); //word id is case sensitive and lowercase is required
-        return "https://od-api.oxforddictionaries.com:443/api/v1/entries/" + language + "/" + word_id + "/synonyms;antonyms";
     }
 
     private void implementRecyclerView(View rootView) {
         mLinkedRV = (RecyclerView) rootView.findViewById(R.id.recycler_view_linked);
         mLinkedRV.setHasFixedSize(true);
         mLinkedRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-//        mTagsRV = (RecyclerView) rootView.findViewById(R.id.recycler_view_tags);
-//        mTagsRV.setHasFixedSize(true);
-//        mTagsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void implementUI(View view) {
         mActionBarToolbar = (Toolbar) view.findViewById(R.id.profile_toolbar);
-        //setSupportActionBar(mActionBarToolbar);
         mAddLinked = (ImageView) view.findViewById(R.id.add_linked_word);
         mWordET = (EditText) view.findViewById(R.id.word_detail_edit_text);
         mTranslationET = (EditText) view.findViewById(R.id.translation_detail_edit_text);
@@ -155,90 +182,52 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
         mPlayWord.setVisibility(View.GONE);
         mAddLinked.setOnClickListener(this);
         mFabDetail.setOnClickListener(this);
+
+
+        //Oxford
+        mLexicalCategory = (TextView) view.findViewById(R.id.oxford_lexical_category);
+        mOxfordCardView = (CardView) view.findViewById(R.id.oxford_card_view);
+        mOxfordCardView.setVisibility(view.GONE);
+
+
+
     }
 
     private void implementRecyclerViewAdapter() {
-        mLinkedWordsRVAdapter = new LinkedWordsRVAdapter(getActivity(), mLinkedItems, this, null, null);
-        mLinkedWordsRVAdapter.clear();
-        mLinkedRV.setAdapter(mLinkedWordsRVAdapter);
-        //updateData();
-        //mLinkedWordsRVAdapter.notifyDataSetChanged();
+
+        mLinkedWordAdapter = new LinkedWordAdapter(mLinkedItems, this);
+        mLinkedWordAdapter.clear();
+        mLinkedRV.setAdapter(mLinkedWordAdapter);
+//        if (getDictionaryName() != null && getCurrentUser() != null) {
+//            implUI();
+//        }
+        mLinkedWordAdapter.notifyDataSetChanged();
+
+
+
+
+
+
+
     }
 
     private void updateData() {
+
         String path = "custom_dictionary/" + User.getCurrentUserUID() + "/dictionaries/" + getDictionary();
         childEventListener =  new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 CustomDictionaryModel item = mFirebaseDictionaryWrapper.getCustomDictionaryWord(dataSnapshot);
                 mItems.add(item);
-                for (int j = 0; j < mLinkedUIDS.size(); j++) {
-                    Log.i(TAG, "size:" + mLinkedUIDS.size() + "1st: " + mLinkedUIDS.get(j));
+                for (String uid: mLinkedUIDS) {
                     for (int i = 0; i < mItems.size(); i++) {
-                        Log.i(TAG, "size:" + mItems.size() + "2nd: " + mItems.get(i).getUID());
-                         if(mLinkedUIDS.get(j).equals(mItems.get(i).getUID())){
-//                             if (mLinkedItems.isEmpty()){
-//                                 Log.i(TAG, " isEmpty ");
-//                                 mLinkedItems.add(item);
-//                                 mLinkedBooleanArray.put(i, true);
-//                             } else {
-//                                 for (int k = 0; k < mLinkedItems.size(); k++) {
-//                                     if (!mLinkedItems.get(k).getUID().equals(item.getUID())){
-                                         Log.i(TAG, "if: " + mItems.get(i).getUID());
-                                         mLinkedItems.add(item);
-                                         mLinkedBooleanArray.put(i, true);
-                             Log.i(TAG, "Linked items size: " + mLinkedItems.size());
-
-                             break;
-//                                     }
-//                                 }
-//                             }
-                         }
+                        if (mItems.get(i).getUID().equals(uid)){
+                            mLinkedItems.add(mItems.get(i));
+                            mLinkedBooleanArray.put(i, true);
+                          //  Log.i(TAG, "dsadasdasdasad: " + mItems.get(i).getNewWord());
+                        }
                     }
                 }
-                mLinkedWordsRVAdapter.notifyDataSetChanged();
-
-
-
-//                    for (int i = 0; i < mItems.size(); i++) {
-//                    if (item.getLinked() != null) {
-//                        for (int j = 0; j < item.getLinked().size(); j++) {
-//                            for (int k = 0; k < mLinkedUIDS.size(); k++) {
-//                                if (mLinkedUIDS.get(k)
-//                                        .equals(item.getLinked().get(j))) {
-//                                    mLinkedItems.add(item);
-//                                    Log.i(TAG, "onChildAdded: " + mLinkedItems.get(j).getUID());
-//                                    Log.i(TAG, "onChildAdded: " + mLinkedItems.get(j).getWord());
-//                                    //checkedItems[i] = true;
-//                                    mLinkedBooleanArray.put(i, true);
-//                                    break;
-//                                } else {
-//                                    // checkedItems[i] = false;
-//                                }
-//                            }
-//
-//                        }
-//
-//                    }
-          //      }
-//                checkedItems = new boolean[mItems.size()];
-//
-//                for (int i = 0; i < mItems.size(); i++) {
-//                    for (int j = 0; j < mItems.size(); j++) {
-//                        for (int k = 0; k < mLinkedUIDS.size(); k++) {
-//                            if (mLinkedUIDS.get(k)
-//                                    .equals(mItems.get(i).getLinked().get(j))){
-//                                checkedItems[i] = true;
-//                                break;
-//                            } else {
-//                                checkedItems[i] = false;
-//                            }
-//
-//                        }
-//
-//                    }
-//                }
-
 
             }
 
@@ -268,6 +257,64 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
 
     }
 
+    private void implUI(){
+         String path = "custom_dictionary/" + User.getCurrentUserUID() + "/dictionaries/" + getDictionary();
+        FirebaseDatabase.getInstance().getReference().child(path).orderByChild("word").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                CustomDictionaryModel item = mFirebaseDictionaryWrapper.getCustomDictionaryWord(dataSnapshot);
+                if (item != null){
+
+                    mItems.add(item);
+                    //CollectionConverter.sort(mItems, new DictionaryCompare.WordCompare());
+                }
+
+                if (item.getUID().equals(getWordUID())){
+                    getMainWordData(item);
+                    getOxfordData(item);
+                }
+
+                getLinkedRVData();
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void getLinkedRVData(){
+        for (String uid: mLinkedUIDS) {
+            for (int i = 0; i < mItems.size(); i++) {
+                if (mItems.get(i).getUID().equals(uid)){
+                    mLinkedItems.add(mItems.get(i));
+                    mLinkedWordAdapter.setItems(mLinkedItems);
+                    mLinkedBooleanArray.put(i, true);
+                }
+            }
+        }
+        mLinkedWordAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -277,7 +324,7 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mDatabaseReference.removeEventListener(childEventListener);
+//        mDatabaseReference.removeEventListener(childEventListener);
     }
 
     private void setMods () {
@@ -285,8 +332,11 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
             case "DetailViewMod":
                 mod = getMod();
                 setDetailViewMod();
-                implementUIData(getWordUID());
-                updateData();
+
+                implUI();
+
+                //implementUIData(getWordUID());
+                //updateData();
                 break;
             case "EditMod":
                 mod = getMod();
@@ -366,6 +416,46 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
         mLearnedSwitcher.setChecked(false);
     }
 
+    private void getOxfordData(CustomDictionaryModel cdi){
+        try {
+            oxfordDictionary = new OxfordDictionary(cdi.getWord());
+            mOxfordCardView.setVisibility(View.VISIBLE);
+            List<OxfordDictionary.OxDictionary> oxDictionary = oxfordDictionary.getOxDictionary();
+            String oxfordStr = "";
+            for (OxfordDictionary.OxDictionary item:oxDictionary) {
+                // Log.i(TAG, "onDataChange: " + item.toString());
+                if (oxfordStr == "") oxfordStr = item.toString();
+                else oxfordStr = oxfordStr + "\n\n" + item.toString();
+            }
+            mLexicalCategory.setText(oxfordStr);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getMainWordData(CustomDictionaryModel item){
+        mWordET.setText(item.getWord());
+        mTranslationET.setText(item.getTranslationString());
+        mDescriptionET.setText(item.getDescription());
+        if (item.getDescription() == null){
+            if (getMod() != "EditMod")
+                mDescriptionCV.setVisibility(View.GONE);
+        } else{
+            mDescriptionET.setText(item.getDescription());
+        }
+
+        mFavoriteSwitcher.setChecked(item.getFavorite());
+        mLearnedSwitcher.setChecked(item.getStatus());
+
+        if (item.getLinked() != null){
+            mLinkedUIDS.addAll(item.getLinked());
+        }
+    }
+
     private void implementUIData (String uid) {
         String path = "custom_dictionary/" + User.getCurrentUserUID() + "/dictionaries/" + getDictionary();
         mFirebaseHelper = new FirebaseHelper<>(getActivity(), path, null, null);
@@ -386,23 +476,31 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
                 mLearnedSwitcher.setChecked(mItem.getStatus());
                 if (mItem.getLinked() != null){
                     mLinkedUIDS.addAll(mItem.getLinked());
-                    Log.i(TAG, "onDataChangefddddddddddddddddddddddd: " + mLinkedUIDS);
+                    Log.i(TAG, "Linked UIDs: " + mLinkedUIDS);
                 }
 
-                AsyncTask str =
-                        new SynonymsAntonymsCallbackTask().execute(dictionaryEntries(mItem.getWord()));
-                Object dt = null;
+                OxfordDictionary oxfordDictionary = null;
                 try {
-                    dt = str.get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    oxfordDictionary = new OxfordDictionary(mItem.getWord());
+                    mOxfordCardView.setVisibility(View.VISIBLE);
+                    List<OxfordDictionary.OxDictionary> oxDictionary = oxfordDictionary.getOxDictionary();
+                    String oxfordStr = "";
+                    for (OxfordDictionary.OxDictionary item:oxDictionary) {
+                       // Log.i(TAG, "onDataChange: " + item.toString());
+                        if (oxfordStr == "") oxfordStr = item.toString();
+                        else oxfordStr = oxfordStr + "\n\n" + item.toString();
+                    }
+                    mLexicalCategory.setText(oxfordStr);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                Log.i(TAG, "onCreateView:dtdtdtdtdtdtd " + dt);
 
-                // if (mItem.getTags() != null)
-              //  mTags.addAll(mItem.getLinked());
+
+
             }
 
             @Override
@@ -418,17 +516,17 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
 
     }
 
-    private void playText(String text, final Locale locale){
-         mTextToSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
-             @Override
-             public void onInit(int status) {
-                 if(status != TextToSpeech.ERROR) {
-                     mTextToSpeech.setLanguage(locale);
-                 }
-             }
-         });
-        mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-    }
+//    private void playText(String text, final Locale locale){
+//         mTextToSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
+//             @Override
+//             public void onInit(int status) {
+//                 if(status != TextToSpeech.ERROR) {
+//                     mTextToSpeech.setLanguage(locale);
+//                 }
+//             }
+//         });
+//        mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+//    }
 
 
 
@@ -442,7 +540,6 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
     }
 
     private int getDictionarySize(){
-        Log.i(TAG, "getDictionarySize: " + getArguments().getInt("DictionarySize"));
         return getArguments().getInt("DictionarySize");
     }
 
@@ -455,7 +552,6 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
     }
 
     public void changeWord () {
-
         String[] translationsList = (mTranslationET.getText().toString()).split(", ");
         ArrayList<String> translationList = new ArrayList<String>(Arrays.asList(translationsList));
 
@@ -466,62 +562,61 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
         hashMap.put("status", mLearnedSwitcher.isChecked());
         hashMap.put("favorite", mFavoriteSwitcher.isChecked());
 
-
-
         mDatabaseReference
                 .child("custom_dictionary")
                 .child(User.getCurrentUserUID())
                 .child("dictionaries")
                 .child(getDictionary())
                 .child(getWordUID()).updateChildren(hashMap);
-        //.setValue(item);
-
     }
 
 
     private void addNewWord () {
 
-        String[] translationsList = (mTranslationET.getText().toString()).split(", ");
-        ArrayList<String> translationList = new ArrayList<String>(Arrays.asList(translationsList));
+        if (getDictionary() == null){
+            Toast.makeText(getActivity(), "Pleas reselect dictionary in setting of this dictionary", Toast.LENGTH_LONG).show();
+        } else {
+            String[] translationsList = (mTranslationET.getText().toString()).split(", ");
+            ArrayList<String> translationList = new ArrayList<String>(Arrays.asList(translationsList));
 
-        String key = mDatabaseReference
-                .child("custom_dictionary")
-                .child(User.getCurrentUserUID())
-                .child("dictionaries")
-                .child(getDictionary())
-                .push()
-                .getKey();
-
-        Map<String, Object> hashMap = new HashMap<String, Object>();
-        hashMap.put("id", mDictionarySize);
-        hashMap.put("word", mWordET.getText().toString());
-        hashMap.put("translation", translationList);
-        if  (mDescriptionET.getText().length() != 0) {
-            hashMap.put("description", mDescriptionET.getText().toString());
-        }
-        hashMap.put("status", mLearnedSwitcher.isChecked());
-        hashMap.put("favorite", mFavoriteSwitcher.isChecked());
-
-
-
-        if (mWordET.getText().length() != 0 && mTranslationET.getText().length() != 0) {
-            mDatabaseReference
+            String key = mDatabaseReference
                     .child("custom_dictionary")
                     .child(User.getCurrentUserUID())
                     .child("dictionaries")
                     .child(getDictionary())
-                    .child(key).setValue(hashMap);
-            if (closeAfterAdded() == true){
-                getActivity().onBackPressed();
+                    .push()
+                    .getKey();
+
+            Map<String, Object> hashMap = new HashMap<String, Object>();
+            hashMap.put("id", mDictionarySize);
+            hashMap.put("word", mWordET.getText().toString());
+            hashMap.put("translation", translationList);
+            if (mDescriptionET.getText().length() != 0) {
+                hashMap.put("description", mDescriptionET.getText().toString());
             }
-        } else {
-            Toast.makeText(getActivity(), R.string.field_of_a_word_or_translation_is_empty, Toast.LENGTH_LONG).show();
+            hashMap.put("status", mLearnedSwitcher.isChecked());
+            hashMap.put("favorite", mFavoriteSwitcher.isChecked());
+
+
+            if (mWordET.getText().length() != 0 && mTranslationET.getText().length() != 0) {
+                mDatabaseReference
+                        .child("custom_dictionary")
+                        .child(User.getCurrentUserUID())
+                        .child("dictionaries")
+                        .child(getDictionary())
+                        .child(key).setValue(hashMap);
+                if (closeAfterAdded() == true) {
+                    getActivity().onBackPressed();
+                }
+            } else {
+                Toast.makeText(getActivity(), R.string.field_of_a_word_or_translation_is_empty, Toast.LENGTH_LONG).show();
+            }
+
+            String path = "custom_dictionary/" + User.getCurrentUserUID() + "/meta_data/" + getDictionary() + "/size";
+            mDatabaseReference.child(path).setValue(mDictionarySize);
+
+            mDictionarySize++;
         }
-
-        String path = "custom_dictionary/" + User.getCurrentUserUID() + "/meta_data/" + getDictionary() + "/size";
-        mDatabaseReference.child(path).setValue(mDictionarySize);
-
-        mDictionarySize++;
     }
     
 
@@ -547,9 +642,9 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
                                             case R.id.fab_detail:
                                                 switch (getMod()){
                                                     case "DetailViewMod":
-                                                       // replaceFragmentWithEditMod(new DetailFragment());
-                                                        //setEditMod();
-                                                        mWordET.invalidate();
+                                                        replaceFragmentWithEditMod(new DetailFragment());
+                                                        setEditMod();
+                                                        //mWordET.invalidate();
                                                         break;
                                                     case "EditMod":
                                                         changeWord();
@@ -568,44 +663,17 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
                                                 mArrayStr = new ArrayList<>();
                                                 for (int j = 0; j < mItems.size(); j++) {
                                                     mArrayStr.add(mItems.get(j).getWord() + " - " + mItems.get(j).getTranslationString());
-
-                                                    for (int i = 0; i < mLinkedUIDS.size(); i++) {
-                                                        if (mLinkedUIDS.get(i)
-                                                                .equals(mItems.get(j).getLinked())){
-                                                            //checkedItems[j] = true;
-                                                            break;
-                                                            //mCheckedItemsOfAlertDialog = i;
-                                                            //mLinkedBooleanArray.put(j, true);
-                                                        } else {
-                                                          //  checkedItems[j] = false;
-                                                        }
-                                                    }
                                                     }
 
                                                String[] mStringOfDictionaries = mArrayStr.toArray(new String[0]);
 
-//
-//                                                checkedItems = new boolean[mItems.size()];
-//
                                                 for (int j = 0; j < mItems.size(); j++) {
-                                                    //for (int i = 0; i < mLinkedBooleanArray2.size(); i++) {
                                                         if (mLinkedBooleanArray.get(j) == true){
                                                             checkedItems[j] = true;
-                                                            Log.i(TAG, "onClicvbbbbbbbbbbbbbk: " + checkedItems[j]);
                                                         } else {
                                                             checkedItems[j] = false;
-                                                            Log.i(TAG, "onClicvbbbbbbbbbbbbbk: " + checkedItems[j]);
                                                         }
-                                                   // }
                                                 }
-                                                Log.i(TAG, "onClick: " + checkedItems + " : " + mLinkedBooleanArray2);
-
-
-
-
-
-
-
 
                                                     if (mItems.isEmpty()){
                                                     LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -615,84 +683,52 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
                                                     mAlertDialogBuilder.setTitle(R.string.dict_customizer_dict_description);
                                                     mAlertDialogBuilder.setAdapter(new ArrayAdapter<String>(getActivity(),
                                                             android.R.layout.simple_list_item_multiple_choice, mStringOfDictionaries), null);
-
-//                                                        ListAdapter adapter = new ArrayAdapter<String>(
-//                                                                getActivity(), R.layout.list_row, items) {
-//
-//                                                            ViewHolder holder;
-//
-//                                                            class ViewHolder {
-//                                                                TextView word, translation;
-//                                                            }
-//
-//                                                            public View getView(int position, View convertView,
-//                                                                                ViewGroup parent) {
-//                                                                final LayoutInflater inflater = (LayoutInflater) getDictionary()
-//                                                                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//
-//                                                                if (convertView == null) {
-//                                                                    convertView = inflater.inflate(
-//                                                                            R.layout.list_row, null);
-//
-//                                                                    holder = new ViewHolder();
-//                                                                    holder.word = (TextView) convertView
-//                                                                            .findViewById(R.id.);
-//                                                                    holder.translation = (TextView) convertView
-//                                                                            .findViewById(R.id.);
-//                                                                    convertView.setTag(holder);
-//                                                                } else {
-//                                                                    // view already defined, retrieve view holder
-//                                                                    holder = (ViewHolder) convertView.getTag();
-//                                                                }
-//                                                                holder.word.setText();
-//                                                                holder.translation.setText();
-//
-//                                                                return convertView;
-//                                                            }
-//                                                        };
-
                                                     mAlertDialogBuilder.setMultiChoiceItems(mStringOfDictionaries, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                                             mLinkedBooleanArray.put(which, isChecked);
                                                         }
                                                     });
-
-//                                                            mStringOfDictionaries, mCheckedItemsOfAlertDialog, new DialogInterface.OnClickListener() {
-//                                                        @Override
-//                                                        public void onClick(DialogInterface dialog, int which) {
-//                                                            int mPickedValue = which;
-//                                                        }
-//                                                    });
                                                 }
 
 
                                                 mAlertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        List<String> mList = new ArrayList<String>();
 
+                                                        HashSet<CustomDictionaryModel> dict = new HashSet<>();
+
+                                                        if(mLinkedUIDS != null)
+                                                            mLinkedUIDS.clear();
                                                         for (int i = 0; i < mItems.size(); i++) {
                                                             if (mLinkedBooleanArray.get(i) == true)
-                                                            mList.add(mItems.get(i).getUID());
+                                                                mLinkedUIDS.add(mItems.get(i).getUID());
                                                         }
-                                                            mDatabaseReference.child("custom_dictionary/" + User.getCurrentUserUID() + "/dictionaries/" + getDictionary() + "/" + getWordUID() + "/linked").setValue(mList);
+                                                        mDatabaseReference.child("custom_dictionary/" + User.getCurrentUserUID() + "/dictionaries/"
+                                                                + getDictionary() + "/" + getWordUID() + "/linked").setValue(mLinkedUIDS);
+
+                                                        if (mLinkedItems != null)
+                                                            mLinkedItems.clear();
+                                                        for (String uid: mLinkedUIDS) {
+                                                            Log.i(TAG, "onClick: " + uid);
+                                                            for (int i = 0; i < mItems.size(); i++) {
+                                                                if (mItems.get(i).getUID().equals(uid)){
+                                                                    mLinkedItems.add(mItems.get(i));
+                                                                    mLinkedWordAdapter.notifyDataSetChanged();
+                                                                }
+                                                            }
+                                                        }
+                                                        mLinkedWordAdapter = new LinkedWordAdapter(mLinkedItems, DetailFragment.this);
+                                                        mLinkedRV.setAdapter(mLinkedWordAdapter);
+                                                        mLinkedWordAdapter.notifyDataSetChanged();
                                                     }
                                                 });
-//                                                mAlertDialogBuilder.setNeutralButton(R.string.add_new_dictionary, new DialogInterface.OnClickListener() {
-//                                                    @Override
-//                                                    public void onClick(DialogInterface dialog, int which) {
-//                                                        Intent addDictionary = new Intent(getApplicationContext(), AddCustomDictionaryActivity.class);
-//                                                        startActivity(addDictionary);
-//                                                    }
-//                                                });
                                                 mAlertDialogBuilder.setNegativeButton(this.getString(R.string.cancel), null);
                                                 mAlertDialog = mAlertDialogBuilder.create();
                                                 mAlertDialog.show();
                                                 break;
                                         }
                                     }
-
 
     /*
     *       Options Menu
@@ -710,6 +746,9 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
             case R.id.settings:
                 Intent settings = new Intent(getActivity(), Preference.DetailViewPreference.class);
                 startActivity(settings);
+                break;
+            case R.id.gg:
+                Toast.makeText(getActivity(), "Hello World", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -769,13 +808,13 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
             int result = mTextToSpeech.setLanguage(Locale.US);
             if (result == TextToSpeech.LANG_MISSING_DATA
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e("TTS", getResources().getString(R.string.lang_is_not_supported));
+             //   Log.e("TTS", getResources().getString(R.string.lang_is_not_supported));
                 Toast.makeText(getActivity(), getResources().getString(R.string.lang_is_not_supported), Toast.LENGTH_LONG).show();
             } else {
                 //speakOut(mWordET.getText().toString());
             }
         } else {
-            Log.e("TTS", "Initialization Failed!");
+          //  Log.e("TTS", "Initialization Failed!");
         }
 
 //        if(status == TextToSpeech.SUCCESS){
@@ -834,22 +873,29 @@ public class DetailFragment extends Fragment implements CompoundButton.OnChecked
     @Override
     public void onItemClicked(View view, int position) {
         Intent intent = new Intent(getActivity(), BaseDetailActivity.class);
-        //intent.putExtra("Word", mItems.get(position).getWord());
-        intent.putExtra("WordUID", mItems.get(position).getUID());
+        //intent.putExtra("Word", mItems.get(position).getNewWord());
+
+        intent.putExtra("WordUID", covertSetToList(mLinkedItems).get(position).getUID());
         intent.putExtra("DictionaryName", getDictionary());
         intent.putExtra("DictionarySize", mDictionarySize);
         intent.putExtra("Mod", "DetailViewMod");
         startActivity(intent);
     }
 
+    private List<CustomDictionaryModel> covertSetToList(Set<CustomDictionaryModel> mLinkedItems){
+        List<CustomDictionaryModel> items = new ArrayList<>();
+        for (CustomDictionaryModel subset : mLinkedItems) {
+            items.add(subset);
+        }
+        return items;
+    }
+
     @Override
     public void onOptionsClicked(View view, int position) {
-
     }
 
     @Override
     public boolean onItemLongClicked(View view, int position) {
-
         return false;
     }
 

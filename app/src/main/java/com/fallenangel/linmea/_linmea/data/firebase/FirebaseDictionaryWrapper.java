@@ -39,12 +39,12 @@ public class FirebaseDictionaryWrapper {
         Boolean mFavorite = (Boolean) dataSnapshot.child("favorite").getValue();
         List<String> mLinked = (ArrayList<String>) dataSnapshot.child("linked").getValue();
         List<String> mTags = (ArrayList<String>) dataSnapshot.child("tags").getValue();
-
         CustomDictionaryModel word = new CustomDictionaryModel();
 
       //  word.setId(mId);
         word.setUID(mUID);
         word.setWord(mWord);
+        word.setTranslation(mTranslationList);
         word.setTranslationString(mTranslations);
         word.setDescription(mDescription);
         word.setStatus(mStatus);

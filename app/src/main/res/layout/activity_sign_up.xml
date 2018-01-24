@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
               android:id="@+id/sign_up_layout"
               android:background="#e3e3e3"
               android:layout_width="match_parent"
@@ -8,90 +12,127 @@
               android:padding="@dimen/activity_horizontal_margin"
               android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="Welcome"
-            android:textSize="60sp"
-            android:textColor="@color/colorAccent"/>
-
-    </RelativeLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:orientation="vertical">
-
-        <android.support.design.widget.TextInputLayout
-            style="@style/TextShadow"
-            android:id="@+id/usernameWrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                style="@style/TextShadow"
-                android:id="@+id/email_singup"
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="@string/email_singup"/>
+                android:layout_weight="0.5"
+                android:orientation="vertical">
 
-        </android.support.design.widget.TextInputLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Welcome"
+                    android:textSize="60sp"
+                    android:textColor="@color/colorAccent"/>
 
-        <android.support.design.widget.TextInputLayout
-            style="@style/TextShadow"
-            android:id="@+id/passwordWrapper_singup_1"
+        </RelativeLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/usernameWrapper"
-            android:layout_marginTop="4dp">
+            android:layout_weight="0.5"
+            android:orientation="vertical">
 
-            <EditText
+            <android.support.design.widget.TextInputLayout
                 style="@style/TextShadow"
-                android:id="@+id/password_singup_1"
+                android:id="@+id/usernameWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/TextShadow"
+                    android:id="@+id/email_singup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/email_singup"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                style="@style/TextShadow"
+                android:id="@+id/passwordWrapper_singup_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="Password"/>
+                android:layout_below="@id/usernameWrapper"
+                android:layout_marginTop="4dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    style="@style/TextShadow"
+                    android:id="@+id/password_singup_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Password"/>
 
-        <android.support.design.widget.TextInputLayout
-            style="@style/TextShadow"
-            android:id="@+id/passwordWrapper_singup_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/usernameWrapper"
-            android:layout_marginTop="4dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
+            <android.support.design.widget.TextInputLayout
                 style="@style/TextShadow"
-                android:id="@+id/password_singup_2"
+                android:id="@+id/passwordWrapper_singup_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="Password"/>
+                android:layout_below="@id/usernameWrapper"
+                android:layout_marginTop="4dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    style="@style/TextShadow"
+                    android:id="@+id/password_singup_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Password"/>
 
-        <Button
-            android:id="@+id/btn_singup"
-            android:layout_marginTop="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/singup"/>
+            </android.support.design.widget.TextInputLayout>
 
+
+            <Button
+                android:id="@+id/btn_singup"
+                android:layout_marginTop="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/singup"/>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/activity_login_margin_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+
+                <TextView
+                    style="@style/TextShadow"
+                    android:textColor="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="@string/already_have_acc"/>
+
+                <TextView
+                    android:id="@+id/sign_in_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:gravity="left"
+                    style="@style/TextShadow"
+                    android:text="@string/sign_in"/>
+            </LinearLayout>
 
     </LinearLayout>
 
 </LinearLayout>
+
+<ProgressBar
+    android:visibility="gone"
+    android:id="@+id/progress_bar_sign_up"
+    android:layout_width="32dp"
+    android:layout_height="32dp"
+    app:layout_anchor="@id/btn_singup"
+    app:layout_anchorGravity="center_horizontal|center|center_vertical"/>
+
+    </android.support.design.widget.CoordinatorLayout>

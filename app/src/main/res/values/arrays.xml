@@ -67,8 +67,9 @@
 
     <string-array name="display_type">
         <item name="0">Word and Translation</item>
-        <item name="1">Only word</item>
+        <item name="1">Only newWord</item>
         <item name="2">Only translation</item>
+        <item name="2">Small view item</item>
     </string-array>
 
     <string-array name="options_menu">
@@ -98,6 +99,22 @@
         <item name="0">Show all items</item>
         <item name="1">Show only favorite</item>
         <item name="2">Show not favorite</item>
+    </string-array>
+
+    <string-array name="input_type">
+        <item name="0">Choosing answer</item>
+        <item name="1">Manual input</item>
+    </string-array>
+
+    <string-array name="test_side">
+        <item name="0">Word - translation</item>
+        <item name="1">Translation - word</item>
+    </string-array>
+
+    <string-array name="test_type">
+        <item name="0">Limit by questions</item>
+        <item name="1">Restriction on the number of repetitions of words</item>
+        <item name="2">The limit on the number of correct words</item>
     </string-array>
 
     <string-array name="hide_favorite_values">

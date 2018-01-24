@@ -16,7 +16,7 @@
     <string name="password_hint">Password</string>
     <string name="welcome">Welcome</string>
     <string name="rememberme">remember me</string>
-    <string name="singup">Sing UP</string>
+    <string name="singup">Sign UP</string>
     <string name="restorepassword">Restore password</string>
     <string name="noacc">Don\'t have an account?</string>
     <string name="email_singup">Email</string>
@@ -27,7 +27,7 @@
     <string name="profile">profile</string>
     <string name="password_reset">Reset password</string>
     <string name="restore_password">Restore password</string>
-    <string name="email_verification">email verification</string>
+    <string name="email_verification">Email verification</string>
     <string name="user_name">Name:</string>
     <string name="user_email">Email:</string>
     <string name="user_email_verification">Email verification: </string>
@@ -52,7 +52,7 @@
     <string name="LOG_TAG_USER_PROFILE">UserProfile</string>
     <string name="no_permission">no permission</string>
     <string name="fire_base">Fire Base</string>
-    <string name="word">Word</string>
+    <string name="newWord">Word</string>
     <string name="forms">Form</string>
     <string name="translation">Translation</string>
     <string name="word_hint">Word</string>
@@ -72,7 +72,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="default_custom_dictionary">Default custom dictionary</string>
+    <string name="default_custom_dictionary">Default custom dictionaryName</string>
     <string name="custom_dictionary_list">Other dictionaries</string>
     <string name="font_fontFamily_medium">sans-serif</string>
     <string name="name_dictionary_hint">Name</string>
@@ -138,7 +138,7 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value"/>
+    <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
@@ -153,8 +153,8 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="pref_order_by">Order by</string>
     <string name="pref_display_type">Display type</string>
-    <string name="sorting_elements">sorting dictionary elements</string>
-    <string name="display_elements">display of dictionary elements</string>
+    <string name="sorting_elements">sorting dictionaryName elements</string>
+    <string name="display_elements">display of dictionaryName elements</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="learned">Learned</string>
@@ -167,7 +167,7 @@
     <string name="all_dictionaries">All</string>
     <string name="search_title">Search</string>
     <string name="filter_elements">0</string>
-    <string name="filter_type">filter your dictionary</string>
+    <string name="filter_type">filter your dictionaryName</string>
     <string name="hide_learned_words">Learned words</string>
     <string name="hide_favorite_words">Favorite words</string>
     <string name="hide_learned_words_summary">hide or display learned or not learned words</string>
@@ -205,6 +205,7 @@
     <string name="selection_toggle">Selection mode</string>
     <string name="detail_view">Detail view</string>
     <string name="delete_messege">you are sure that you want to remove this a word, it can\'t be cancelled</string>
+    <string name="delete_mes">are you sure that you want to delete this item?</string>
     <string name="search_options">Search options</string>
     <string name="search_elements">Search by...</string>
     <string name="pref_search_type">Search by</string>
@@ -227,8 +228,9 @@
     <string name="lang_is_not_supported">This Language is not supported</string>
     <string name="name_of_dictionary">set name of dictionary</string>
     <string name="name">Custom name</string>
-    <string name="dictionary">Dictionary</string>
-    <string name="dict_customizer_dict_description">Choose a dictionary</string>
+    <string name="dictionaryName">Dictionary</string>
+    <string name="dict_customizer_dict_description">Choose a dictionary Name</string>
+    <string name="dictionary_is_empty_description">Choose words for testing</string>
     <string name="global_settings">Global dictionary settings</string>
     <string name="description_of_global_settings">use global settings for this dictionary</string>
     <string name="dictionary_customizer">Dictionary customizer</string>
@@ -250,6 +252,66 @@
     <string name="translator">Translator</string>
     <string name="linked">Linked</string>
     <string name="tags">Tags</string>
+    <string name="oxford">Oxford</string>
+    <string name="lexicalCategory">Lexical Category</string>
+    <string name="synonyms">Synonyms</string>
+    <string name="antonyms">Antonyms</string>
+    <string name="examples">Examples</string>
+    <string name="complete">Finish test</string>
+    <string name="do_not_know">Don\'t know</string>
+    <string name="timer">Timer</string>
+    <string name="pick_answer">Pick answer</string>
+    <string name="testing">Start testing</string>
+    <string name="testing_words">Testing words</string>
+    <string name="words_description">Choose a testing words</string>
+    <string name="input_type">Input type</string>
+    <string name="input_type_description">Choose input type</string>
+    <string name="test_type">Choose test type</string>
+    <string name="answer_count">Number of answers</string>
+    <string name="test_type_title">Test type</string>
+    <string name="test_type_description">Choose test type</string>
+    <string name="save_test">Save test</string>
+    <string name="save_test_description">Save settings of this test</string>
+    <string name="timer_count">Time to answer</string>
+    <string name="start_test">START TEST</string>
+    <string name="dictionary_is_empty">Dictionary is empty</string>
+    <string name="select_all">Select all</string>
+    <string name="word_repetition_counter">Number of word repetition</string>
+    <string name="correct_words_counter">Number of correct answers</string>
+    <string name="question_counter">Numbers of question in the test</string>
+    <string name="test_side">Side of translation</string>
+    <string name="testing_type_seek_bar">testing_type_seek_bar</string>
+    <string name="type_answer">type answer</string>
+    <string name="finish_test">Are you sure that you want to finish the test?</string>
+    <string name="color_of_learned">Color of learned words</string>
+    <string name="select_color">select color</string>
+    <string name="color_of_selected">Color of selected word</string>
+    <string name="translation_history">Translation history</string>
+    <string name="history">History</string>
+    <string name="title_activity_detail_grammar">Grammar</string>
+    <string name="about">About</string>
+    <string name="categories">Categories</string>
+    <string name="change_learned">Change learned</string>
+    <string name="change_favorite">Change favorite</string>
+    <string name="user_allready_exist">User with this email already exist!</string>
+    <string name="already_have_acc">Already have an account?</string>
+    <string name="sign_in">Sign IN</string>
+    <string name="login_is_successful">login is successful</string>
+    <string name="login_failed">login failed</string>
+    <string name="valid_email">Enter a valid email address!</string>
+    <string name="not_valid_email">Not a valid email address!</string>
+    <string name="default_page">Default start up page</string>
+    <string name="select_default_page">select default start up page</string>
+    <string name="default_start_up_page">Default start up page</string>
+    <string name="title_activity_user_profile">Profile</string>
+    <string name="user_name_hint">Name</string>
+    <string name="uid_hint">UID</string>
+    <string name="delete_account">Delete account</string>
+    <string name="connection_error">Connection error</string>
+    <string name="try_again">retry</string>
+    <string name="title_activity_test_result">TestResultActivity</string>
+    <string name="close">Close</string>
+    <string name="reamove_all">Remove all</string>
 
 
 </resources>

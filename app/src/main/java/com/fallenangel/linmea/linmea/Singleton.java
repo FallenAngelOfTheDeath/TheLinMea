@@ -266,9 +266,9 @@ public class Singleton {
 //        CustomDictionaryModel newItem = null;
 //
 //        for(CustomDictionaryModel items : mItems){
-//            if(items.getWord() != null && items.getUID().contains(wordUid)){
+//            if(items.getNewWord() != null && items.getUID().contains(wordUid)){
 //                newItem.setUID(items.getUID());
-//                newItem.setWord(items.getWord());
+//                newItem.setNewWord(items.getNewWord());
 //                newItem.setTranslationString(items.getTranslationString());
 //                newItem.setTranslation(items.getTranslation());
 //                newItem.setDescription(items.getDescription());

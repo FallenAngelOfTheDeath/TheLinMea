@@ -8,17 +8,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
-        android:text="@string/word"/>
+        android:textSize="16sp"
+        android:text="@string/newWord"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
+        android:textSize="16sp"
         android:text=" - "/>
     <TextView
         android:id="@+id/linked_translation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
+        android:textSize="16sp"
         android:text="@string/translation"/>
 
 </LinearLayout>
