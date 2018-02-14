@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Кондрашов Дмитрий Эдуардович
+  ~ Copyright (C) 2018. All rights reserved.
+  ~ email: kondrashovde@gmail.com
+  ~
+  ~ Last modified 1/26/18 5:59 PM
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/search"
+        android:title="@string/search_title"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+
+    <item android:id="@+id/show_hide_favorite"
+        android:title="@string/hide_favorite"
+        android:icon="@drawable/ic_favorite_black"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/show_hide_learned"
+        android:title="@string/hide_learned"
+        android:icon="@drawable/ic_school_black"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/reset_filter"
+        android:title="@string/reset_filter_title"
+        app:showAsAction="never"/>
+
+</menu>

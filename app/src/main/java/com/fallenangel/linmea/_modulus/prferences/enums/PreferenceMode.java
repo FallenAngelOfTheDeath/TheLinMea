@@ -1,14 +1,21 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea._modulus.prferences.enums;
 
-import com.fallenangel.linmea._linmea.ui.dictionary.CustomDictionaryFragment;
-import com.fallenangel.linmea._linmea.ui.dictionary.CustomDictionaryListFragment;
-import com.fallenangel.linmea._linmea.ui.dictionary.MainDictionaryFragment;
-import com.fallenangel.linmea._linmea.ui.preference.MainPreferenceActivity;
-import com.fallenangel.linmea._linmea.ui.society.FriendsFragment;
-import com.fallenangel.linmea._linmea.ui.translator.TranslateHistory;
-import com.fallenangel.linmea._linmea.ui.translator.TranslatorFragment;
+import com.fallenangel.linmea._modulus.custom_dictionary.ui.CustomDictionaryFragment;
+import com.fallenangel.linmea._modulus.custom_dictionary.ui.CustomDictionaryListFragment;
 import com.fallenangel.linmea._modulus.grammar.ui.CategoryGrammarFragment;
 import com.fallenangel.linmea._modulus.grammar.ui.OnlyFavoriteGrammarFragment;
+import com.fallenangel.linmea._modulus.main_dictionary.MainDictionaryFragment;
+import com.fallenangel.linmea._modulus.prferences.ui.MainPreferenceActivity;
+import com.fallenangel.linmea._modulus.translator.TranslateHistory;
+import com.fallenangel.linmea._modulus.translator.TranslatorFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +31,13 @@ public enum PreferenceMode {
     CUSTOM_DICTIONARY_LIST(3, "List of custom dictionaries", true, CustomDictionaryListFragment.class),
     //SHARED_DICTIONARY_PAGE_1,
     //SHARED_DICTIONARY_PAGE_2
-    SOCIETY_FRIENDS_LIST(8, "Friends", false, FriendsFragment.class),
+    SOCIETY_FRIENDS_LIST(8, "Friends", false, null),
     GRAMMAR_CATEGORIES(4, "Grammar categories", true, CategoryGrammarFragment.class),
     GRAMMAR_FAVORITE(5, "Favorite grammar", true, OnlyFavoriteGrammarFragment.class),
     TRANSLATOR(6, "Translator", true, TranslatorFragment.class),
     TRANSLATOR_HISTORY(7, "History of translate", true, TranslateHistory.class),
-    SINGLE_PAGE(8, "Main settings", false, CustomDictionaryFragment.class),
-    MAIN_GLOBAL_SETTINGS(9, "Single custom dictionary", false, MainPreferenceActivity.class);
+    MAIN_GLOBAL_SETTINGS(8, "Main settings", false, MainPreferenceActivity.class),
+    SINGLE_PAGE(9, "Single custom dictionary", false, CustomDictionaryFragment.class);
 
     int index;
     private String name, UID;
@@ -62,6 +69,10 @@ public enum PreferenceMode {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public static String[] toArrayNames() {

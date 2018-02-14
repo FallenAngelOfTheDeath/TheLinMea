@@ -1,52 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background_recyclerview"
-    tools:context="com.fallenangel.linmea._linmea.ui.testing.tests.TestResultActivity">
+<!--
+  ~ Created by Кондрашов Дмитрий Эдуардович
+  ~ Copyright (C) 2018. All rights reserved.
+  ~ email: kondrashovde@gmail.com
+  ~
+  ~ Last modified 1/26/18 5:59 PM
+  -->
 
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_recyclerview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <include
         android:id="@+id/tb"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_below="@id/tb"
-            android:layout_above="@id/close_test_result"
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:background="@color/background_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.v7.widget.CardView
-                android:layout_below="@id/tb"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/tb">
-                    <TextView
-                        android:id="@+id/result"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="18sp" />
-                </ScrollView>
-            </android.support.v7.widget.CardView>
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tb"
+            android:layout_above="@id/close_test_result">
+
+        </android.support.v4.view.ViewPager>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_dots"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/close_test_result"
+        android:layout_centerHorizontal="true"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
+
+
     <Button
         android:id="@+id/close_test_result"
-        android:background="@color/colorPrimary"
-        android:layout_alignParentBottom="true"
-        android:text="@string/close"
         android:layout_width="match_parent"
-        android:textColor="@color/white"
-        android:layout_height="wrap_content" />
-
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="@string/close"
+        android:textColor="@color/white"/>
 </RelativeLayout>
+
+<!--<android.support.design.widget.CoordinatorLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@android:color/background_light"-->
+    <!--android:fitsSystemWindows="true">-->
+    <!--<include-->
+        <!--android:id="@+id/tb"-->
+        <!--layout="@layout/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"/>-->
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/view_pager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+    <!--</android.support.v4.view.ViewPager>-->
+
+    <!--<android.support.design.widget.TabLayout-->
+        <!--android:id="@+id/tab_dots"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--app:tabBackground="@drawable/tab_selector"-->
+        <!--app:tabGravity="center"-->
+        <!--app:tabIndicatorHeight="0dp"-->
+        <!--app:layout_anchor="@id/view_pager"-->
+        <!--app:layout_anchorGravity="bottom|center|end"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/close_test_result"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:text="@string/close"-->
+        <!--android:textColor="@color/white"-->
+        <!--app:layout_anchor="@+id/view_pager"-->
+        <!--app:layout_anchorGravity="bottom|center" />-->
+
+<!--</android.support.design.widget.CoordinatorLayout>-->
+
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@color/background_recyclerview"-->
+    <!--tools:context="com.fallenangel.linmea._modulus.testing.TestResultActivity">-->
+
+    <!--<include-->
+        <!--android:id="@+id/tb"-->
+        <!--layout="@layout/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"/>-->
+
+
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:layout_below="@id/tb"-->
+        <!--android:layout_above="@id/tab_dots"-->
+        <!--android:id="@+id/view_pager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+    <!--</android.support.v4.view.ViewPager>-->
+
+    <!--<android.support.design.widget.TabLayout-->
+        <!--android:id="@+id/tab_dots"-->
+        <!--android:layout_below="@id/view_pager"-->
+        <!--android:layout_above="@id/close_test_result"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--app:tabBackground="@drawable/tab_selector"-->
+        <!--app:tabGravity="center"-->
+        <!--app:tabIndicatorHeight="0dp"-->
+        <!--app:layout_anchor="@id/view_pager_profile"-->
+        <!--app:layout_anchorGravity="bottom|center|end"/>-->
+
+
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/container"-->
+            <!--android:layout_below="@id/tb"-->
+            <!--android:layout_above="@id/close_test_result"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_below="@id/tb"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<ScrollView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentStart="true"-->
+                    <!--android:layout_below="@+id/tb">-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/result"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_margin="10dp"-->
+                        <!--android:textColor="@color/colorBlack"-->
+                        <!--android:textSize="18sp" />-->
+                <!--</ScrollView>-->
+            <!--</android.support.v7.widget.CardView>-->
+        <!--</FrameLayout>-->
+    <!--<Button-->
+        <!--android:id="@+id/close_test_result"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:text="@string/close"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:layout_height="wrap_content" />-->
+
+
+<!--</RelativeLayout>-->

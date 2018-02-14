@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Кондрашов Дмитрий Эдуардович
+  ~ Copyright (C) 2018. All rights reserved.
+  ~ email: kondrashovde@gmail.com
+  ~
+  ~ Last modified 1/26/18 5:59 PM
+  -->
+
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -56,7 +64,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0"
-                            android:src="@drawable/ic_more_vert_black_34dp" />
+                            app:srcCompat="@drawable/ic_more_vert_black_34dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -95,7 +103,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0"
-                            android:src="@drawable/ic_volume"/>
+                            app:srcCompat="@drawable/ic_volume"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -120,6 +128,45 @@
                                 android:textColor="@color/text_description_bottom_sheet_color"/>
                         </LinearLayout>
                     </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/close_after_add_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_settings"
+                        android:paddingLeft="@dimen/padding_settings"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0"
+                            app:srcCompat="@drawable/ic_add_circle_black_34dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/action_after_add_word"
+                                android:textColor="@color/text_bottom_sheet_color"/>
+
+                            <TextView
+                                android:id="@+id/close_after_add_description"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/speed_of_tts"
+                                android:textColor="@color/text_description_bottom_sheet_color"/>
+                        </LinearLayout>
+                    </LinearLayout>
 
 
                     <LinearLayout
@@ -136,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0"
-                            android:src="@drawable/ic_color_lens_black"/>
+                            app:srcCompat="@drawable/ic_color_lens_black"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -177,7 +224,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0"
-                            android:src="@drawable/ic_border_color_black"/>
+                            app:srcCompat="@drawable/ic_border_color_black"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -217,7 +264,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0"
-                            android:src="@drawable/ic_pages_black"/>
+                            app:srcCompat="@drawable/ic_pages_black"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -239,6 +286,46 @@
                                 android:layout_gravity="bottom"
                                 android:layout_marginLeft="20dp"
                                 android:text="@string/select_default_page"
+                                android:textColor="@color/text_description_bottom_sheet_color"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/search_by_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_settings"
+                        android:paddingLeft="@dimen/padding_settings"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0"
+                            app:srcCompat="@drawable/ic_search_black_34dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/search_by"
+                                android:textColor="@color/text_bottom_sheet_color"/>
+
+                            <TextView
+                                android:id="@+id/search_by_description"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="20dp"
+                                android:text="@string/search_by"
                                 android:textColor="@color/text_description_bottom_sheet_color"/>
                         </LinearLayout>
                     </LinearLayout>

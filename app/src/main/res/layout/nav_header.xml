@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Кондрашов Дмитрий Эдуардович
+  ~ Copyright (C) 2018. All rights reserved.
+  ~ email: kondrashovde@gmail.com
+  ~
+  ~ Last modified 1/26/18 5:59 PM
+  -->
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -45,28 +53,15 @@
         android:layout_below="@+id/liner_layout_header"
 
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-
-
-
-
-
-
     <ImageView
         android:id="@+id/log_out_header_image_view"
-        android:src="@drawable/ic_exit"
+        app:srcCompat="@drawable/ic_exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
-
-
-
-
-
-
 
 </RelativeLayout>
 

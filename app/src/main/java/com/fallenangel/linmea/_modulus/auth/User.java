@@ -1,24 +1,26 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea._modulus.auth;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
-import com.fallenangel.linmea._linmea.model.UserModel;
-import com.fallenangel.linmea.linmea.user.utils.Validations;
+import com.fallenangel.linmea._modulus.non.utils.Validations;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Date;
 
 /**
  * Created by NineB on 9/29/2017.
@@ -32,24 +34,6 @@ public class User {
         this.mAuth = mAuth;
     }
 
-    //static User instance;
-
-//    public static User getInstance(){
-//        return instance;
-//    }
-//
-//    public synchronized static User getInstance(){
-//        if (instance == null){
-//            instance = new User(FirebaseAuth.getInstance());
-//        }
-//        return instance;
-//    }
-
-
-//
-//    public User() {
-//    }
-//
     public FirebaseUser getCurrUser () {
         return mAuth.getCurrentUser();
     }
@@ -87,68 +71,49 @@ public class User {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 mOnCompleteListener.onComplete(task);
-
             }
         });
 
     }
 
-    public Boolean updateUserName(String name){
-        final Boolean[] bool = {false};
+    public void updateUserName(String name, OnCompleteListener mOnCompleteListener){
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
         getCurrUser()
                 .updateProfile(profileUpdates)
-                .addOnCompleteListener((OnCompleteListener) task -> {
-                    if (task.isSuccessful())
-                        bool[0] = true;
-                    else
-                        bool[0] = false;
-                });
-        return bool[0];
-    }
-
-    public Boolean updateUserEmail(String email){
-        final Boolean[] bool = {false};
-        getCurrUser()
-                .updateEmail(email)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .addOnCompleteListener(new com.google.android.gms.tasks.OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                            bool[0] = true;
-                        else
-                            bool[0] = false;
+                        mOnCompleteListener.onComplete(task);
                     }
                 });
-        return bool[0];
     }
 
-    public Boolean sendEmailVerification(){
-        final Boolean[] bool = {false};
-        getCurrUser()
-                .sendEmailVerification()
-                .addOnCompleteListener((OnCompleteListener) task -> {
-                    if (task.isSuccessful())
-                        bool[0] = true;
-                    else
-                        bool[0] = false;
-                });
-        return bool[0];
+    public void updateUserEmail(String password, String email, String currentEmail, OnCompleteListenerWithCredit onCompleteListenerWithCredit){
+        AuthCredential credential = EmailAuthProvider.getCredential(currentEmail, password);
+        getCurrUser().reauthenticate(credential).addOnCompleteListener(creditTask -> {
+            if (creditTask.isSuccessful())
+                getCurrUser().updateEmail(email).addOnCompleteListener(task -> onCompleteListenerWithCredit.onComplete(task, creditTask));
+            else
+                onCompleteListenerWithCredit.onCreditError(creditTask);
+        });
     }
 
-    public Boolean updatePassword(String newPassword){
-        final Boolean[] bool = {false};
+    public void sendEmailVerification(){
         getCurrUser()
-                .updatePassword(newPassword)
-                .addOnCompleteListener((OnCompleteListener) task -> {
-                    if (task.isSuccessful())
-                        bool[0] = true;
-                    else
-                        bool[0] = false;
-                });
-        return bool[0];
+                .sendEmailVerification();
+    }
+
+    public void updatePassword(String oldPassword, String newPassword, OnCompleteListener mOnCompleteListener){
+        AuthCredential credential = EmailAuthProvider.getCredential(getCurrUser().getEmail(), oldPassword);
+        getCurrUser().reauthenticate(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                getCurrUser()
+                        .updatePassword(newPassword)
+                        .addOnCompleteListener(mOnCompleteListener);
+        });
+
     }
 
     public void sendPasswordResetEmail(String email, OnCompleteListener mOnCompleteListener){
@@ -157,14 +122,21 @@ public class User {
            .addOnCompleteListener(task -> mOnCompleteListener.onComplete(task));
     }
 
-    public void deleteUser(OnCompleteListener mOnCompleteListener){
-        getCurrUser().delete().addOnCompleteListener(task -> mOnCompleteListener.onComplete(task));
+    public void deleteUser(String currentEmail, String password, OnCompleteListenerWithCredit onCompleteListenerWithCredit){
+        AuthCredential credential = EmailAuthProvider.getCredential(currentEmail, password);
+        getCurrUser().reauthenticate(credential).addOnCompleteListener(creditTask -> {
+            if (creditTask.isSuccessful())
+                getCurrUser().delete().addOnCompleteListener(task -> onCompleteListenerWithCredit.onComplete(task, creditTask));
+            else
+                onCompleteListenerWithCredit.onCreditError(creditTask);
+        });
     }
 
-
-    public interface OnUserComplete{
-        void onComplete(@NonNull Task task);
+    public interface OnCompleteListenerWithCredit{
+        void onComplete(@NonNull Task<Void> task, @NonNull Task<Void> creditTask);
+        void onCreditError(@NonNull Task<Void> creditTask);
     }
+
 
 
 
@@ -194,23 +166,6 @@ public class User {
             firebaseAuth.signOut();
         }
     }
-
-    public static void logIn(){
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -244,95 +199,5 @@ public class User {
         }
         return bool = status[0];
     }
-
-
-
-
-    public static void getMainMetadata(){
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("user").child(getCurrentUserUID()).addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                UserModel user = null;
-
-                String mFirstName = (String) dataSnapshot.child("main_metadata").child("first_name").getValue();
-                String mLastName = (String) dataSnapshot.child("main_metadata").child("last_name").getValue();
-                String mBiography = (String) dataSnapshot.child("other_metadata").child("biography").getValue();
-                Date mBirthday = (Date) dataSnapshot.child("other_metadata").child("birthday").getValue();
-                String mCity = (String) dataSnapshot.child("other_metadata").child("city").getValue();
-                Date mDateOfCreation = (Date) dataSnapshot.child("other_metadata").child("date_of_creation").getValue();
-
-                user.setFirestName(mFirstName);
-                user.setLastName(mLastName);
-                user.setBiography(mBiography);
-                user.setBiography(mBiography);
-                user.setBirthday(mBirthday);
-                user.setDateOfCreation(mDateOfCreation);
-                user.setCity(mCity);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public static void getOtherMetadata(){
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    public void singing (String email, String password){
-//        FirebaseAuth.getInstance();
-//
-//        Observable<FirebaseAuth.>
-//
-//
-//
-//
-//        final Thread[] thread = new Thread[1];
-//       FirebaseAuth.getInstance() = mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<AuthResult> task) {
-//                if (task.isSuccessful()) {
-//
-//                    if (User.getCurrentUser() != null){
-//                        thread[0] = new Thread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                UpdateUserData.getUserDataFromFire(LoginActivity.this);
-//                            }
-//                        });
-//                    }
-//
-//                    Toast.makeText(getApplicationContext(), "login is successful", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "login failed", Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }
-//        });
-//    }
-
-
-
-
-
-
 
 }

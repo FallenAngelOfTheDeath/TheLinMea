@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Кондрашов Дмитрий Эдуардович
+  ~ Copyright (C) 2018. All rights reserved.
+  ~ email: kondrashovde@gmail.com
+  ~
+  ~ Last modified 1/26/18 5:59 PM
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fallenangel.linmea">
 
@@ -7,6 +13,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".LinMea"
@@ -25,15 +32,12 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".linmea.startup.StartUpActivity" />
         <activity android:name="._modulus.auth.ui.LoginActivity" />
         <activity android:name="._modulus.auth.ui.SignUpActivity" />
-        <activity android:name=".linmea.user.profile.ProfileActivity" />
-        <activity android:name=".authentication.ChangePasswordActivity" />
-        <activity android:name=".linmea.user.profile.ChangeProfileDataActivity" />
-        <activity android:name=".profile.activities.ChangeUserProfileActivity" />
-        <activity android:name="._linmea.ui.dictionary.AddCustomDictionaryActivity" />
-        <activity android:name="._linmea.ui.dictionary.DictionaryActivity">
+        <activity
+            android:name="._modulus.custom_dictionary.ui.AddCustomDictionaryActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name="._modulus.custom_dictionary.ui.DictionaryActivity">
             <intent-filter android:label="@string/custom_dictionaries">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -46,74 +50,35 @@
                     android:scheme="app" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".preference.SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity
-            android:name="._linmea.ui.preference.Preference$CustomDictionaryPreference"
-            android:label="@string/title_activity_settings" />
-        <activity
-            android:name="._linmea.ui.preference.Preference$MainPreference"
-            android:label="@string/title_activity_settings" />
-        <activity
-            android:name="._linmea.ui.preference.Preference$DetailViewPreference"
-            android:label="@string/title_activity_settings" />
-        <activity
-            android:name="._linmea.ui.preference.Preference"
-            android:label="@string/title_activity_settings" />
         <activity android:name="._modulus.main.ui.MainActivity" />
-        <activity android:name="._linmea.ui.first_start.FirstStartActivity" />
-
-        <service
-            android:name="._linmea.service.UpdateUserData"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name="._linmea.service.ChatService"
-            android:enabled="true" />
-        <service
-            android:name="._test.BoundService"
-            android:enabled="true" />
-
         <activity
-            android:name=".linmea.ui.dictionary.WordDetailActivity"
+            android:name="._modulus.custom_dictionary.ui.BaseDetailActivity"
             android:windowSoftInputMode="stateHidden" />
+        <activity android:name="._modulus.prferences.ui.DictionaryCustomizerActivity" />
+        <activity android:name="._modulus.prferences.ui.MainPreferenceActivity" />
         <activity
-            android:name="._linmea.ui.dictionary.BaseDetailActivity"
-            android:windowSoftInputMode="stateHidden" />
-        <activity android:name="._linmea.ui.preference.DictionaryCustomizerActivity" />
-        <activity android:name="._linmea.ui.preference.MainPreferenceActivity" />
-        <activity android:name="._linmea.ui.society.ChatRoomActivity" />
-
-        <receiver
-            android:name="._linmea.service.BroadReceive"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
-        <activity android:name="._linmea.ui.testing.TestingActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name="._linmea.ui.testing.TestConfiguratorActivity" />
+            android:name="._modulus.testing.TestingActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name="._modulus.testing.TestConfiguratorActivity" />
         <activity
             android:name="._modulus.grammar.ui.DetailGrammarActivity"
             android:label="@string/title_activity_detail_grammar" />
         <activity android:name="._modulus.grammar.ui.GrammarsListActivity" />
-        <activity
-            android:name="._modulus.auth.ui.UserProfileActivity"
-            android:label="@string/title_activity_user_profile"
-            android:parentActivityName="._modulus.main.supclasses.SuperAppCompatActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.fallenangel.linmea._modulus.main.supclasses.SuperAppCompatActivity" />
-        </activity>
         <activity android:name="._modulus.main.supclasses.SuperAppCompatActivity" />
         <activity
-            android:name="._linmea.ui.testing.tests.TestResultActivity"
+            android:name="._modulus.testing.TestResultActivity"
             android:label="@string/title_activity_test_result"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="._modulus.auth.ui.UserProfileActivity"
+            android:label="@string/title_activity_up"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name="._modulus.grammar.ui.DetailActivity" />
+        <activity android:name="._modulus.main_dictionary.ViewMainWordActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name="._barcode.BarCodeReaderActivity" />
+        <activity android:name="._modulus.main.ui.AboutActivity"></activity>
     </application>
 
 </manifest>

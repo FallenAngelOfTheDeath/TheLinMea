@@ -1,5 +1,14 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea._modulus.auth.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,8 +28,10 @@ import com.fallenangel.linmea._modulus.auth.User;
 import com.fallenangel.linmea._modulus.auth.View.RxEditText;
 import com.fallenangel.linmea._modulus.main.supclasses.SuperAppCompatActivity;
 import com.fallenangel.linmea._modulus.main.ui.MainActivity;
+import com.fallenangel.linmea._modulus.non.utils.SharedPreferencesUtils;
 import com.fallenangel.linmea._modulus.non.utils.Utils;
-import com.fallenangel.linmea.linmea.utils.image.Blur;
+import com.fallenangel.linmea._modulus.non.utils.Blur;
+import com.fallenangel.linmea._modulus.prferences.utils.LoadDefaultConfig;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -38,6 +49,8 @@ import static com.fallenangel.linmea._modulus.auth.utils.ValidationOfAuth.valida
 public class SignUpActivity extends SuperAppCompatActivity implements View.OnClickListener, OnCompleteListener {
 
     @Inject public User user;
+    @Inject
+    Context mContex;
 
     private LinearLayout mLayout;
 
@@ -145,12 +158,22 @@ public class SignUpActivity extends SuperAppCompatActivity implements View.OnCli
             snack.show();
         } else {
             String email = emailEditText.getText().toString();
-            user.updateUserName(email.substring(0, email.lastIndexOf('@')));
             user.sendEmailVerification();
-            Toast.makeText(getApplicationContext(), this.getString(R.string.registrationissuccessful), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            user.updateUserName(email.substring(0, email.lastIndexOf('@')), new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.registrationissuccessful), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
+            if (SharedPreferencesUtils.getBollFromSharedPreferences(mContex, "FIRST", "START")) {
+                LoadDefaultConfig mLoadDefaultConfig = new LoadDefaultConfig(mContex);
+                mLoadDefaultConfig.createSampleCustomDictionary();
+            }
+
         }
     }
 }

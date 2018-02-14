@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Кондрашов Дмитрий Эдуардович
+  ~ Copyright (C) 2018. All rights reserved.
+  ~ email: kondrashovde@gmail.com
+  ~
+  ~ Last modified 1/26/18 5:59 PM
+  -->
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,7 +14,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_recyclerview"
-    tools:context="com.fallenangel.linmea._linmea.ui.testing.TestConfiguratorActivity">
+    tools:context="com.fallenangel.linmea._modulus.testing.TestConfiguratorActivity">
     <include
         android:id="@+id/toooolbar"
         layout="@layout/toolbar"
@@ -42,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0"
-                        android:src="@drawable/ic_library_books_black"/>
+                        app:srcCompat="@drawable/ic_library_books_black"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -82,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0"
-                        android:src="@drawable/ic_assignment_black"/>
+                        app:srcCompat="@drawable/ic_assignment_black"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -121,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0"
-                        android:src="@drawable/ic_view_agenda_black_34dp"/>
+                        app:srcCompat="@drawable/ic_view_agenda_black_34dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -162,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0"
-                android:src="@drawable/ic_shuffle_black"/>
+                    app:srcCompat="@drawable/ic_shuffle_black"/>
 
                 <LinearLayout
                 android:layout_width="match_parent"
@@ -216,7 +224,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0"
-                        android:src="@drawable/ic_code_black"/>
+                        app:srcCompat="@drawable/ic_code_black"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -362,7 +370,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0"
-                        android:src="@drawable/ic_power_input_black"/>
+                        app:srcCompat="@drawable/ic_power_input_black"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -400,7 +408,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0"
-                        android:src="@drawable/ic_question_answer_black"/>
+                        app:srcCompat="@drawable/ic_question_answer_black"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -447,7 +455,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0"
-                        android:src="@drawable/ic_timer_black"/>
+                        app:srcCompat="@drawable/ic_timer_black"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

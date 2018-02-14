@@ -1,10 +1,19 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea._modulus.non.adapter;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
-import com.fallenangel.linmea._linmea.model.BaseModel;
+import com.fallenangel.linmea._modulus.non.interfaces.OnRecyclerViewClickListener;
+import com.fallenangel.linmea._modulus.non.data.BaseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +51,21 @@ public abstract class SimpleAbstractAdapter <T extends BaseModel, VH extends Rec
 
     public void clear (){
         mItemsList.clear();
+    }
+
+    public void setFilter(List<T> item) {
+        mItemsList = new ArrayList<T>();
+        mItemsList.addAll(item);
+        notifyDataSetChanged();
+    }
+
+    public void setItems(List<T> items){
+        if (!mItemsList.isEmpty()) mItemsList.clear();
+        mItemsList = items;
+    }
+
+    public List<T> getItems(){
+        return mItemsList;
     }
 
 }

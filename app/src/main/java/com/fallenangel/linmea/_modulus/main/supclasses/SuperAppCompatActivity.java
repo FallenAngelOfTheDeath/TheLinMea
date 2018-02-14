@@ -1,3 +1,11 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea._modulus.main.supclasses;
 
 import android.os.Bundle;
@@ -11,7 +19,7 @@ import com.fallenangel.linmea._modulus.main.dagger.AppComponent;
  * Created by NineB on 1/18/2018.
  */
 
-public class SuperAppCompatActivity extends AppCompatActivity {
+public abstract class SuperAppCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,5 +29,6 @@ public class SuperAppCompatActivity extends AppCompatActivity {
     public AppComponent getAppComponent() {
         return ((LinMea)getApplication()).getAppComponent();
     }
+
 
 }

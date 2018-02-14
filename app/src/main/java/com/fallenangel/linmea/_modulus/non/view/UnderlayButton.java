@@ -1,3 +1,11 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea._modulus.non.view;
 
 import android.content.Context;
@@ -9,7 +17,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-import com.fallenangel.linmea._linmea.interfaces.UnderlayButtonClickListener;
+import com.fallenangel.linmea._modulus.non.interfaces.UnderlayButtonClickListener;
 
 
 /**
@@ -26,6 +34,8 @@ public class UnderlayButton {
     private UnderlayButtonClickListener clickListener;
     private Context mContext;
 
+    private int mTextGravity = BOTTOM;
+
     private boolean mDrawBitmap = false;
 
     private String mText = "";
@@ -33,45 +43,34 @@ public class UnderlayButton {
     private int mTextColor = Color.WHITE;
     private int mBackgroundColor = Color.LTGRAY;
     private int mTextSize = 32;
-  //  private int mSide = RIGHT;
-    private UnderlayButtonClickListener mOnClickListener;
 
-//    public static final int LEFT = 0;
-//    public static final int RIGHT = 1;
+    public static final int CENTER = 0;
+    public static final int TOP = 1;
+    public static final int BOTTOM = 2;
 
- //   public static final int LEFT = 1 << 2;
-  //  public static final int RIGHT = 1 << 3;
-
-//    public UnderlayButton(Context context, String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
-//        this.mContext = context;
-//        this.text = text;
-//        this.imageResId = imageResId;
-//        this.color = color;
-//        this.clickListener = clickListener;
-//    }
-//
-//    public UnderlayButton(UnderlayButtonClickListener clickListener) {
-//        this.clickListener = clickListener;
-//    }
-//
-//    public UnderlayButton(Context context) {
-//        this.mContext = context;
-//    }
 
     public UnderlayButton(Context context, int res) {
         this.mContext = context;
         this.imageResId = res;
     }
+    public UnderlayButton(Context context) {
+        this.mContext = context;
+    }
 
     public boolean onClickUnderlayButton(float x, float y){
         if (clickRegion != null && clickRegion.contains(x, y)){
-            clickListener.onClickUnderlayButton(pos, id);
+            try {
+                if (clickListener != null)
+                clickListener.onClickUnderlayButton(pos, id);
+            } catch (Exception e){
+                throw e;
+            }
             return true;
         }
         return false;
     }
 
-    public void onDraw(Canvas c, RectF rect, int pos){
+    public void onDraw(Canvas c, RectF rect, int pos) {
         Paint p = new Paint();
 
         // Draw background
@@ -91,18 +90,31 @@ public class UnderlayButton {
 
         float x = cWidth / 2f - r.width() / 2f - r.left;
         float y = cHeight / 2f + r.height() / 2f - r.bottom;
-        c.drawText(mText, rect.left + x, rect.bottom -20, p);
-       // c.drawText(mText, rect.left + x, rect.top + yy, p);
+        switch (mTextGravity){
+            case CENTER:
+                c.drawText(mText, rect.left + x, rect.centerY() + 20, p);
+                break;
+            case TOP:
+                c.drawText(mText, rect.left + x, rect.top + 30, p);
+                break;
+            case BOTTOM:
+                c.drawText(mText, rect.left + x, rect.bottom - 20, p);
+                break;
+            default:
+                c.drawText(mText, rect.left + x, rect.bottom - 20, p);
+                break;
+        }
+        // c.drawText(mText, rect.left + x, rect.top + yy, p);
 
         // Draw Image
+        if (imageResId != 0){
+            p.setColor(Color.BLACK);
+            Bitmap b = BitmapFactory.decodeResource(mContext.getResources(), imageResId);
 
-        p.setColor(Color.BLACK);
-        Bitmap b = BitmapFactory.decodeResource(mContext.getResources(), imageResId);
-
-        int cx = Math.round(r.width() - b.getWidth()) >> 1; // same as (...) / 2
-        int cy = Math.round(r.height() - b.getHeight()) >> 1;
-        c.drawBitmap(b, rect.right - rect.width()/1.3f, rect.top + rect.height()/6f, p);
-
+            int cx = Math.round(r.width() - b.getWidth()) >> 1; // same as (...) / 2
+            int cy = Math.round(r.height() - b.getHeight()) >> 1;
+            c.drawBitmap(b, rect.right - rect.width() / 1.3f, rect.top + rect.height() / 6f, p);
+        }
 
         clickRegion = rect;
         this.pos = pos;
@@ -116,6 +128,10 @@ public class UnderlayButton {
         this.mImageResId = imageResId;
         this.mContext = context;
         mDrawBitmap = true;
+    }
+
+    public void setTextGravity(int gravity){
+        mTextGravity = gravity;
     }
 
     public void setTextColor(int textColor) {

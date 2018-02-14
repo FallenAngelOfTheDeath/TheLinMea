@@ -1,3 +1,11 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea._modulus.auth.ui;
 
 import android.content.Intent;
@@ -20,7 +28,7 @@ import com.fallenangel.linmea._modulus.auth.View.RxEditText;
 import com.fallenangel.linmea._modulus.main.supclasses.SuperAppCompatActivity;
 import com.fallenangel.linmea._modulus.main.ui.MainActivity;
 import com.fallenangel.linmea._modulus.non.utils.Utils;
-import com.fallenangel.linmea.linmea.utils.image.Blur;
+import com.fallenangel.linmea._modulus.non.utils.Blur;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -63,7 +71,7 @@ public class LoginActivity extends SuperAppCompatActivity implements View.OnClic
         emailObservable = RxEditText.getTextWatcherOnAfterTextChanged(emailEditText);
 
         emailObservable.exists(s -> {
-            if (s.isEmpty())
+            if (!validateEmail(s))
                 return false;
             else
                 return true;
@@ -119,10 +127,11 @@ public class LoginActivity extends SuperAppCompatActivity implements View.OnClic
         mResetPasswordTextView.setClickable(false);
 
         //emailEditText.setText("speedvagon@spv.com");
-        emailEditText.setText("fallenangelofthedeath@gmail.com");
-        ///passwordEditText.setText("SpeedVagon1Vasya");
-        passwordEditText.setText("947019sdk20");
-
+        //emailEditText.setText("fallenangelofthedeath@gmail.com");
+        //passwordEditText.setText("SpeedVagon1Vasya");
+        //passwordEditText.setText("947019sdk20");
+        if(emailEditText.getText().length()!= 0 & passwordEditText.getText().length() !=0)
+            loginButton.setEnabled(true);
 
     }
 

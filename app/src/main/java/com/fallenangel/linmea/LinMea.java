@@ -1,3 +1,11 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea;
 
 import android.app.Activity;
@@ -11,7 +19,6 @@ import com.fallenangel.linmea._modulus.main.dagger.AndroidModule;
 import com.fallenangel.linmea._modulus.main.dagger.AppComponent;
 import com.fallenangel.linmea._modulus.main.dagger.AppModule;
 import com.fallenangel.linmea._modulus.main.dagger.DaggerAppComponent;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by NineB on 12/6/2017.
@@ -25,7 +32,7 @@ public class LinMea extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
 

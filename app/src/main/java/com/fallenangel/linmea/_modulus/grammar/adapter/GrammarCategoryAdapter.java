@@ -1,3 +1,11 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea._modulus.grammar.adapter;
 
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallenangel.linmea.R;
-import com.fallenangel.linmea._linmea.interfaces.OnRecyclerViewClickListener;
+import com.fallenangel.linmea._modulus.non.interfaces.OnRecyclerViewClickListener;
 import com.fallenangel.linmea._modulus.grammar.model.GrammarCategory;
 import com.fallenangel.linmea._modulus.non.adapter.SimpleAbstractAdapter;
 

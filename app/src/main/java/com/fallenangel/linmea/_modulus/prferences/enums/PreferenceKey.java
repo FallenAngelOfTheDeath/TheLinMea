@@ -1,3 +1,11 @@
+/*
+ * Created by Кондрашов Дмитрий Эдуардович
+ * Copyright (C) 2018. All rights reserved.
+ * email: kondrashovde@gmail.com
+ *
+ * Last modified 1/26/18 5:59 PM
+ */
+
 package com.fallenangel.linmea._modulus.prferences.enums;
 
 /**
@@ -16,8 +24,9 @@ public enum PreferenceKey {
     FOUNT_SIZE_WORD,
     FOUNT_SIZE_TRANSLATION,
     DISPLAY_TYPE,
-
-
+    UNDERLAY_CUSTOM_DICTIONARY,
+    SEARCH_BY,
+    CLOSE_AFTER_ADD_OR_CHANGE_WORD,
 
     GLOBAL_SETTINGS,
     TRANSLATION_PAIR,
